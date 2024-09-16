@@ -1,10 +1,21 @@
-import { Html, Head, Main, NextScript } from "next/document";
+import type { DocumentProps } from "next/document";
+import { Head, Html, Main, NextScript } from "next/document";
 
-export default function Document() {
+type Props = DocumentProps & {
+  // add custom document props
+};
+
+export default function Document(props: Props) {
+  const {
+    __NEXT_DATA__: { locale },
+  } = props;
   return (
-    <Html lang="en">
+    <Html lang={locale} translate="no">
       <Head />
       <body>
+        <div className="loader-wrapper">
+          <div className="loader" />
+        </div>
         <Main />
         <NextScript />
       </body>
