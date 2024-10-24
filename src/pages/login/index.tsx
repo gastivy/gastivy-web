@@ -1,10 +1,10 @@
 import { PageRender } from "@/components/base/PageRender";
-import HomeContainer from "@/containers/mobile/home";
+import LoginContainer from "@/containers/mobile/login";
 import { PageNotSupport } from "@/containers/web";
 
 const Login = () =>
   PageRender({
-    mobile: <HomeContainer />,
+    mobile: <LoginContainer />,
     web: <PageNotSupport />,
   });
 

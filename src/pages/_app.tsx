@@ -3,9 +3,11 @@ import { GlobalStyle } from "@/styles/global-styled";
 import { Flex } from "astarva-ui";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export default function App({ Component, pageProps }: AppProps) {
   const { isReadyMounted } = usePageRender();
+  const queryClient = new QueryClient();
 
   return (
     <>
@@ -16,10 +18,12 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Flex>
-          <GlobalStyle />
-          {isReadyMounted && <Component {...pageProps} />}
-        </Flex>
+        <QueryClientProvider client={queryClient}>
+          <Flex>
+            <GlobalStyle />
+            {isReadyMounted && <Component {...pageProps} />}
+          </Flex>
+        </QueryClientProvider>
       </main>
     </>
   );
