@@ -1,6 +1,6 @@
 import axios from "axios";
+import { cookies } from "./cookies";
 
-// create axios instance wrapper
 export const httpService = axios.create({
   baseURL: process.env.API_URL,
   withCredentials: true,
@@ -9,24 +9,24 @@ export const httpService = axios.create({
   },
 });
 
-axios.interceptors.request.use(
+httpService.interceptors.request.use(
   (config) => {
-    // Add your token or other credentials to every request here
-    const token = localStorage.getItem("authToken"); // Example: Get token from localStorage
+    const token = cookies.getCookie("GSTID");
+
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
+    } else {
+      console.warn("No token found, Authorization header not set.");
     }
 
-    // Make sure to return the modified config
     return config;
   },
   (error) => {
-    // Handle any errors that occur before the request is sent
+    console.error("Request Error:", error);
     return Promise.reject(error);
   }
 );
 
-// add interceptor to handle errors
 httpService.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -36,10 +36,12 @@ httpService.interceptors.response.use(
       const baseUrl = windowObj?.location.origin;
       const currentUrl = windowObj?.location.href;
 
-      // redirect to login page if not authenticated
+      // Redirect to login page if not authenticated
       if (windowObj) {
         windowObj.location.href = `${baseUrl}/login?referrer=${currentUrl}`;
       }
+    } else {
+      console.error("Response Error:", error.response?.data || error);
     }
 
     return Promise.reject(error);

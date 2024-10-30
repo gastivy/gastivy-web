@@ -1,4 +1,4 @@
-import Layout from "@/components/Layout";
+import Layout from "@/components/mobile/Layout";
 import { route } from "@/constants/route";
 import { useLogin } from "@/modules/auth/hooks/useAuth";
 import { LoginRequest } from "@/modules/auth/models/Auth";
@@ -32,13 +32,13 @@ const LoginContainer = () => {
   };
 
   return (
-    <Layout _flex={{ padding: "64px 32px", gap: "64px" }}>
-      <Flex flexDirection="column" gap="24px" textAlign="center">
+    <Layout _flex={{ padding: "4rem 2rem", gap: "4rem" }}>
+      <Flex flexDirection="column" gap="1.5rem" textAlign="center">
         <Text color="black900" variant="heading4">
           Login Here
         </Text>
       </Flex>
-      <Flex flexDirection="column" padding="24px" gap="16px">
+      <Flex flexDirection="column" padding="1.5rem" gap="1rem">
         <Input
           label="Email"
           autoComplete="new-email"

@@ -11,4 +11,8 @@ export const route = {
     name: "Register",
     path: "/register",
   },
+  category: {
+    name: "Category",
+    path: "/category",
+  },
 };

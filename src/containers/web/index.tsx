@@ -1,4 +1,4 @@
-import Layout from "@/components/Layout";
+import Layout from "@/components/mobile/Layout";
 import { Text } from "astarva-ui";
 
 export const PageNotSupport = () => {
