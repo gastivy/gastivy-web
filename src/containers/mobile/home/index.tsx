@@ -9,11 +9,17 @@ import { Timer } from "@/hooks/useStopwatch";
 import { getRange } from "@/utils/getRange";
 import { Category } from "@/modules/category/models";
 
+interface Activity {
+  id: string;
+  name: string;
+  data: Timer[];
+}
+
 const HomeContainer = () => {
   const { data, isLoading, refetch } = useGetCategory();
   const activityDisclosure = useDisclosure({ open: false });
   const [categorySelected, setCategorySelected] = useState<Category>();
-  const [dataActivity, setDataActivity] = useState<Timer[]>([]);
+  const [dataActivity, setDataActivity] = useState<Activity>();
 
   const selectCategory = async (category: Category) => {
     setCategorySelected(category);
@@ -24,13 +30,10 @@ const HomeContainer = () => {
   const getActivityExisting = async () => {
     const activity = (await IndexedDB.getAll("activities"))[0];
     if (activity?.data?.length) {
-      setCategorySelected(activity.id);
-      setDataActivity(activity.data);
+      setDataActivity(activity);
       activityDisclosure.onOpen();
     }
   };
-
-  console.log("RANGE", getRange());
 
   const handleBackAddActivity = () => {
     activityDisclosure.onClose();
@@ -45,9 +48,10 @@ const HomeContainer = () => {
     <Layout>
       {activityDisclosure.isOpen && (
         <AddActivityDrawer
-          title={categorySelected?.name}
-          categoryId={categorySelected?.id || ""}
-          data={dataActivity}
+          title={categorySelected?.name || dataActivity?.name}
+          categoryId={categorySelected?.id || dataActivity?.id}
+          data={dataActivity?.data}
+          onRefetch={refetch}
           onBack={handleBackAddActivity}
         />
       )}
