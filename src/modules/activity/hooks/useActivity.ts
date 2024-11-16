@@ -1,6 +1,11 @@
-import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import {
+  useMutation,
+  UseMutationOptions,
+  useQuery,
+  UseQueryOptions,
+} from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { CreateActivityRequest } from "../models";
+import { CreateActivityRequest, LogActivityResponse } from "../models";
 import { ActivityServices } from "../services";
 
 export const useCreateActivity = (
@@ -8,5 +13,14 @@ export const useCreateActivity = (
 ) =>
   useMutation({
     mutationFn: (data) => ActivityServices.create(data),
+    ...options,
+  });
+
+export const useGetActivity = (
+  options?: UseQueryOptions<LogActivityResponse>
+) =>
+  useQuery({
+    queryKey: ["all-category"],
+    queryFn: () => ActivityServices.getAll(),
     ...options,
   });

@@ -3,8 +3,9 @@ import { useCreateCategory } from "@/modules/category/hooks/useCategory";
 import { CategoryRequest } from "@/modules/category/models";
 import { schemaCategory } from "@/modules/category/schema/category";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button, Flex, Icon, Input } from "astarva-ui";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export const AddCategoryDrawer: React.FC<Props> = ({ refetch, onBack }) => {
+  const queryClient = useQueryClient();
   const { isPending, mutate } = useCreateCategory({
     onSuccess: () => {
       onBack();
@@ -22,7 +24,6 @@ export const AddCategoryDrawer: React.FC<Props> = ({ refetch, onBack }) => {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schemaCategory),
@@ -32,10 +33,14 @@ export const AddCategoryDrawer: React.FC<Props> = ({ refetch, onBack }) => {
     mutate(form);
   };
 
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["all-category"] });
+  }, []);
+
   return (
     <Drawer>
       <Flex flexDirection="column" padding="1.25rem" gap="1.5rem" width="100%">
-        <Icon icon="Left-outline" onClick={onBack} />
+        <Icon icon="Arrow-Left-solid" onClick={onBack} />
         <Input
           label="Category Name"
           disabled={isPending}

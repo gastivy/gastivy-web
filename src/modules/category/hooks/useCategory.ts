@@ -9,17 +9,19 @@ import {
   CategoryRequest,
   CategoryResponse,
   DeleteCategoryRequest,
+  GetCategoryRequest,
   UpdateCategoryRequest,
 } from "../models";
 import { CategoryServices } from "../services";
 import { AxiosError } from "axios";
 
 export const useGetCategory = (
+  params?: GetCategoryRequest,
   options?: UseQueryOptions<AllCategoryResponse>
 ) =>
   useQuery({
-    queryKey: ["all-category"],
-    queryFn: () => CategoryServices.getAll(),
+    queryKey: ["all-category", params],
+    queryFn: () => CategoryServices.getAll(params),
     ...options,
   });
 

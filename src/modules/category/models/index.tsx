@@ -5,6 +5,12 @@ export interface CategoryRequest {
   target: number;
 }
 
+export interface GetCategoryRequest {
+  start_date?: string;
+  end_date?: string;
+  categoryId?: string[];
+}
+
 export interface UpdateCategoryRequest {
   id: string;
   name: string;

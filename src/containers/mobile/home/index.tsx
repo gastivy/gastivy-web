@@ -3,11 +3,11 @@ import useDisclosure from "@/hooks/useDisclosure";
 import { useGetCategory } from "@/modules/category/hooks/useCategory";
 import { Flex, Text, Progress } from "astarva-ui";
 import { AddActivityDrawer } from "./components/AddActivityDrawer";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { IndexedDB } from "@/utils/indexedDB";
 import { Timer } from "@/hooks/useStopwatch";
-import { getRange } from "@/utils/getRange";
 import { Category } from "@/modules/category/models";
+import { dateTime } from "@/utils/dateTime";
 
 interface Activity {
   id: string;
@@ -16,10 +16,25 @@ interface Activity {
 }
 
 const HomeContainer = () => {
-  const { data, isLoading, refetch } = useGetCategory();
   const activityDisclosure = useDisclosure({ open: false });
   const [categorySelected, setCategorySelected] = useState<Category>();
   const [dataActivity, setDataActivity] = useState<Activity>();
+  // const [rangeWeekly]
+
+  const rangeWeekly = dateTime.getRangeWeekly();
+  const { data, isLoading, refetch } = useGetCategory({
+    ...rangeWeekly,
+  });
+
+  const greeting = () => {
+    const today = new Date();
+    const hours = today.getHours();
+
+    if (hours >= 0 && hours < 11) return "Good morning";
+    if (hours >= 11 && hours < 17) return "Good afternoon";
+    if (hours >= 17 && hours < 22) return "Good evening";
+    return "Good night";
+  };
 
   const selectCategory = async (category: Category) => {
     setCategorySelected(category);
@@ -55,9 +70,9 @@ const HomeContainer = () => {
           onBack={handleBackAddActivity}
         />
       )}
-      <Flex flexDirection="column">
-        <Text variant="small" color="black500">
-          Good Morning
+      <Flex flexDirection="column" gap=".5rem">
+        <Text variant="medium" color="black500">
+          {greeting()}
         </Text>
         <Text variant="large" weight="bold" color="black800">
           Ganna Prasetya
@@ -95,7 +110,7 @@ const HomeContainer = () => {
                   </Flex>
                   <Progress.Bar
                     width="100%"
-                    color="greenyellow400"
+                    color="blue400"
                     percent={Math.round((minutes / target) * 100)}
                   />
                 </Flex>

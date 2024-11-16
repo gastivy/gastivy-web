@@ -15,4 +15,12 @@ export const route = {
     name: "Category",
     path: "/category",
   },
+  statistic: {
+    name: "Statistic",
+    path: "/statistic",
+  },
+  activity: {
+    name: "Activity",
+    path: "/activity",
+  },
 };

@@ -18,7 +18,7 @@ export const ModalConfirm: React.FC<ModalConfirmProps> = ({
       verticalCentered
       padding="1.25rem"
       width="17.5rem"
-      height="200px"
+      height="12.5rem"
     >
       <Flex flexDirection="column" justifyContent="space-between">
         <Flex flexDirection="column" gap=".75rem">

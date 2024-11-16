@@ -4,12 +4,15 @@ import {
   CategoryRequest,
   CategoryResponse,
   DeleteCategoryRequest,
+  GetCategoryRequest,
   UpdateCategoryRequest,
 } from "../models";
 
 export const CategoryServices = {
-  getAll: () =>
-    httpService.get<AllCategoryResponse>("/categories").then((res) => res.data),
+  getAll: (params?: GetCategoryRequest) =>
+    httpService
+      .get<AllCategoryResponse>("/categories", { params })
+      .then((res) => res.data),
 
   getById: (categoryId: string) =>
     httpService

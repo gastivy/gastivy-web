@@ -4,15 +4,20 @@ import { BottomBar } from "./BottomBar";
 interface LayoutProps {
   _flex?: FlexProps;
   children: React.ReactNode;
+  isShowBottomBar?: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, _flex }) => {
+const Layout: React.FC<LayoutProps> = ({
+  children,
+  _flex,
+  isShowBottomBar = true,
+}) => {
   return (
     <Flex width="100vw" justifyContent="center" backgroundColor="black50">
       <Flex
         maxWidth="48rem"
         width="100%"
-        height="100vh"
+        minHeight="100vh"
         flexDirection="column"
         position="relative"
         backgroundColor="#F7F6FA"
@@ -22,7 +27,7 @@ const Layout: React.FC<LayoutProps> = ({ children, _flex }) => {
         {..._flex}
       >
         {children}
-        <BottomBar />
+        {isShowBottomBar && <BottomBar />}
       </Flex>
     </Flex>
   );

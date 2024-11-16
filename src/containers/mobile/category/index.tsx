@@ -2,14 +2,14 @@ import Layout from "@/components/mobile/Layout";
 import { route } from "@/constants/route";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useGetCategory } from "@/modules/category/hooks/useCategory";
-import { Button, Flex, Text, Skeleton } from "astarva-ui";
+import { Flex, Text, Skeleton, Icon } from "astarva-ui";
 import { useRouter } from "next/router";
 import { AddCategoryDrawer } from "./components/AddCategoryDrawer";
 
 const CategoryContainer: React.FC = () => {
   const router = useRouter();
   const addCategoryDisclosure = useDisclosure({ open: false });
-  const { data, isLoading, refetch } = useGetCategory();
+  const { data, isLoading, isRefetching, refetch } = useGetCategory();
 
   return (
     <Layout>
@@ -21,7 +21,7 @@ const CategoryContainer: React.FC = () => {
       )}
       <Text>Category</Text>
       <Flex flexDirection="column" gap="1rem">
-        {isLoading
+        {isLoading || isRefetching
           ? Array.from({ length: 3 }).map((_, index: number) => (
               <Skeleton backgroundColor="black50" height="5rem" key={index} />
             ))
@@ -46,9 +46,19 @@ const CategoryContainer: React.FC = () => {
               );
             })}
       </Flex>
-      <Button isBlock shape="rounded" onClick={addCategoryDisclosure.onOpen}>
-        Add Category
-      </Button>
+      <Flex
+        padding=".75rem"
+        backgroundColor="blue400"
+        maxWidth="max-content"
+        borderRadius="3.125rem"
+        boxShadow="0rem .25rem .5rem 0rem rgba(50, 132, 255, 0.25)"
+        position="absolute"
+        bottom="5.625rem"
+        right="1.25rem"
+        onClick={addCategoryDisclosure.onOpen}
+      >
+        <Icon icon="Plus-solid" size="1.25rem" color="white" />
+      </Flex>
     </Layout>
   );
 };

@@ -32,7 +32,10 @@ const LoginContainer = () => {
   };
 
   return (
-    <Layout _flex={{ padding: "4rem 2rem", gap: "4rem" }}>
+    <Layout
+      isShowBottomBar={false}
+      _flex={{ padding: "4rem 2rem", gap: "4rem" }}
+    >
       <Flex flexDirection="column" gap="1.5rem" textAlign="center">
         <Text color="black900" variant="heading4">
           Login Here
