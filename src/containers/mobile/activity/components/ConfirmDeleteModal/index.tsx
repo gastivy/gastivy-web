@@ -1,6 +1,7 @@
-import Drawer from "@/components/base/Drawer";
+import { useDeleteActivity } from "@/modules/activity/hooks/useActivity";
 import { LogActivity } from "@/modules/activity/models";
 import { dateTime } from "@/utils/dateTime";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button, Flex, Icon, Modal, Text } from "astarva-ui";
 
 interface Props {
@@ -17,13 +18,23 @@ export const ConfirmDeleteDrawer: React.FC<Props> = ({
   const {
     category_name,
     end_date,
+    id,
     is_done,
     seconds = 0,
     start_date,
   } = logActivity || {};
 
+  const queryClient = useQueryClient();
+
+  const { mutate } = useDeleteActivity({
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-category"] });
+      onClose();
+    },
+  });
+
   const handleDelete = () => {
-    onClose();
+    if (id) mutate(id);
   };
 
   return (

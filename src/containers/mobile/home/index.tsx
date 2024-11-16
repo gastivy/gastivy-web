@@ -19,7 +19,6 @@ const HomeContainer = () => {
   const activityDisclosure = useDisclosure({ open: false });
   const [categorySelected, setCategorySelected] = useState<Category>();
   const [dataActivity, setDataActivity] = useState<Activity>();
-  // const [rangeWeekly]
 
   const rangeWeekly = dateTime.getRangeWeekly();
   const { data, isLoading, refetch } = useGetCategory({

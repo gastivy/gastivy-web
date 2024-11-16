@@ -24,3 +24,11 @@ export const useGetActivity = (
     queryFn: () => ActivityServices.getAll(),
     ...options,
   });
+
+export const useDeleteActivity = (
+  options?: UseMutationOptions<void, AxiosError, string>
+) =>
+  useMutation({
+    mutationFn: (activityId) => ActivityServices.delete(activityId),
+    ...options,
+  });

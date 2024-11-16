@@ -6,4 +6,7 @@ export const ActivityServices = {
 
   create: (payload: CreateActivityRequest) =>
     httpService.post("/activity/create", payload).then((res) => res.data),
+
+  delete: (activityId: string) =>
+    httpService.delete(`/activity/${activityId}`).then((res) => res.data),
 };
