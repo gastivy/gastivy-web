@@ -7,14 +7,16 @@ import { Divider, Flex, Icon, Text } from "astarva-ui";
 import { OptionsLogActivity } from "./components/OptionsLogActivity";
 import { ConfirmDeleteDrawer } from "./components/ConfirmDeleteModal";
 import { useState } from "react";
+import { UpdateLogActivity } from "./components/UpdateLogActivity";
 
 const ActivityContainer = () => {
-  const { data } = useGetActivity();
+  const { data, refetch } = useGetActivity();
   const [activitySelected, setActivitySelected] = useState<
     LogActivity | undefined
   >(undefined);
   const optionsLogActivity = useDisclosure({ open: false });
   const confirmDeleteModal = useDisclosure({ open: false });
+  const updateLogActivtyDrawer = useDisclosure({ open: false });
 
   const getLogActivity = () => {
     const grouped: { [key: string]: LogActivity[] } = {};
@@ -42,19 +44,30 @@ const ActivityContainer = () => {
   return (
     <Layout>
       {/* Drawer Options Log Activity */}
-      <OptionsLogActivity
-        isVisible={optionsLogActivity.isOpen}
-        onConfirmDelete={confirmDeleteModal.onOpen}
-        onClose={optionsLogActivity.onClose}
-      />
+      {optionsLogActivity.isOpen && (
+        <OptionsLogActivity
+          onConfirmDelete={confirmDeleteModal.onOpen}
+          onClose={optionsLogActivity.onClose}
+          onUpdateActivity={updateLogActivtyDrawer.onOpen}
+        />
+      )}
 
       {/* Modal Confirm Delete */}
-      <ConfirmDeleteDrawer
-        isVisible={confirmDeleteModal.isOpen}
-        logActivity={activitySelected}
-        onClose={confirmDeleteModal.onClose}
-      />
+      {confirmDeleteModal.isOpen && (
+        <ConfirmDeleteDrawer
+          logActivity={activitySelected}
+          onClose={confirmDeleteModal.onClose}
+        />
+      )}
 
+      {/* Update Log Activity */}
+      {updateLogActivtyDrawer.isOpen && (
+        <UpdateLogActivity
+          refetch={refetch}
+          logActivity={activitySelected}
+          onClose={updateLogActivtyDrawer.onClose}
+        />
+      )}
       <Flex>
         <Text>Activity</Text>
       </Flex>

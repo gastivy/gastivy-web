@@ -4,6 +4,7 @@ import { Flex } from "astarva-ui";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   const { isReadyMounted } = usePageRender();

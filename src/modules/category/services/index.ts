@@ -14,19 +14,24 @@ export const CategoryServices = {
       .get<AllCategoryResponse>("/categories", { params })
       .then((res) => res.data),
 
+  getList: () =>
+    httpService
+      .get<AllCategoryResponse>("/categories/list")
+      .then((res) => res.data),
+
   getById: (categoryId: string) =>
     httpService
       .get<CategoryResponse>(`/categories/${categoryId}`)
       .then((res) => res.data),
 
   create: (payload: CategoryRequest) =>
-    httpService.post("/categories/create", payload).then((res) => res.data),
+    httpService.post("/categories", payload).then((res) => res.data),
 
   update: (payload: UpdateCategoryRequest) =>
-    httpService.patch("/categories/save", payload).then((res) => res.data),
+    httpService.patch("/categories", payload).then((res) => res.data),
 
   delete: (payload: DeleteCategoryRequest) =>
     httpService
-      .delete("/categories/delete", { data: payload })
+      .delete("/categories", { data: payload })
       .then((res) => res.data),
 };

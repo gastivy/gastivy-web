@@ -2,18 +2,25 @@ import Drawer from "@/components/base/Drawer";
 import { Flex, Icon, Text } from "astarva-ui";
 
 interface Props {
-  isVisible?: boolean;
   onClose: () => void;
   onConfirmDelete: () => void;
+  onUpdateActivity: () => void;
 }
 
 export const OptionsLogActivity: React.FC<Props> = ({
-  isVisible,
   onClose,
   onConfirmDelete,
+  onUpdateActivity,
 }) => {
   const options = [
-    { title: "Edit", key: "edit" },
+    {
+      title: "Edit",
+      key: "edit",
+      onClick: () => {
+        onClose();
+        onUpdateActivity();
+      },
+    },
     {
       title: "Delete",
       key: "delete",
@@ -23,8 +30,6 @@ export const OptionsLogActivity: React.FC<Props> = ({
       },
     },
   ];
-
-  if (!isVisible) return null;
 
   return (
     <Drawer

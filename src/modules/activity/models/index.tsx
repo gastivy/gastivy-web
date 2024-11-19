@@ -1,5 +1,4 @@
 import { HttpResponse } from "@/types/HttpResponse";
-import { boolean } from "yup";
 
 export interface Activity {
   category_id: string;
@@ -23,6 +22,15 @@ export interface LogActivity {
 
 export interface CreateActivityRequest {
   activities: Activity[];
+}
+
+export interface UpdateActivityRequest {
+  id: string; // Activity ID
+  category_id?: string;
+  is_done: boolean;
+  seconds: number;
+  start_date: Date;
+  end_date: Date;
 }
 
 export type LogActivityResponse = HttpResponse<LogActivity[]>;

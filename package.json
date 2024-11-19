@@ -21,8 +21,10 @@
     "next": "14.2.5",
     "nookies": "^2.5.2",
     "react": "^18",
+    "react-datepicker": "^7.5.0",
     "react-dom": "^18",
     "react-hook-form": "^7.53.1",
+    "react-select": "^5.8.3",
     "styled-components": "^6.1.12",
     "styled-system": "^5.1.5",
     "yup": "^1.4.0"

@@ -25,6 +25,15 @@ export const useGetCategory = (
     ...options,
   });
 
+export const useGetListCategory = (
+  options?: UseQueryOptions<AllCategoryResponse>
+) =>
+  useQuery({
+    queryKey: ["list-category"],
+    queryFn: () => CategoryServices.getList(),
+    ...options,
+  });
+
 export const useGetCategoryById = (
   categoryId: string,
   options?: UseQueryOptions<CategoryResponse>

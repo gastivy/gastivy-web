@@ -5,13 +5,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Button, Flex, Icon, Modal, Text } from "astarva-ui";
 
 interface Props {
-  isVisible: boolean;
   logActivity?: LogActivity;
   onClose: () => void;
 }
 
 export const ConfirmDeleteDrawer: React.FC<Props> = ({
-  isVisible,
   logActivity,
   onClose,
 }) => {
@@ -39,7 +37,7 @@ export const ConfirmDeleteDrawer: React.FC<Props> = ({
 
   return (
     <Modal
-      isVisible={isVisible}
+      isVisible
       verticalCentered
       padding="1.25rem"
       width="17.5rem"

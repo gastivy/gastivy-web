@@ -51,9 +51,15 @@ export const dateTime = {
 
   formatTimeFromUTC(utcDateString: string): string {
     const date = new Date(utcDateString);
-    const hours = date.getUTCHours().toString().padStart(2, "0");
-    const minutes = date.getUTCMinutes().toString().padStart(2, "0");
-    return `${hours}:${minutes}`;
+
+    const time = new Intl.DateTimeFormat("id-ID", {
+      hour: "numeric",
+      minute: "numeric",
+    })
+      .format(date)
+      .split(".");
+
+    return `${time[0]}:${time[1]}`;
   },
 
   getRangeTime(start: string, end: string) {
