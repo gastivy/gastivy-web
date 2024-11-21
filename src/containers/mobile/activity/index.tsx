@@ -7,7 +7,7 @@ import { Divider, Flex, Icon, Text } from "astarva-ui";
 import { OptionsLogActivity } from "./components/OptionsLogActivity";
 import { ConfirmDeleteDrawer } from "./components/ConfirmDeleteModal";
 import { useState } from "react";
-import { UpdateLogActivity } from "./components/UpdateLogActivity";
+import { FormLogActivity } from "./components/FormLogActivity";
 
 const ActivityContainer = () => {
   const { data, refetch } = useGetActivity();
@@ -17,6 +17,7 @@ const ActivityContainer = () => {
   const optionsLogActivity = useDisclosure({ open: false });
   const confirmDeleteModal = useDisclosure({ open: false });
   const updateLogActivtyDrawer = useDisclosure({ open: false });
+  const addActivityDrawer = useDisclosure({ open: false });
 
   const getLogActivity = () => {
     const grouped: { [key: string]: LogActivity[] } = {};
@@ -61,16 +62,26 @@ const ActivityContainer = () => {
       )}
 
       {/* Update Log Activity */}
-      {updateLogActivtyDrawer.isOpen && (
-        <UpdateLogActivity
-          refetch={refetch}
+      {(updateLogActivtyDrawer.isOpen || addActivityDrawer.isOpen) && (
+        <FormLogActivity
+          isEdit
+          onRefetch={refetch}
           logActivity={activitySelected}
           onClose={updateLogActivtyDrawer.onClose}
+        />
+      )}
+
+      {/* Add Log Activity */}
+      {addActivityDrawer.isOpen && (
+        <FormLogActivity
+          onRefetch={refetch}
+          onClose={addActivityDrawer.onClose}
         />
       )}
       <Flex>
         <Text>Activity</Text>
       </Flex>
+
       <Flex flexDirection="column" gap="1.25rem" paddingBottom="5rem">
         {getLogActivity().map((item, key) => {
           return (
@@ -132,6 +143,20 @@ const ActivityContainer = () => {
             </Flex>
           );
         })}
+      </Flex>
+
+      <Flex
+        padding=".75rem"
+        backgroundColor="blue400"
+        maxWidth="max-content"
+        borderRadius="3.125rem"
+        boxShadow="0rem .25rem .5rem 0rem rgba(50, 132, 255, 0.25)"
+        position="fixed"
+        bottom="5.625rem"
+        right="1.25rem"
+        onClick={addActivityDrawer.onOpen}
+      >
+        <Icon icon="Plus-solid" size="1.25rem" color="white" />
       </Flex>
     </Layout>
   );

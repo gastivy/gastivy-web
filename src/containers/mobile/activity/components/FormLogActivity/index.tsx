@@ -1,5 +1,8 @@
 import Drawer from "@/components/base/Drawer";
-import { useUpdateActivity } from "@/modules/activity/hooks/useActivity";
+import {
+  useCreateActivity,
+  useUpdateActivity,
+} from "@/modules/activity/hooks/useActivity";
 import { LogActivity } from "@/modules/activity/models";
 import { useGetListCategory } from "@/modules/category/hooks/useCategory";
 import { Button, Flex, Icon, Input, Text } from "astarva-ui";
@@ -9,7 +12,8 @@ import Select, { SingleValue } from "react-select";
 
 interface UpdateLogActivityProps {
   logActivity?: LogActivity;
-  refetch: () => void;
+  isEdit?: boolean;
+  onRefetch: () => void;
   onClose: () => void;
 }
 
@@ -21,15 +25,23 @@ interface FormActivity {
   isDone: boolean;
 }
 
-export const UpdateLogActivity: React.FC<UpdateLogActivityProps> = ({
+export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
   logActivity,
+  isEdit = false,
   onClose,
-  refetch,
+  onRefetch,
 }) => {
   const { mutate } = useUpdateActivity({
     onSuccess: () => {
       onClose();
-      refetch();
+      onRefetch();
+    },
+  });
+
+  const { mutate: addActivity } = useCreateActivity({
+    onSuccess: async () => {
+      onClose();
+      onRefetch();
     },
   });
   const { data } = useGetListCategory();
@@ -69,16 +81,33 @@ export const UpdateLogActivity: React.FC<UpdateLogActivityProps> = ({
         (hoursToSeconds + minutesToSeconds + seconds) * 1000
     );
 
-    mutate({
-      id: logActivity?.id || "",
-      ...(!!form.categorySelected?.value && {
-        category_id: form.categorySelected?.value,
-      }),
-      is_done: form.isDone,
-      start_date: form.startDate,
-      end_date: dateInSeconds,
-      seconds: hoursToSeconds + minutesToSeconds + seconds,
-    });
+    if (isEdit) {
+      mutate({
+        id: logActivity?.id || "",
+        ...(!!form.categorySelected?.value && {
+          category_id: form.categorySelected?.value,
+        }),
+        is_done: form.isDone,
+        start_date: form.startDate,
+        end_date: dateInSeconds,
+        seconds: hoursToSeconds + minutesToSeconds + seconds,
+      });
+      return;
+    }
+
+    if (form.categorySelected?.value) {
+      addActivity({
+        activities: [
+          {
+            category_id: form.categorySelected?.value,
+            is_done: form.isDone,
+            start_date: form.startDate,
+            end_date: dateInSeconds,
+            description: "",
+          },
+        ],
+      });
+    }
   };
 
   useEffect(() => {
@@ -127,12 +156,12 @@ export const UpdateLogActivity: React.FC<UpdateLogActivityProps> = ({
           maxWidth="55%"
           flex={1}
         >
-          <Text weight="semi-bold">Edit</Text>
+          <Text weight="semi-bold">{isEdit ? "Edit" : "Add"}</Text>
           <Icon icon="Close-solid" onClick={onClose} />
         </Flex>
       </Flex>
       <Flex padding="1.25rem 0 2rem" flexDirection="column" gap="1rem">
-        {!!form.categorySelected && (
+        {(!!form.categorySelected || !isEdit) && (
           <Select
             defaultValue={form.categorySelected}
             options={categoryOptions}

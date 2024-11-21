@@ -49,7 +49,7 @@ const LoginContainer = () => {
           isError={Boolean(errors.email?.message)}
           error={errors.email?.message}
         />
-        <Input
+        <Input.Password
           label="Password"
           {...register("password")}
           isError={Boolean(errors.password?.message)}
