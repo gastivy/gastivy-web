@@ -43,8 +43,8 @@ const HomeContainer = () => {
   // Get From IndexedDB
   const getActivityExisting = async () => {
     const activity = (await IndexedDB.getAll("activities"))[0];
+    setDataActivity(activity);
     if (activity?.data?.length) {
-      setDataActivity(activity);
       activityDisclosure.onOpen();
     }
   };
@@ -55,20 +55,23 @@ const HomeContainer = () => {
   };
 
   useEffect(() => {
-    getActivityExisting();
-  }, []);
+    if (!activityDisclosure.isOpen) {
+      getActivityExisting();
+    }
+  }, [activityDisclosure.isOpen]);
 
   return (
-    <Layout>
-      {activityDisclosure.isOpen && (
-        <AddActivityDrawer
-          title={categorySelected?.name || dataActivity?.name}
-          categoryId={categorySelected?.id || dataActivity?.id}
-          data={dataActivity?.data}
-          onRefetch={refetch}
-          onBack={handleBackAddActivity}
-        />
-      )}
+    <Layout _flex={{ paddingBottom: "5.5rem" }}>
+      {/* Add Activity Drawer */}
+      <AddActivityDrawer
+        isVisible={activityDisclosure.isOpen}
+        title={categorySelected?.name || dataActivity?.name}
+        categoryId={categorySelected?.id || dataActivity?.id}
+        data={dataActivity?.data}
+        onRefetch={refetch}
+        onBack={handleBackAddActivity}
+      />
+
       <Flex flexDirection="column" gap=".5rem">
         <Text variant="medium" color="black500">
           {greeting()}

@@ -3,11 +3,12 @@ import { useCreateActivity } from "@/modules/activity/hooks/useActivity";
 import { Activity } from "@/modules/activity/models";
 import { IndexedDB } from "@/utils/indexedDB";
 import { Button, Drawer, Flex, Icon, Text } from "astarva-ui";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ModalConfirm } from "./ModalConfirm";
 import useDisclosure from "@/hooks/useDisclosure";
 
 interface Props {
+  isVisible: boolean;
   categoryId?: string;
   title?: string;
   data?: Timer[];
@@ -16,17 +17,19 @@ interface Props {
 }
 
 export const AddActivityDrawer: React.FC<Props> = ({
+  isVisible,
   categoryId = "",
   title = "",
   data = [],
   onBack,
   onRefetch,
 }) => {
-  const [times, setTimes] = useState<Timer[]>(data);
+  const [times, setTimes] = useState<Timer[]>([]);
   const modalConfirm = useDisclosure({ open: false });
   const timer = useStopwatch(times);
   const existingTime = times.filter((time) => time.end_date);
   const lastItem = times[times.length - 1];
+  const disabled = !times.at(-1)?.end_date;
 
   const { mutate } = useCreateActivity({
     onSuccess: async () => {
@@ -60,6 +63,7 @@ export const AddActivityDrawer: React.FC<Props> = ({
   };
 
   const handlePauseTimer = () => {
+    if (lastItem.end_date) return;
     const data = [
       ...existingTime,
       { start_date: lastItem.start_date, end_date: new Date() },
@@ -77,7 +81,7 @@ export const AddActivityDrawer: React.FC<Props> = ({
     );
   };
 
-  const handleTimer = async () => {
+  const handleTimer = () => {
     // Start Timer
     if (!lastItem || (lastItem?.start_date && lastItem?.end_date)) {
       handleStartTimer();
@@ -99,8 +103,6 @@ export const AddActivityDrawer: React.FC<Props> = ({
     mutate({ activities: activities });
   };
 
-  const disabled = !times.at(-1)?.end_date;
-
   const handleOK = async () => {
     await IndexedDB.delete("activities", categoryId);
     onBack();
@@ -116,8 +118,12 @@ export const AddActivityDrawer: React.FC<Props> = ({
     onBack();
   };
 
+  useEffect(() => {
+    setTimes(data);
+  }, [isVisible]);
+
   return (
-    <Drawer isFullHeight isVisible onClose={onBack}>
+    <Drawer isFullHeight isVisible={isVisible}>
       {/* Modal Confirm */}
       <ModalConfirm
         isVisible={modalConfirm.isOpen}
