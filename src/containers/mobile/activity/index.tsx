@@ -45,39 +45,35 @@ const ActivityContainer = () => {
   return (
     <Layout>
       {/* Drawer Options Log Activity */}
-      {optionsLogActivity.isOpen && (
-        <OptionsLogActivity
-          onConfirmDelete={confirmDeleteModal.onOpen}
-          onClose={optionsLogActivity.onClose}
-          onUpdateActivity={updateLogActivtyDrawer.onOpen}
-        />
-      )}
+      <OptionsLogActivity
+        isVisible={optionsLogActivity.isOpen}
+        onConfirmDelete={confirmDeleteModal.onOpen}
+        onClose={optionsLogActivity.onClose}
+        onUpdateActivity={updateLogActivtyDrawer.onOpen}
+      />
 
       {/* Modal Confirm Delete */}
-      {confirmDeleteModal.isOpen && (
-        <ConfirmDeleteDrawer
-          logActivity={activitySelected}
-          onClose={confirmDeleteModal.onClose}
-        />
-      )}
+      <ConfirmDeleteDrawer
+        isVisible={confirmDeleteModal.isOpen}
+        logActivity={activitySelected}
+        onClose={confirmDeleteModal.onClose}
+      />
 
       {/* Update Log Activity */}
-      {(updateLogActivtyDrawer.isOpen || addActivityDrawer.isOpen) && (
-        <FormLogActivity
-          isEdit
-          onRefetch={refetch}
-          logActivity={activitySelected}
-          onClose={updateLogActivtyDrawer.onClose}
-        />
-      )}
+      <FormLogActivity
+        isVisible={updateLogActivtyDrawer.isOpen}
+        isEdit
+        onRefetch={refetch}
+        logActivity={activitySelected}
+        onClose={updateLogActivtyDrawer.onClose}
+      />
 
       {/* Add Log Activity */}
-      {addActivityDrawer.isOpen && (
-        <FormLogActivity
-          onRefetch={refetch}
-          onClose={addActivityDrawer.onClose}
-        />
-      )}
+      <FormLogActivity
+        isVisible={addActivityDrawer.isOpen}
+        onRefetch={refetch}
+        onClose={addActivityDrawer.onClose}
+      />
       <Flex>
         <Text>Activity</Text>
       </Flex>
@@ -122,7 +118,7 @@ const ActivityContainer = () => {
                     <Flex justifyContent="space-between">
                       <Flex alignItems="center" gap=".5rem">
                         <Icon
-                          icon={is_done ? "Instant-outline" : "Clock-outline"}
+                          name={is_done ? "Instant-outline" : "Clock-outline"}
                           color={is_done ? "blue400" : "black300"}
                           size={is_done ? "1.25rem" : "1rem"}
                         />
@@ -156,7 +152,7 @@ const ActivityContainer = () => {
         right="1.25rem"
         onClick={addActivityDrawer.onOpen}
       >
-        <Icon icon="Plus-solid" size="1.25rem" color="white" />
+        <Icon name="Plus-solid" size="1.25rem" color="white" />
       </Flex>
     </Layout>
   );

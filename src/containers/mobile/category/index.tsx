@@ -13,12 +13,13 @@ const CategoryContainer: React.FC = () => {
 
   return (
     <Layout>
-      {addCategoryDisclosure.isOpen && (
-        <AddCategoryDrawer
-          refetch={refetch}
-          onBack={addCategoryDisclosure.onClose}
-        />
-      )}
+      {/* Add Category Drawer */}
+      <AddCategoryDrawer
+        isVisible={addCategoryDisclosure.isOpen}
+        refetch={refetch}
+        onBack={addCategoryDisclosure.onClose}
+      />
+
       <Text>Category</Text>
       <Flex flexDirection="column" gap="1rem">
         {isLoading || isRefetching
@@ -57,7 +58,7 @@ const CategoryContainer: React.FC = () => {
         right="1.25rem"
         onClick={addCategoryDisclosure.onOpen}
       >
-        <Icon icon="Plus-solid" size="1.25rem" color="white" />
+        <Icon name="Plus-solid" size="1.25rem" color="white" />
       </Flex>
     </Layout>
   );

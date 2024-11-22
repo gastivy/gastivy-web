@@ -67,7 +67,7 @@ const CategoryDetailContainer: React.FC = () => {
         boxShadow="0px .125rem .5rem 0px rgba(50, 132, 255, 0.25)"
       >
         <Box onClick={() => push(route.category.path)}>
-          <Icon icon="Arrow-Left-solid" />
+          <Icon name="Arrow-Left-solid" />
         </Box>
         <Text>Category Detail</Text>
       </Flex>

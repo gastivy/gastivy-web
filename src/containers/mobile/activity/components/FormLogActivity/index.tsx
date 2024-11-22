@@ -1,11 +1,10 @@
-import Drawer from "@/components/base/Drawer";
 import {
   useCreateActivity,
   useUpdateActivity,
 } from "@/modules/activity/hooks/useActivity";
 import { LogActivity } from "@/modules/activity/models";
 import { useGetListCategory } from "@/modules/category/hooks/useCategory";
-import { Button, Flex, Icon, Input, Text } from "astarva-ui";
+import { Button, Drawer, Flex, Icon, Input, Text } from "astarva-ui";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import Select, { SingleValue } from "react-select";
@@ -13,6 +12,7 @@ import Select, { SingleValue } from "react-select";
 interface UpdateLogActivityProps {
   logActivity?: LogActivity;
   isEdit?: boolean;
+  isVisible: boolean;
   onRefetch: () => void;
   onClose: () => void;
 }
@@ -28,6 +28,7 @@ interface FormActivity {
 export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
   logActivity,
   isEdit = false,
+  isVisible,
   onClose,
   onRefetch,
 }) => {
@@ -143,9 +144,8 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
 
   return (
     <Drawer
+      isVisible={isVisible}
       height="max-content"
-      borderTopLeftRadius="1.25rem"
-      borderTopRightRadius="1.25rem"
       padding="1.25rem"
       flexDirection="column"
     >
@@ -157,7 +157,7 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
           flex={1}
         >
           <Text weight="semi-bold">{isEdit ? "Edit" : "Add"}</Text>
-          <Icon icon="Close-solid" onClick={onClose} />
+          <Icon name="Close-solid" onClick={onClose} />
         </Flex>
       </Flex>
       <Flex padding="1.25rem 0 2rem" flexDirection="column" gap="1rem">

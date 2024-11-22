@@ -58,7 +58,7 @@ export const BottomBar: React.FC = () => {
             onClick={() => push(item.path)}
           >
             <Icon
-              icon={item.icon}
+              name={item.icon}
               size="1.125rem"
               color={pathname === item.path ? "blue400" : "black400"}
             />

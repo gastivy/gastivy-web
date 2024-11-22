@@ -1,13 +1,14 @@
-import Drawer from "@/components/base/Drawer";
-import { Flex, Icon, Text } from "astarva-ui";
+import { Drawer, Flex, Icon, Text } from "astarva-ui";
 
 interface Props {
+  isVisible: boolean;
   onClose: () => void;
   onConfirmDelete: () => void;
   onUpdateActivity: () => void;
 }
 
 export const OptionsLogActivity: React.FC<Props> = ({
+  isVisible,
   onClose,
   onConfirmDelete,
   onUpdateActivity,
@@ -33,6 +34,7 @@ export const OptionsLogActivity: React.FC<Props> = ({
 
   return (
     <Drawer
+      isVisible={isVisible}
       height="max-content"
       borderTopLeftRadius="1.25rem"
       borderTopRightRadius="1.25rem"
@@ -40,7 +42,7 @@ export const OptionsLogActivity: React.FC<Props> = ({
       flexDirection="column"
     >
       <Flex justifyContent="flex-end" flex={1}>
-        <Icon icon="Close-solid" onClick={onClose} />
+        <Icon name="Close-solid" onClick={onClose} />
       </Flex>
       <Flex flexDirection="column">
         {options.map((item) => {

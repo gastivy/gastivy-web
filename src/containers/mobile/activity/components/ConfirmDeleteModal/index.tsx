@@ -5,11 +5,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Button, Flex, Icon, Modal, Text } from "astarva-ui";
 
 interface Props {
+  isVisible: boolean;
   logActivity?: LogActivity;
   onClose: () => void;
 }
 
 export const ConfirmDeleteDrawer: React.FC<Props> = ({
+  isVisible,
   logActivity,
   onClose,
 }) => {
@@ -37,7 +39,7 @@ export const ConfirmDeleteDrawer: React.FC<Props> = ({
 
   return (
     <Modal
-      isVisible
+      isVisible={isVisible}
       verticalCentered
       padding="1.25rem"
       width="17.5rem"
@@ -75,7 +77,7 @@ export const ConfirmDeleteDrawer: React.FC<Props> = ({
             </Text>
             <Flex alignItems="center" gap=".5rem">
               <Icon
-                icon={is_done ? "Instant-outline" : "Clock-outline"}
+                name={is_done ? "Instant-outline" : "Clock-outline"}
                 color={is_done ? "blue400" : "black300"}
                 size={is_done ? "1.25rem" : "1rem"}
               />
@@ -85,14 +87,20 @@ export const ConfirmDeleteDrawer: React.FC<Props> = ({
             </Flex>
           </Flex>
 
-          <Flex gap=".5rem" justifyContent="space-between" alignItems="center">
-            <Text variant="small" color="black400">
-              Time
-            </Text>
-            <Text variant="small" color="black400">
-              {dateTime.getRangeTime(String(start_date), String(end_date))}
-            </Text>
-          </Flex>
+          {start_date && end_date && (
+            <Flex
+              gap=".5rem"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Text variant="small" color="black400">
+                Time
+              </Text>
+              <Text variant="small" color="black400">
+                {dateTime.getRangeTime(String(start_date), String(end_date))}
+              </Text>
+            </Flex>
+          )}
 
           <Flex gap=".5rem" justifyContent="space-between" alignItems="center">
             <Text variant="small" color="black400">

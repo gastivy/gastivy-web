@@ -1,9 +1,8 @@
-import Drawer from "@/components/base/Drawer";
 import useStopwatch, { Timer } from "@/hooks/useStopwatch";
 import { useCreateActivity } from "@/modules/activity/hooks/useActivity";
 import { Activity } from "@/modules/activity/models";
 import { IndexedDB } from "@/utils/indexedDB";
-import { Button, Flex, Icon, Text } from "astarva-ui";
+import { Button, Drawer, Flex, Icon, Text } from "astarva-ui";
 import React, { useState } from "react";
 import { ModalConfirm } from "./ModalConfirm";
 import useDisclosure from "@/hooks/useDisclosure";
@@ -118,7 +117,7 @@ export const AddActivityDrawer: React.FC<Props> = ({
   };
 
   return (
-    <Drawer>
+    <Drawer isFullHeight isVisible onClose={onBack}>
       {/* Modal Confirm */}
       <ModalConfirm
         isVisible={modalConfirm.isOpen}
@@ -126,9 +125,9 @@ export const AddActivityDrawer: React.FC<Props> = ({
         onCancel={modalConfirm.onClose}
       />
 
-      <Flex flexDirection="column" padding="1.25rem" gap="1.5rem" width="100%">
+      <Flex flexDirection="column" gap="1.5rem" width="100%">
         <Flex justifyContent="space-between" alignItems="center">
-          <Icon icon="Arrow-Left-solid" onClick={handleBack} />
+          <Icon name="Arrow-Left-solid" onClick={handleBack} />
           <Button
             variant="primary"
             shape="rounded"
