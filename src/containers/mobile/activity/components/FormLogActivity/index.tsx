@@ -4,10 +4,19 @@ import {
 } from "@/modules/activity/hooks/useActivity";
 import { LogActivity } from "@/modules/activity/models";
 import { useGetListCategory } from "@/modules/category/hooks/useCategory";
-import { Button, Drawer, Flex, Icon, Input, Text } from "astarva-ui";
+import {
+  Button,
+  Drawer,
+  Flex,
+  Icon,
+  Input,
+  Option,
+  Select,
+  Switch,
+  Text,
+} from "astarva-ui";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
-import Select, { SingleValue } from "react-select";
 
 interface UpdateLogActivityProps {
   logActivity?: LogActivity;
@@ -17,10 +26,8 @@ interface UpdateLogActivityProps {
   onClose: () => void;
 }
 
-type MyOption = { label: string; value: string };
-
 interface FormActivity {
-  categorySelected: MyOption | null;
+  categorySelected: Option["value"];
   startDate: Date | null;
   isDone: boolean;
 }
@@ -50,25 +57,26 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
   const [minutes, setMinutes] = useState<number>(0);
   const [hours, setHours] = useState<number>(0);
   const [form, setForm] = useState<FormActivity>({
-    categorySelected: null,
+    categorySelected: "",
     startDate: null,
     isDone: false,
   });
 
-  const categoryOptions = data?.data?.map((item) => ({
-    value: item.id || "",
-    label: item.name || "",
-  }));
+  const categoryOptions =
+    data?.data?.map((item) => ({
+      value: item.id || "",
+      label: item.name || "",
+    })) || [];
 
-  const handleSelectCategory = (newValue: SingleValue<MyOption>) => {
+  const handleSelectCategory = (option: Option) => {
     setForm((prev) => ({
       ...prev,
-      categorySelected: newValue,
+      categorySelected: option.value,
     }));
   };
 
-  const handleCheckIsDone = (checked: boolean) => {
-    setForm((prev) => ({ ...prev, isDone: checked }));
+  const handleCheckIsDone = () => {
+    setForm((prev) => ({ ...prev, isDone: !prev.isDone }));
   };
 
   const handleSubmit = () => {
@@ -85,8 +93,8 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
     if (isEdit) {
       mutate({
         id: logActivity?.id || "",
-        ...(!!form.categorySelected?.value && {
-          category_id: form.categorySelected?.value,
+        ...(!!form.categorySelected && {
+          category_id: form.categorySelected,
         }),
         is_done: form.isDone,
         start_date: form.startDate,
@@ -96,11 +104,11 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
       return;
     }
 
-    if (form.categorySelected?.value) {
+    if (form.categorySelected) {
       addActivity({
         activities: [
           {
-            category_id: form.categorySelected?.value,
+            category_id: form.categorySelected,
             is_done: form.isDone,
             start_date: form.startDate,
             end_date: dateInSeconds,
@@ -132,10 +140,7 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
       date.setHours(hour, minute, 0);
 
       setForm({
-        categorySelected: {
-          value: logActivity?.category_id || "",
-          label: logActivity?.category_name || "",
-        },
+        categorySelected: logActivity?.category_id || "",
         startDate: date,
         isDone: logActivity?.is_done || false,
       });
@@ -160,12 +165,14 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
           <Icon name="Close-solid" onClick={onClose} />
         </Flex>
       </Flex>
-      <Flex padding="1.25rem 0 2rem" flexDirection="column" gap="1rem">
+      <Flex padding="1.25rem 0 2rem" flexDirection="column" gap="1.25rem">
         {(!!form.categorySelected || !isEdit) && (
           <Select
-            defaultValue={form.categorySelected}
+            label="Category"
+            value={form.categorySelected}
             options={categoryOptions}
-            onChange={handleSelectCategory}
+            size="small"
+            onSelect={handleSelectCategory}
           />
         )}
         <DatePicker
@@ -180,44 +187,50 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
           }}
         />
 
-        <Flex gap="1.25rem">
-          <Flex maxWidth="3.75rem" alignItems="center" gap=".5rem">
-            <Input
-              value={String(hours)}
-              size="small"
-              style={{ textAlign: "center" }}
-              onChange={(e) => setHours(Number(e.currentTarget.value))}
-            />
-            <Text color="black300">h</Text>
-          </Flex>
-          <Flex maxWidth="3.75rem" alignItems="center" gap=".5rem">
-            <Input
-              value={String(minutes)}
-              size="small"
-              style={{ textAlign: "center" }}
-              onChange={(e) => setMinutes(Number(e.currentTarget.value))}
-            />
-            <Text color="black300">m</Text>
-          </Flex>
-          <Flex maxWidth="3.75rem" alignItems="center" gap=".5rem">
-            <Input
-              value={String(seconds)}
-              size="small"
-              style={{ textAlign: "center" }}
-              onChange={(e) => setSeconds(Number(e.currentTarget.value))}
-            />
-            <Text color="black300">s</Text>
+        <Flex flexDirection="column" gap=".625rem">
+          <Text variant="small" weight="bold" color="black600">
+            Time
+          </Text>
+          <Flex gap="1.25rem">
+            <Flex maxWidth="3.75rem" alignItems="center" gap=".5rem">
+              <Input
+                value={String(hours)}
+                size="small"
+                style={{ textAlign: "center" }}
+                onChange={(e) => setHours(Number(e.currentTarget.value))}
+              />
+              <Text color="black300">h</Text>
+            </Flex>
+            <Flex maxWidth="3.75rem" alignItems="center" gap=".5rem">
+              <Input
+                value={String(minutes)}
+                size="small"
+                style={{ textAlign: "center" }}
+                onChange={(e) => setMinutes(Number(e.currentTarget.value))}
+              />
+              <Text color="black300">m</Text>
+            </Flex>
+            <Flex maxWidth="3.75rem" alignItems="center" gap=".5rem">
+              <Input
+                value={String(seconds)}
+                size="small"
+                style={{ textAlign: "center" }}
+                onChange={(e) => setSeconds(Number(e.currentTarget.value))}
+              />
+              <Text color="black300">s</Text>
+            </Flex>
           </Flex>
         </Flex>
 
-        <Flex gap="8px" alignItems="center">
-          <Text variant="small" color="black600">
+        <Flex flexDirection="column" gap=".625rem">
+          <Text variant="small" weight="bold" color="black600">
             Is Done?
           </Text>
-          <input
-            type="checkbox"
-            checked={form.isDone}
-            onChange={(e) => handleCheckIsDone(e.currentTarget.checked)}
+          <Switch
+            size="small"
+            active={form.isDone}
+            disabled={isEdit}
+            onChange={handleCheckIsDone}
           />
         </Flex>
       </Flex>
