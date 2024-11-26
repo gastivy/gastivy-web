@@ -21,8 +21,7 @@ const Layout: React.FC<LayoutProps> = ({
         minHeight="100vh"
         flexDirection="column"
         position="relative"
-        background="#F7F6FA"
-        // backgroundColor="white"
+        backgroundColor="white"
         padding="1rem"
         gap="1.5rem"
         {..._flex}

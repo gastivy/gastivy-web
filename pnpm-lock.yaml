@@ -15,8 +15,8 @@ importers:
         specifier: ^5.59.15
         version: 5.59.16(react@18.3.1)
       astarva-ui:
-        specifier: ^1.3.5
-        version: 1.3.5(@types/styled-components@5.1.34)(@types/styled-system@5.1.22)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^1.3.7
+        version: 1.3.7(@types/styled-components@5.1.34)(@types/styled-system@5.1.22)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       axios:
         specifier: ^1.7.7
         version: 1.7.7
@@ -722,8 +722,8 @@ packages:
   ast-types-flow@0.0.8:
     resolution: {integrity: sha512-OH/2E5Fg20h2aPrbe+QL8JZQFko0YZaF+j4mnQ7BGhfavO7OpSLa8a0y9sBwomHdSbkhTS8TQNayBfnW5DwbvQ==}
 
-  astarva-ui@1.3.5:
-    resolution: {integrity: sha512-T9q2fpdo3tP7PJsTXWED8vBuHl4SJMV3Kp/v3/gCDFNFsWXfWevlYVriaZv7hjW+Z0x3MZdrVIVvMx5ZyGInCA==}
+  astarva-ui@1.3.7:
+    resolution: {integrity: sha512-5RVNjvlzn3kmYPCOTGEE8A8foRLIuzlXt3glU8pwIHTM8pBjCt4YdQ3EhEsFizWJ1qoqOm3qVEFZg7YMdRSaEA==}
     engines: {node: '>=14.0.0 <20.0.0'}
     peerDependencies:
       '@types/styled-components': '>=5.1.26'
@@ -3097,11 +3097,12 @@ snapshots:
 
   ast-types-flow@0.0.8: {}
 
-  astarva-ui@1.3.5(@types/styled-components@5.1.34)(@types/styled-system@5.1.22)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  astarva-ui@1.3.7(@types/styled-components@5.1.34)(@types/styled-system@5.1.22)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@types/styled-components': 5.1.34
       '@types/styled-system': 5.1.22
       react: 18.3.1
+      react-datepicker: 7.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-dom: 18.3.1(react@18.3.1)
       react-icomoon: 2.5.7(react@18.3.1)
 

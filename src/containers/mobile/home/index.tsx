@@ -27,16 +27,6 @@ const HomeContainer = () => {
     ...rangeWeekly,
   });
 
-  const greeting = () => {
-    const today = new Date();
-    const hours = today.getHours();
-
-    if (hours >= 0 && hours < 11) return "Good morning";
-    if (hours >= 11 && hours < 17) return "Good afternoon";
-    if (hours >= 17 && hours < 22) return "Good evening";
-    return "Good night";
-  };
-
   const selectCategory = async (category: Category) => {
     setCategorySelected(category);
     activityDisclosure.onOpen();
@@ -74,13 +64,14 @@ const HomeContainer = () => {
         onBack={handleBackAddActivity}
       />
 
-      <Flex flexDirection="column" gap=".5rem">
-        <Text variant="medium" color="black500">
-          {greeting()}
+      <Flex flexDirection="column">
+        <Text variant="heading6" weight="medium" color="black700">
+          Hi, Ganna
         </Text>
-        <Text variant="large" weight="bold" color="black800">
-          Ganna Prasetya
-        </Text>
+        <Text
+          variant="small"
+          color="black700"
+        >{`Let's make this day productive`}</Text>
       </Flex>
       <Flex
         flexDirection="column"
@@ -89,34 +80,60 @@ const HomeContainer = () => {
         flex={1}
         gap="1rem"
       >
-        <Text weight="bold">Weekly Plan</Text>
+        <Text variant="large" weight="medium">
+          Weekly Plan
+        </Text>
 
-        <Flex flexDirection="column" gap="1rem">
+        <Flex
+          flexDirection="column"
+          gap="1rem"
+          maxHeight="18.75rem"
+          overflowY="auto"
+          paddingRight=".75rem"
+        >
           {isLoading ? (
             <Text>Loading...</Text>
           ) : (
             data?.data.map(({ minutes = 0, target = 0, ...item }, key) => {
+              const difference = minutes - target;
               return (
                 <Flex
                   flexDirection="column"
-                  backgroundColor="white"
+                  backgroundColor="blue50"
                   padding=".625rem"
                   borderRadius=".625rem"
                   key={key}
                   gap=".75rem"
                   onClick={() => selectCategory({ ...item, minutes, target })}
                 >
+                  <Text variant="medium" color="black900">
+                    {item.name}
+                  </Text>
                   <Flex flexDirection="column" gap=".25rem">
-                    <Text>{item.name}</Text>
-                    <Text color="black400" variant="small">
-                      {target} Menit
-                    </Text>
+                    <Flex justifyContent="space-between">
+                      <Text color="black400" variant="small">
+                        {minutes} / {target} Minutes
+                      </Text>
+                      <Text
+                        color={difference < 0 ? "red400" : "blue400"}
+                        variant="small"
+                      >
+                        {difference < 0 ? difference : `+${difference}`} m
+                      </Text>
+                    </Flex>
+                    <Progress.Bar
+                      width="100%"
+                      color="blue400"
+                      backgroundColor="white"
+                      withoutLimit
+                      textInside={false}
+                      height=".75rem"
+                      _text={{
+                        color: "black700",
+                      }}
+                      percent={Math.round((minutes / target) * 100)}
+                    />
                   </Flex>
-                  <Progress.Bar
-                    width="100%"
-                    color="blue400"
-                    percent={Math.round((minutes / target) * 100)}
-                  />
                 </Flex>
               );
             })
