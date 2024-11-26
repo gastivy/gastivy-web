@@ -1,10 +1,6 @@
-import { NextApiResponse } from "next";
-import nookies from "nookies";
 import * as cookiesNext from "cookies-next";
+import nookies from "nookies";
 
-type ResConfig = {
-  res: NextApiResponse;
-};
 interface ParamCookie {
   key: string;
   value: object | string | number | boolean;

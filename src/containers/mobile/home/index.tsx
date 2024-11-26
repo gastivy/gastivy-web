@@ -1,13 +1,15 @@
+import { Flex, Progress, Text } from "astarva-ui";
+import { useEffect, useState } from "react";
+
 import Layout from "@/components/mobile/Layout";
 import useDisclosure from "@/hooks/useDisclosure";
-import { useGetCategory } from "@/modules/category/hooks/useCategory";
-import { Flex, Text, Progress } from "astarva-ui";
-import { AddActivityDrawer } from "./components/AddActivityDrawer";
-import { useEffect, useMemo, useState } from "react";
-import { IndexedDB } from "@/utils/indexedDB";
 import { Timer } from "@/hooks/useStopwatch";
+import { useGetCategory } from "@/modules/category/hooks/useCategory";
 import { Category } from "@/modules/category/models";
 import { dateTime } from "@/utils/dateTime";
+import { IndexedDB } from "@/utils/indexedDB";
+
+import { AddActivityDrawer } from "./components/AddActivityDrawer";
 
 interface Activity {
   id: string;

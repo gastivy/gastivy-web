@@ -1,11 +1,13 @@
+import { Button, Drawer, Flex, Icon, Text } from "astarva-ui";
+import React, { useEffect, useState } from "react";
+
+import useDisclosure from "@/hooks/useDisclosure";
 import useStopwatch, { Timer } from "@/hooks/useStopwatch";
 import { useCreateActivity } from "@/modules/activity/hooks/useActivity";
 import { Activity } from "@/modules/activity/models";
 import { IndexedDB } from "@/utils/indexedDB";
-import { Button, Drawer, Flex, Icon, Text } from "astarva-ui";
-import React, { useEffect, useState } from "react";
+
 import { ModalConfirm } from "./ModalConfirm";
-import useDisclosure from "@/hooks/useDisclosure";
 
 interface Props {
   isVisible: boolean;

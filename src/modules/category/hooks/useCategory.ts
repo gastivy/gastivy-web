@@ -4,6 +4,8 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+
 import {
   AllCategoryResponse,
   CategoryRequest,
@@ -13,7 +15,6 @@ import {
   UpdateCategoryRequest,
 } from "../models";
 import { CategoryServices } from "../services";
-import { AxiosError } from "axios";
 
 export const useGetCategory = (
   params?: GetCategoryRequest,

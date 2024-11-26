@@ -1,6 +1,3 @@
-// updateTimer();
-// const intervalId = setInterval(updateTimer, 1000);
-
 import { useEffect, useState } from "react";
 
 export interface Timer {

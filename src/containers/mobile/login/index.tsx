@@ -1,15 +1,17 @@
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Button, Flex, Input, Text } from "astarva-ui";
+import { useRouter } from "next/router";
+import React from "react";
+import { useForm } from "react-hook-form";
+
 import Layout from "@/components/mobile/Layout";
 import { route } from "@/constants/route";
 import { useLogin } from "@/modules/auth/hooks/useAuth";
 import { LoginRequest } from "@/modules/auth/models/Auth";
 import { schemaLogin } from "@/modules/auth/schema/auth";
 import { cookies } from "@/utils/cookies";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Input, Flex, Text, Button } from "astarva-ui";
-import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
 
-const LoginContainer = () => {
+const LoginContainer: React.FC = () => {
   const router = useRouter();
   const { isPending, mutate } = useLogin({
     onSuccess: ({ data }) => {

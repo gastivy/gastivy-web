@@ -1,7 +1,8 @@
-import { route } from "@/constants/route";
 import { Flex, Icon, IconNames, Text } from "astarva-ui";
 import { useRouter } from "next/router";
 import React from "react";
+
+import { route } from "@/constants/route";
 
 interface BottomBarProps {
   path: string;

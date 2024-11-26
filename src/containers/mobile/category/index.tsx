@@ -1,9 +1,11 @@
+import { Flex, Icon, Skeleton, Text } from "astarva-ui";
+import { useRouter } from "next/router";
+
 import Layout from "@/components/mobile/Layout";
 import { route } from "@/constants/route";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useGetCategory } from "@/modules/category/hooks/useCategory";
-import { Flex, Text, Skeleton, Icon } from "astarva-ui";
-import { useRouter } from "next/router";
+
 import { AddCategoryDrawer } from "./components/AddCategoryDrawer";
 
 const CategoryContainer: React.FC = () => {

@@ -1,4 +1,5 @@
 import { httpService } from "@/utils/httpService";
+
 import { CreateActivityRequest, UpdateActivityRequest } from "../models";
 
 export const ActivityServices = {

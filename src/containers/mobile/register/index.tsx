@@ -1,12 +1,13 @@
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Button, Flex, Input, Text } from "astarva-ui";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+
 import Layout from "@/components/mobile/Layout";
 import { route } from "@/constants/route";
 import { useRegister } from "@/modules/auth/hooks/useAuth";
 import { RegisterRequest } from "@/modules/auth/models/Auth";
 import { schemaRegister } from "@/modules/auth/schema/auth";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Input, Flex, Text, Button } from "astarva-ui";
-import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
 
 const RegisterContainer = () => {
   const router = useRouter();
@@ -49,7 +50,7 @@ const RegisterContainer = () => {
           isError={Boolean(errors.email?.message)}
           error={errors.email?.message}
         />
-        <Input
+        <Input.Password
           label="Password"
           {...register("password")}
           isError={Boolean(errors.password?.message)}

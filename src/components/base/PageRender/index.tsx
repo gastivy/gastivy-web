@@ -1,7 +1,8 @@
 import React, { ReactElement } from "react";
 
-import { LoadingSpinner } from "../LoadingSpinner";
 import { useWindowSize } from "@/hooks/useWindowSize";
+
+import { LoadingSpinner } from "../LoadingSpinner";
 
 type Props = {
   mobile: ReactElement;

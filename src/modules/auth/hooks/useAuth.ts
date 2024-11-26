@@ -1,4 +1,6 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+
 import {
   LoginRequest,
   LoginResponse,
@@ -6,7 +8,6 @@ import {
   RegisterResponse,
 } from "../models/Auth";
 import { AuthServices } from "../services";
-import { AxiosError } from "axios";
 
 export const useLogin = (
   options?: UseMutationOptions<LoginResponse, AxiosError, LoginRequest>

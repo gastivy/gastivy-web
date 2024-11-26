@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { cookies } from "./cookies";
 
 export const httpService = axios.create({

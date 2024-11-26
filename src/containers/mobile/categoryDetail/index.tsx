@@ -1,3 +1,9 @@
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Box, Button, Flex, Icon, Input, Skeleton, Text } from "astarva-ui";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+
 import Layout from "@/components/mobile/Layout";
 import { route } from "@/constants/route";
 import {
@@ -7,11 +13,6 @@ import {
 } from "@/modules/category/hooks/useCategory";
 import { CategoryRequest } from "@/modules/category/models";
 import { schemaCategory } from "@/modules/category/schema/category";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Flex, Icon, Input, Box, Text, Skeleton } from "astarva-ui";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
 
 const CategoryDetailContainer: React.FC = () => {
   const { query, push } = useRouter();

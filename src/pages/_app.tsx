@@ -1,10 +1,12 @@
-import usePageRender from "@/hooks/usePageRender";
-import { GlobalStyle } from "@/styles/global-styled";
+import "react-datepicker/dist/react-datepicker.css";
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Flex } from "astarva-ui";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import "react-datepicker/dist/react-datepicker.css";
+
+import usePageRender from "@/hooks/usePageRender";
+import { GlobalStyle } from "@/styles/global-styled";
 
 export default function App({ Component, pageProps }: AppProps) {
   const { isReadyMounted } = usePageRender();

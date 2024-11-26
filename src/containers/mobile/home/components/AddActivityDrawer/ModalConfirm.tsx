@@ -43,10 +43,10 @@ export const ModalConfirm: React.FC<ModalConfirmProps> = ({
             backgroundColorHover="red700"
             onClick={onOk}
           >
-            Yes, I don't wanna save
+            {`Yes, I don't wanna save`}
           </Button>
           <Button size="small" shape="semi-round" isBlock onClick={onCancel}>
-            No, I'll think about it again
+            {`No, I'll think about it again`}
           </Button>
         </Flex>
       </Flex>

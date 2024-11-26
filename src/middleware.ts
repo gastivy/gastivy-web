@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { route } from "./constants/route";
 
 export function middleware(request: NextRequest) {

@@ -1,13 +1,15 @@
+import { Divider, Flex, Icon, Text } from "astarva-ui";
+import { useState } from "react";
+
 import Layout from "@/components/mobile/Layout";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useGetActivity } from "@/modules/activity/hooks/useActivity";
 import { LogActivity } from "@/modules/activity/models";
 import { dateTime } from "@/utils/dateTime";
-import { Divider, Flex, Icon, Text } from "astarva-ui";
-import { OptionsLogActivity } from "./components/OptionsLogActivity";
+
 import { ConfirmDeleteDrawer } from "./components/ConfirmDeleteModal";
-import { useState } from "react";
 import { FormLogActivity } from "./components/FormLogActivity";
+import { OptionsLogActivity } from "./components/OptionsLogActivity";
 
 const ActivityContainer = () => {
   const { data, refetch } = useGetActivity();

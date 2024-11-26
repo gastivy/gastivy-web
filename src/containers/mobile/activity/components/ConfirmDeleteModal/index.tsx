@@ -1,8 +1,9 @@
+import { useQueryClient } from "@tanstack/react-query";
+import { Button, Flex, Icon, Modal, Text } from "astarva-ui";
+
 import { useDeleteActivity } from "@/modules/activity/hooks/useActivity";
 import { LogActivity } from "@/modules/activity/models";
 import { dateTime } from "@/utils/dateTime";
-import { useQueryClient } from "@tanstack/react-query";
-import { Button, Flex, Icon, Modal, Text } from "astarva-ui";
 
 interface Props {
   isVisible: boolean;
@@ -138,7 +139,7 @@ export const ConfirmDeleteDrawer: React.FC<Props> = ({
             backgroundColorHover="red700"
             onClick={onClose}
           >
-            No, Don't delete it!
+            {`No, Don't delete it!`}
           </Button>
         </Flex>
       </Flex>
