@@ -1,4 +1,4 @@
-import { Flex, Icon, IconNames, Text } from "astarva-ui";
+import { Box, Flex, Icon, IconNames, Text } from "astarva-ui";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -38,20 +38,23 @@ export const BottomBar: React.FC = () => {
   return (
     <Flex
       position="fixed"
-      bottom=".5rem"
-      left=".5rem"
-      right=".5rem"
-      width="calc(100% - 1rem)"
+      bottom="1rem"
+      left="1rem"
+      right="1rem"
+      width="calc(100% - 2rem)"
       backgroundColor="white"
       borderRadius=".75rem"
-      boxShadow="0px 1px 10px 1px rgba(50, 132, 255, 0.1)"
+      boxShadow="0 .0625rem .75rem .0625rem rgba(50, 132, 255, 0.2)"
+      overflow="hidden"
     >
       {menu.map((item, index) => {
+        const isActive = pathname === item.path;
         return (
           <Flex
+            position="relative"
             flexDirection="column"
             width="50%"
-            padding=".5rem .375rem"
+            padding=".625rem .75rem"
             justifyContent="center"
             alignItems="center"
             gap=".25rem"
@@ -61,14 +64,22 @@ export const BottomBar: React.FC = () => {
             <Icon
               name={item.icon}
               size="1.125rem"
-              color={pathname === item.path ? "blue400" : "black400"}
+              color={isActive ? "blue400" : "black400"}
             />
-            <Text
-              color={pathname === item.path ? "blue400" : "black400"}
-              variant="small"
-            >
+            <Text color={isActive ? "blue400" : "black400"} variant="small">
               {item.name}
             </Text>
+
+            {isActive && (
+              <Box
+                width="80%"
+                height=".5rem"
+                borderRadius="1.25rem"
+                position="absolute"
+                bottom="-0.3125rem"
+                backgroundColor="blue500"
+              />
+            )}
           </Flex>
         );
       })}

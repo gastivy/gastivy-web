@@ -65,7 +65,7 @@ const CategoryDetailContainer: React.FC = () => {
         width="100%"
         padding=".75rem"
         alignItems="center"
-        boxShadow="0px .125rem .5rem 0px rgba(50, 132, 255, 0.25)"
+        boxShadow="0 .125rem .5rem 0 rgba(50, 132, 255, 0.25)"
       >
         <Box onClick={() => push(route.category.path)}>
           <Icon name="Arrow-Left-solid" />

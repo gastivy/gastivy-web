@@ -148,7 +148,7 @@ const ActivityContainer = () => {
         backgroundColor="blue400"
         maxWidth="max-content"
         borderRadius="3.125rem"
-        boxShadow="0rem .25rem .5rem 0rem rgba(50, 132, 255, 0.25)"
+        boxShadow="0 .25rem .5rem 0 rgba(50, 132, 255, 0.25)"
         position="fixed"
         bottom="5.625rem"
         right="1.25rem"

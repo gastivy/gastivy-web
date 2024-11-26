@@ -54,7 +54,7 @@ export const ConfirmDeleteDrawer: React.FC<Props> = ({
           flex={1}
           width="12.5rem"
           flexDirection="column"
-          gap="8px"
+          gap=".5rem"
           padding=".75rem 0"
         >
           <Flex gap=".5rem" justifyContent="space-between" alignItems="center">
@@ -116,7 +116,7 @@ export const ConfirmDeleteDrawer: React.FC<Props> = ({
         <Flex
           flexDirection="column"
           gap=".5rem"
-          width="240px"
+          width="15rem"
           marginTop="1.25rem"
         >
           <Button

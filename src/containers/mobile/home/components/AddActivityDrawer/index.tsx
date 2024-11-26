@@ -152,13 +152,13 @@ export const AddActivityDrawer: React.FC<Props> = ({
             {title}
           </Text>
           <Flex
-            height="280px"
-            width="280px"
+            height="17.5rem"
+            width="17.5rem"
             justifyContent="center"
             alignItems="center"
             backgroundColor="blue200"
-            borderRadius="280px"
-            border="10px solid"
+            borderRadius="17.5rem"
+            border=".625rem solid"
             borderColor="blue50"
           >
             <Text variant="heading3">{timer}</Text>
