@@ -135,7 +135,7 @@ export const AddActivityDrawer: React.FC<Props> = ({
 
       <Flex flexDirection="column" gap="1.5rem" width="100%">
         <Flex justifyContent="space-between" alignItems="center">
-          <Icon name="Arrow-Left-solid" onClick={handleBack} />
+          <Icon name="Left-outline" onClick={handleBack} />
           <Button
             variant="primary"
             shape="rounded"
