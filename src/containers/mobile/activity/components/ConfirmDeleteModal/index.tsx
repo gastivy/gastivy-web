@@ -78,7 +78,7 @@ export const ConfirmDeleteDrawer: React.FC<Props> = ({
             </Text>
             <Flex alignItems="center" gap=".5rem">
               <Icon
-                name={is_done ? "Instant-outline" : "Clock-outline"}
+                name={is_done ? "Instant-outline" : "Time-Square-outline"}
                 color={is_done ? "blue400" : "black300"}
                 size={is_done ? "1.25rem" : "1rem"}
               />

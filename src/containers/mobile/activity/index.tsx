@@ -2,6 +2,7 @@ import { Divider, Flex, Icon, Text } from "astarva-ui";
 import { useState } from "react";
 
 import Layout from "@/components/mobile/Layout";
+import { Navbar } from "@/components/mobile/Navbar";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useGetActivity } from "@/modules/activity/hooks/useActivity";
 import { LogActivity } from "@/modules/activity/models";
@@ -76,11 +77,25 @@ const ActivityContainer = () => {
         onRefetch={refetch}
         onClose={addActivityDrawer.onClose}
       />
-      <Flex>
-        <Text>Activity</Text>
-      </Flex>
 
-      <Flex flexDirection="column" gap="1.25rem" paddingBottom="5rem">
+      <Navbar title="Activity">
+        <Navbar.Suffix>
+          <Flex
+            justifyContent="center"
+            alignItems="center"
+            padding=".375rem"
+            backgroundColor="blue400"
+            maxWidth="max-content"
+            borderRadius=".375rem"
+            boxShadow="0 .25rem .5rem 0 rgba(50, 132, 255, 0.25)"
+            onClick={addActivityDrawer.onOpen}
+          >
+            <Icon name="Plus-solid" size="1rem" color="white" />
+          </Flex>
+        </Navbar.Suffix>
+      </Navbar>
+
+      <Flex flexDirection="column" gap="1.25rem" padding="4.5rem 0 5rem">
         {getLogActivity().map((item, key) => {
           return (
             <Flex key={key} flexDirection="column" gap="1.5rem">
@@ -91,9 +106,11 @@ const ActivityContainer = () => {
                   variant: "medium",
                 }}
               >
-                {dateTime.getDate(new Date(item.key), "en-GB", {
-                  dateStyle: "long",
-                })}
+                <Text variant="small">
+                  {dateTime.getDate(new Date(item.key), "en-GB", {
+                    dateStyle: "long",
+                  })}
+                </Text>
               </Divider>
               {item.logActivity.map(({ is_done, ...activity }, index) => {
                 return (
@@ -107,7 +124,7 @@ const ActivityContainer = () => {
                     }
                   >
                     <Flex justifyContent="space-between" gap=".25rem">
-                      <Text variant="small" weight="medium">
+                      <Text variant="small" weight="regular">
                         {activity.category_name}
                       </Text>
                       <Text variant="small" italic color="black600">
@@ -120,7 +137,9 @@ const ActivityContainer = () => {
                     <Flex justifyContent="space-between">
                       <Flex alignItems="center" gap=".5rem">
                         <Icon
-                          name={is_done ? "Instant-outline" : "Clock-outline"}
+                          name={
+                            is_done ? "Instant-outline" : "Time-Square-outline"
+                          }
                           color={is_done ? "blue400" : "black300"}
                           size={is_done ? "1.25rem" : "1rem"}
                         />
@@ -141,20 +160,6 @@ const ActivityContainer = () => {
             </Flex>
           );
         })}
-      </Flex>
-
-      <Flex
-        padding=".75rem"
-        backgroundColor="blue400"
-        maxWidth="max-content"
-        borderRadius="3.125rem"
-        boxShadow="0 .25rem .5rem 0 rgba(50, 132, 255, 0.25)"
-        position="fixed"
-        bottom="5.625rem"
-        right="1.25rem"
-        onClick={addActivityDrawer.onOpen}
-      >
-        <Icon name="Plus-solid" size="1.25rem" color="white" />
       </Flex>
     </Layout>
   );

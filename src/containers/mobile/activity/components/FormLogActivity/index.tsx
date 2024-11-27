@@ -162,7 +162,9 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
           maxWidth="55%"
           flex={1}
         >
-          <Text weight="semi-bold">{isEdit ? "Edit" : "Add"}</Text>
+          <Text variant="large" weight="medium">
+            {isEdit ? "Edit" : "Add"}
+          </Text>
           <Icon name="Close-solid" onClick={onClose} />
         </Flex>
       </Flex>

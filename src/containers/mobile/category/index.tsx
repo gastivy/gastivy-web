@@ -2,6 +2,7 @@ import { Flex, Icon, Skeleton, Text } from "astarva-ui";
 import { useRouter } from "next/router";
 
 import Layout from "@/components/mobile/Layout";
+import { Navbar } from "@/components/mobile/Navbar";
 import { route } from "@/constants/route";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useGetCategory } from "@/modules/category/hooks/useCategory";
@@ -22,8 +23,24 @@ const CategoryContainer: React.FC = () => {
         onBack={addCategoryDisclosure.onClose}
       />
 
-      <Text>Category</Text>
-      <Flex flexDirection="column" gap="1rem">
+      <Navbar title="Category">
+        <Navbar.Suffix>
+          <Flex
+            justifyContent="center"
+            alignItems="center"
+            padding=".375rem"
+            backgroundColor="blue400"
+            maxWidth="max-content"
+            borderRadius=".375rem"
+            boxShadow="0 .25rem .5rem 0 rgba(50, 132, 255, 0.25)"
+            onClick={addCategoryDisclosure.onOpen}
+          >
+            <Icon name="Plus-solid" size="1rem" color="white" />
+          </Flex>
+        </Navbar.Suffix>
+      </Navbar>
+
+      <Flex flexDirection="column" gap="1rem" paddingY="72px">
         {isLoading || isRefetching
           ? Array.from({ length: 3 }).map((_, index: number) => (
               <Skeleton backgroundColor="black50" height="5rem" key={index} />
@@ -32,7 +49,7 @@ const CategoryContainer: React.FC = () => {
               return (
                 <Flex
                   flexDirection="column"
-                  backgroundColor="white"
+                  backgroundColor="blue50"
                   padding=".625rem"
                   borderRadius=".625rem"
                   key={index}
@@ -48,19 +65,6 @@ const CategoryContainer: React.FC = () => {
                 </Flex>
               );
             })}
-      </Flex>
-      <Flex
-        padding=".75rem"
-        backgroundColor="blue400"
-        maxWidth="max-content"
-        borderRadius="3.125rem"
-        boxShadow="0 .25rem .5rem 0 rgba(50, 132, 255, 0.25)"
-        position="absolute"
-        bottom="5.625rem"
-        right="1.25rem"
-        onClick={addCategoryDisclosure.onOpen}
-      >
-        <Icon name="Plus-solid" size="1.25rem" color="white" />
       </Flex>
     </Layout>
   );

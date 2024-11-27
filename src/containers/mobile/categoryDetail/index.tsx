@@ -1,10 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Button, Flex, Icon, Input, Skeleton, Text } from "astarva-ui";
+import { Button, Flex, Input, Skeleton } from "astarva-ui";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import Layout from "@/components/mobile/Layout";
+import { Navbar } from "@/components/mobile/Navbar";
 import { route } from "@/constants/route";
 import {
   useDeleteCategory,
@@ -56,27 +57,15 @@ const CategoryDetailContainer: React.FC = () => {
 
   return (
     <Layout isShowBottomBar={false}>
-      <Flex
-        gap="1rem"
-        position="fixed"
-        backgroundColor="white"
-        top="0"
-        left="0"
-        width="100%"
-        padding=".75rem"
-        alignItems="center"
-        boxShadow="0 .125rem .5rem 0 rgba(50, 132, 255, 0.25)"
-      >
-        <Box onClick={() => push(route.category.path)}>
-          <Icon name="Arrow-Left-solid" />
-        </Box>
-        <Text>Category Detail</Text>
-      </Flex>
+      <Navbar
+        title="Category Detail"
+        onBack={() => push(route.category.path)}
+      />
 
       <Flex
         flexDirection="column"
         justifyContent="space-between"
-        paddingTop="3.75rem"
+        paddingTop="4.5rem"
         paddingBottom=".5rem"
         flex={1}
       >
@@ -84,7 +73,6 @@ const CategoryDetailContainer: React.FC = () => {
           <Input
             label="Category Name"
             disabled={isPending || isPendingDelete}
-            noBorder
             placeholder="Input Category Name"
             isError={Boolean(errors.name?.message)}
             error={errors.name?.message}
@@ -93,7 +81,6 @@ const CategoryDetailContainer: React.FC = () => {
           <Input
             label="Target Weekly"
             disabled={isPending || isPendingDelete}
-            noBorder
             placeholder="Input Target Weekly"
             isError={Boolean(errors.target?.message)}
             error={errors.target?.message}

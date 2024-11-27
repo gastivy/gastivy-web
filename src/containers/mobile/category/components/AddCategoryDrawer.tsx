@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button, Drawer, Flex, Icon, Input } from "astarva-ui";
+import { Button, Drawer, Flex, Input, Text } from "astarva-ui";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
@@ -43,9 +43,17 @@ export const AddCategoryDrawer: React.FC<Props> = ({
   }, []);
 
   return (
-    <Drawer padding="1rem" isVisible={isVisible}>
+    <Drawer
+      padding="1rem"
+      gap="1.5rem"
+      isVisible={isVisible}
+      closeable
+      onClose={onBack}
+    >
+      <Text textAlign="center" weight="medium">
+        Add Category
+      </Text>
       <Flex flexDirection="column" gap="1.5rem" width="100%">
-        <Icon name="Arrow-Left-solid" onClick={onBack} />
         <Input
           size="small"
           label="Category Name"
