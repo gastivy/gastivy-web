@@ -79,9 +79,9 @@ const CategoryDetailContainer: React.FC = () => {
             {...register("name")}
           />
           <Input
-            label="Target Weekly"
+            label="Target Daily"
             disabled={isPending || isPendingDelete}
-            placeholder="Input Target Weekly"
+            placeholder="Input Target Daily"
             isError={Boolean(errors.target?.message)}
             error={errors.target?.message}
             {...register("target")}

@@ -66,10 +66,10 @@ export const AddCategoryDrawer: React.FC<Props> = ({
         />
         <Input
           size="small"
-          label="Target Weekly"
+          label="Target Daily"
           disabled={isPending}
           _label={{ variant: "small" }}
-          placeholder="Input Target Weekly"
+          placeholder="Input Target Daily"
           isError={Boolean(errors.target?.message)}
           error={errors.target?.message}
           {...register("target")}

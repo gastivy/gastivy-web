@@ -9,6 +9,23 @@ export enum Day {
 }
 
 export const dateTime = {
+  formatDate(date: Date) {
+    return new Intl.DateTimeFormat("en-CA", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    }).format(date);
+  },
+
+  getRangeDaily(): { start_date: string; end_date: string } {
+    const today = new Date();
+
+    return {
+      start_date: this.formatDate(today),
+      end_date: this.formatDate(today),
+    };
+  },
+
   getRangeWeekly(startDay: Day = 5): { start_date: string; end_date: string } {
     const today = new Date();
 
@@ -36,8 +53,38 @@ export const dateTime = {
     end.setDate(start.getDate() + 6); // Go to next 6 days from start day
 
     return {
-      start_date: start.toISOString().split("T")[0],
-      end_date: end.toISOString().split("T")[0],
+      start_date: this.formatDate(start),
+      end_date: this.formatDate(end),
+    };
+  },
+
+  getRangeThisMonth(
+    year = new Date().getFullYear(),
+    month = new Date().getMonth() + 1
+  ): { start_date: string; end_date: string } {
+    if (month < 1 || month > 12) {
+      throw new Error("Month must be between 1 and 12.");
+    }
+
+    const firstDate = new Date(year, month - 1, 1);
+    const lastDate = new Date(year, month, 0);
+
+    return {
+      start_date: this.formatDate(firstDate),
+      end_date: this.formatDate(lastDate),
+    };
+  },
+
+  getRangeThisYear(year = new Date().getFullYear()): {
+    start_date: string;
+    end_date: string;
+  } {
+    const firstDate = new Date(year, 0, 1);
+    const lastDate = new Date(year, 12, 0);
+
+    return {
+      start_date: this.formatDate(firstDate),
+      end_date: this.formatDate(lastDate),
     };
   },
 

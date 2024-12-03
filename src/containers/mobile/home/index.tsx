@@ -1,4 +1,4 @@
-import { Flex, Progress, Text } from "astarva-ui";
+import { Flex, Progress, ScrollBar, Text } from "astarva-ui";
 import { useEffect, useState } from "react";
 
 import Layout from "@/components/mobile/Layout";
@@ -21,10 +21,35 @@ const HomeContainer = () => {
   const activityDisclosure = useDisclosure({ open: false });
   const [categorySelected, setCategorySelected] = useState<Category>();
   const [dataActivity, setDataActivity] = useState<Activity>();
+  const [currentTab, setCurrentTab] = useState("all");
 
+  const rangeDaily = dateTime.getRangeDaily();
   const rangeWeekly = dateTime.getRangeWeekly();
+  const rangeMonthly = dateTime.getRangeThisMonth();
+  const rangeYearly = dateTime.getRangeThisYear();
+
+  const today = new Date();
+  const listTab = [
+    { name: "All", value: "all", range: {}, day: 1 },
+    { name: "Daily", value: "day", range: rangeDaily, day: 1 },
+    { name: "Weekly", value: "week", range: rangeWeekly, day: 7 },
+    {
+      name: "Monthly",
+      value: "month",
+      range: rangeMonthly,
+      day: new Date(today.getFullYear(), today.getMonth() + 1, 29).getDate(),
+    },
+    {
+      name: "Yearly",
+      value: "year",
+      range: rangeYearly,
+      day: new Date(today.getFullYear(), 1, 29).getDate() === 29 ? 366 : 365,
+    },
+  ];
+
+  const selectedCategory = listTab.find((item) => item.value === currentTab);
   const { data, isLoading, refetch } = useGetCategory({
-    ...rangeWeekly,
+    ...selectedCategory?.range,
   });
 
   const selectCategory = async (category: Category) => {
@@ -84,10 +109,34 @@ const HomeContainer = () => {
           Weekly Plan
         </Text>
 
-        <Flex
+        <ScrollBar overflowX="auto" hideScroll gap=".5rem">
+          {listTab.map((item, index) => (
+            <Flex
+              key={index}
+              justifyContent="center"
+              alignItems="center"
+              padding=".25rem 1.5rem"
+              borderRadius="2.5rem"
+              backgroundColor={item.value === currentTab ? "blue400" : "white"}
+              border=".0625rem solid"
+              borderColor="blue400"
+              onClick={() => setCurrentTab(item.value)}
+            >
+              <Text
+                variant="small"
+                color={item.value === currentTab ? "white" : "blue400"}
+                weight="medium"
+              >
+                {item.name}
+              </Text>
+            </Flex>
+          ))}
+        </ScrollBar>
+
+        <ScrollBar
           flexDirection="column"
           gap="1rem"
-          maxHeight="18.75rem"
+          maxHeight="440px"
           overflowY="auto"
           paddingRight=".75rem"
         >
@@ -95,7 +144,8 @@ const HomeContainer = () => {
             <Text>Loading...</Text>
           ) : (
             data?.data.map(({ minutes = 0, target = 0, ...item }, key) => {
-              const difference = minutes - target;
+              const totalTarget = target * (selectedCategory?.day || 0);
+              const difference = minutes - totalTarget;
               return (
                 <Flex
                   flexDirection="column"
@@ -112,7 +162,7 @@ const HomeContainer = () => {
                   <Flex flexDirection="column" gap=".25rem">
                     <Flex justifyContent="space-between">
                       <Text color="black400" variant="small">
-                        {minutes} / {target} Minutes
+                        {minutes} / {totalTarget} Minutes
                       </Text>
                       <Text
                         color={difference < 0 ? "red400" : "blue400"}
@@ -131,14 +181,14 @@ const HomeContainer = () => {
                       _text={{
                         color: "black700",
                       }}
-                      percent={Math.round((minutes / target) * 100)}
+                      percent={Math.round((minutes / totalTarget) * 100)}
                     />
                   </Flex>
                 </Flex>
               );
             })
           )}
-        </Flex>
+        </ScrollBar>
       </Flex>
     </Layout>
   );
