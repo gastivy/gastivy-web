@@ -26,7 +26,9 @@ const ActivityContainer = () => {
     const grouped: { [key: string]: LogActivity[] } = {};
 
     data?.data.forEach((activity) => {
-      const date = activity.start_date.toString().split("T")[0];
+      const date = dateTime
+        .convertToLocalTime(String(activity.start_date))
+        .split("T")[0];
 
       if (!grouped[date]) {
         grouped[date] = [];

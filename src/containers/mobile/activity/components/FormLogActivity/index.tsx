@@ -1,5 +1,6 @@
 import {
   Button,
+  DatePicker,
   Drawer,
   Flex,
   Icon,
@@ -8,9 +9,9 @@ import {
   Select,
   Switch,
   Text,
+  TimePicker,
 } from "astarva-ui";
 import React, { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
 
 import {
   useCreateActivity,
@@ -18,6 +19,7 @@ import {
 } from "@/modules/activity/hooks/useActivity";
 import { LogActivity } from "@/modules/activity/models";
 import { useGetListCategory } from "@/modules/category/hooks/useCategory";
+import { dateTime } from "@/utils/dateTime";
 
 interface UpdateLogActivityProps {
   logActivity?: LogActivity;
@@ -30,6 +32,7 @@ interface UpdateLogActivityProps {
 interface FormActivity {
   categorySelected: Option["value"];
   startDate: Date | null;
+  startTime: string | undefined;
   isDone: boolean;
 }
 
@@ -60,6 +63,7 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
   const [form, setForm] = useState<FormActivity>({
     categorySelected: "",
     startDate: null,
+    startTime: undefined,
     isDone: false,
   });
 
@@ -85,6 +89,10 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
 
     const hoursToSeconds = hours * 60 * 60;
     const minutesToSeconds = minutes * 60;
+
+    const time = form.startTime?.split(":") || [];
+    if ((time?.length || 0) === 2)
+      form.startDate.setHours(Number(time[0]), Number(time[1]), 0, 0);
 
     const dateInSeconds = new Date(
       form.startDate.getTime() +
@@ -144,6 +152,7 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
         categorySelected: logActivity?.category_id || "",
         startDate: date,
         isDone: logActivity?.is_done || false,
+        startTime: dateTime.formatTimeFromUTC(String(date)),
       });
     }
   }, [logActivity]);
@@ -179,16 +188,23 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
           />
         )}
         <DatePicker
+          label="Start Time"
           selected={form.startDate}
-          timeInputLabel="Time:"
-          dateFormat="dd/MM/yyyy HH:mm"
-          timeFormat="HH:mm"
-          placeholderText="Start Time"
-          showTimeInput
-          onChange={(date) => {
+          placeholderText="Select Date..."
+          onSelect={(date) => {
             setForm((prev) => ({ ...prev, startDate: date }));
           }}
         />
+
+        {(form.startTime || !isEdit) && (
+          <TimePicker
+            value={form.startTime}
+            label="Time Picker"
+            onSelect={(val) => {
+              setForm((prev) => ({ ...prev, startTime: val }));
+            }}
+          />
+        )}
 
         <Flex flexDirection="column" gap=".625rem">
           <Text variant="small" weight="bold" color="black600">

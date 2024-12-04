@@ -109,6 +109,18 @@ export const dateTime = {
     return `${time[0]}:${time[1]}`;
   },
 
+  convertToLocalTime(utcDateString: string): string {
+    const utcDate = new Date(utcDateString);
+
+    // Get the timezone offset in minutes and convert it to milliseconds
+    const timezoneOffset = utcDate.getTimezoneOffset() * -1; // Negative for offset direction
+    const localTime = new Date(utcDate.getTime() + timezoneOffset * 60 * 1000);
+
+    // Format to ISO string but retain the 'Z' to match your desired format
+    const isoString = localTime.toISOString();
+    return isoString.slice(0, -1) + "Z";
+  },
+
   getRangeTime(start: string, end: string) {
     return `${this.formatTimeFromUTC(start)} - ${this.formatTimeFromUTC(end)}`;
   },
