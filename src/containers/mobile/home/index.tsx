@@ -10,6 +10,7 @@ import { dateTime } from "@/utils/dateTime";
 import { IndexedDB } from "@/utils/indexedDB";
 
 import { AddActivityDrawer } from "./components/AddActivityDrawer";
+import { Profile } from "./components/Profile";
 
 interface Activity {
   id: string;
@@ -89,14 +90,18 @@ const HomeContainer = () => {
         onBack={handleBackAddActivity}
       />
 
-      <Flex flexDirection="column">
-        <Text variant="heading6" weight="medium" color="black700">
-          Hi, Ganna
-        </Text>
-        <Text
-          variant="small"
-          color="black700"
-        >{`Let's make this day productive`}</Text>
+      <Flex flexDirection="column" gap="1rem">
+        <Profile />
+
+        <Flex flexDirection="column">
+          <Text variant="heading6" weight="medium" color="black700">
+            Hi, Ganna
+          </Text>
+          <Text
+            variant="small"
+            color="black700"
+          >{`Let's make this day productive`}</Text>
+        </Flex>
       </Flex>
       <Flex
         flexDirection="column"
