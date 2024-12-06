@@ -17,7 +17,7 @@ const LoginContainer: React.FC = () => {
     onSuccess: ({ data }) => {
       if (data.token) {
         cookies.setCookie({ key: "GSTID", value: data.token });
-        router.push(route.home.path);
+        router.push(route.activityApp.home.path);
       }
     },
   });

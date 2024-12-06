@@ -19,7 +19,9 @@ export function middleware(request: NextRequest) {
     isAuthenticated &&
     pathWithoutUnauthorized.includes(request.nextUrl.pathname)
   ) {
-    return NextResponse.redirect(new URL(route.home.path, request.url));
+    return NextResponse.redirect(
+      new URL(route.activityApp.home.path, request.url)
+    );
   }
 
   return NextResponse.next();

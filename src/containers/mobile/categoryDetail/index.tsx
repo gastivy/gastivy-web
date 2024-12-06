@@ -20,12 +20,12 @@ const CategoryDetailContainer: React.FC = () => {
   const { data, isLoading } = useGetCategoryById(query.categoryId as string);
   const { isPending, mutate } = useUpdateCategory({
     onSuccess: () => {
-      push(route.category.path);
+      push(route.activityApp.category.path);
     },
   });
   const { isPending: isPendingDelete, mutate: deleteCategory } =
     useDeleteCategory({
-      onSuccess: () => push(route.category.path),
+      onSuccess: () => push(route.activityApp.category.path),
     });
   const { name = "", target = 0 } = data?.data || {};
 
@@ -57,7 +57,7 @@ const CategoryDetailContainer: React.FC = () => {
     <Layout isShowBottomBar={false}>
       <Navbar
         title="Category Detail"
-        onBack={() => push(route.category.path)}
+        onBack={() => push(route.activityApp.category.path)}
       />
 
       {isLoading ? (

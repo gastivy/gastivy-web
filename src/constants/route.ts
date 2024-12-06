@@ -1,7 +1,21 @@
 export const route = {
-  home: {
-    name: "Home",
-    path: "/",
+  activityApp: {
+    home: {
+      name: "Home",
+      path: "/activity-app",
+    },
+    category: {
+      name: "Category",
+      path: "/activity-app/category",
+    },
+    statistic: {
+      name: "Statistic",
+      path: "/activity-app/statistic",
+    },
+    activity: {
+      name: "Activity",
+      path: "/activity-app/activity",
+    },
   },
   login: {
     name: "Login",
@@ -10,17 +24,5 @@ export const route = {
   register: {
     name: "Register",
     path: "/register",
-  },
-  category: {
-    name: "Category",
-    path: "/category",
-  },
-  statistic: {
-    name: "Statistic",
-    path: "/statistic",
-  },
-  activity: {
-    name: "Activity",
-    path: "/activity",
   },
 };

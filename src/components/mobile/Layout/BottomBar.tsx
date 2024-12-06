@@ -13,29 +13,31 @@ interface BottomBarProps {
 
 export const BottomBar: React.FC = () => {
   const { push, pathname } = useRouter();
+  const { home, statistic, category, activity } = route.activityApp;
 
+  console.log("path", pathname);
   const menu: BottomBarProps[] = [
     {
-      path: route.home.path,
-      name: route.home.name,
+      path: home.path,
+      name: home.name,
       icon: "Home-outline",
       iconActive: "Home-solid",
     },
     {
-      path: route.statistic.path,
-      name: route.statistic.name,
+      path: statistic.path,
+      name: statistic.name,
       icon: "Chart-outline",
       iconActive: "Chart-solid",
     },
     {
-      path: route.category.path,
-      name: route.category.name,
+      path: category.path,
+      name: category.name,
       icon: "Grid-outline",
       iconActive: "Grid-solid",
     },
     {
-      path: route.activity.path,
-      name: route.activity.name,
+      path: activity.path,
+      name: activity.name,
       icon: "Line-Chart-outline",
       iconActive: "Line-Chart-solid",
     },

@@ -55,7 +55,7 @@ const CategoryContainer: React.FC = () => {
                   key={index}
                   gap=".625rem"
                   onClick={() =>
-                    router.push(`${route.category.path}/${item.id}`)
+                    router.push(`${route.activityApp.category.path}/${item.id}`)
                   }
                 >
                   <Text color="black800" weight="semi-bold">
