@@ -1,4 +1,4 @@
-import { Divider, Flex, Icon, Text } from "astarva-ui";
+import { Divider, Flex, Icon, Skeleton, Text } from "astarva-ui";
 import { useState } from "react";
 
 import Layout from "@/components/mobile/Layout";
@@ -13,7 +13,7 @@ import { FormLogActivity } from "./components/FormLogActivity";
 import { OptionsLogActivity } from "./components/OptionsLogActivity";
 
 const ActivityContainer = () => {
-  const { data, refetch } = useGetActivity();
+  const { data, isLoading, refetch } = useGetActivity();
   const [activitySelected, setActivitySelected] = useState<
     LogActivity | undefined
   >(undefined);
@@ -98,70 +98,78 @@ const ActivityContainer = () => {
       </Navbar>
 
       <Flex flexDirection="column" gap="1.25rem" padding="4.5rem 0 5rem">
-        {getLogActivity().map((item, key) => {
-          return (
-            <Flex key={key} flexDirection="column" gap="1.5rem">
-              <Divider
-                align="center"
-                _textStyle={{
-                  color: "black300",
-                  variant: "medium",
-                }}
-              >
-                <Text variant="small">
-                  {dateTime.getDate(new Date(item.key), "en-GB", {
-                    dateStyle: "long",
-                  })}
-                </Text>
-              </Divider>
-              {item.logActivity.map(({ is_done, ...activity }, index) => {
-                return (
-                  <Flex
-                    flexDirection="column"
-                    justifyContent="space-between"
-                    key={index}
-                    gap=".25rem"
-                    onClick={() =>
-                      handleClickActivity({ is_done, ...activity })
-                    }
+        {isLoading
+          ? Array.from({ length: 20 }).map((_, index: number) => (
+              <Skeleton key={index} minHeight="50px" />
+            ))
+          : getLogActivity().map((item, key) => {
+              return (
+                <Flex key={key} flexDirection="column" gap="1.5rem">
+                  <Divider
+                    align="center"
+                    _textStyle={{
+                      color: "black300",
+                      variant: "medium",
+                    }}
                   >
-                    <Flex justifyContent="space-between" gap=".25rem">
-                      <Text variant="small" weight="regular">
-                        {activity.category_name}
-                      </Text>
-                      <Text variant="small" italic color="black600">
-                        {dateTime.getRangeTime(
-                          String(activity.start_date),
-                          String(activity.end_date)
-                        )}
-                      </Text>
-                    </Flex>
-                    <Flex justifyContent="space-between">
-                      <Flex alignItems="center" gap=".5rem">
-                        <Icon
-                          name={
-                            is_done ? "Instant-outline" : "Time-Square-outline"
-                          }
-                          color={is_done ? "blue400" : "black300"}
-                          size={is_done ? "1.25rem" : "1rem"}
-                        />
-                        <Text
-                          variant="small"
-                          color={is_done ? "blue400" : "black400"}
-                        >
-                          {is_done ? "Done" : "Pause"}
-                        </Text>
+                    <Text variant="small">
+                      {dateTime.getDate(new Date(item.key), "en-GB", {
+                        dateStyle: "long",
+                      })}
+                    </Text>
+                  </Divider>
+                  {item.logActivity.map(({ is_done, ...activity }, index) => {
+                    return (
+                      <Flex
+                        flexDirection="column"
+                        justifyContent="space-between"
+                        key={index}
+                        gap=".25rem"
+                        onClick={() =>
+                          handleClickActivity({ is_done, ...activity })
+                        }
+                      >
+                        <Flex justifyContent="space-between" gap=".25rem">
+                          <Text variant="small" weight="regular">
+                            {activity.category_name}
+                          </Text>
+                          <Text variant="small" italic color="black600">
+                            {dateTime.getRangeTime(
+                              String(activity.start_date),
+                              String(activity.end_date)
+                            )}
+                          </Text>
+                        </Flex>
+                        <Flex justifyContent="space-between">
+                          <Flex alignItems="center" gap=".5rem">
+                            <Icon
+                              name={
+                                is_done
+                                  ? "Instant-outline"
+                                  : "Time-Square-outline"
+                              }
+                              color={is_done ? "blue400" : "black300"}
+                              size={is_done ? "1.25rem" : "1rem"}
+                            />
+                            <Text
+                              variant="small"
+                              color={is_done ? "blue400" : "black400"}
+                            >
+                              {is_done ? "Done" : "Pause"}
+                            </Text>
+                          </Flex>
+                          <Text color="black400" variant="small">
+                            {dateTime.convertSecondsToTimeFormat(
+                              activity.seconds
+                            )}
+                          </Text>
+                        </Flex>
                       </Flex>
-                      <Text color="black400" variant="small">
-                        {dateTime.convertSecondsToTimeFormat(activity.seconds)}
-                      </Text>
-                    </Flex>
-                  </Flex>
-                );
-              })}
-            </Flex>
-          );
-        })}
+                    );
+                  })}
+                </Flex>
+              );
+            })}
       </Flex>
     </Layout>
   );
