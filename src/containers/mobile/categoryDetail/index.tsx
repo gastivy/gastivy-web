@@ -53,8 +53,6 @@ const CategoryDetailContainer: React.FC = () => {
     }
   }, [data?.data]);
 
-  if (isLoading) return <Skeleton />;
-
   return (
     <Layout isShowBottomBar={false}>
       <Navbar
@@ -62,55 +60,86 @@ const CategoryDetailContainer: React.FC = () => {
         onBack={() => push(route.category.path)}
       />
 
-      <Flex
-        flexDirection="column"
-        justifyContent="space-between"
-        paddingTop="4.5rem"
-        paddingBottom=".5rem"
-        flex={1}
-      >
-        <Flex flexDirection="column" gap=".75rem">
-          <Input
-            label="Category Name"
-            disabled={isPending || isPendingDelete}
-            placeholder="Input Category Name"
-            isError={Boolean(errors.name?.message)}
-            error={errors.name?.message}
-            {...register("name")}
-          />
-          <Input
-            label="Target Daily"
-            disabled={isPending || isPendingDelete}
-            placeholder="Input Target Daily"
-            isError={Boolean(errors.target?.message)}
-            error={errors.target?.message}
-            {...register("target")}
-          />
+      {isLoading ? (
+        <LoadingSkeleton />
+      ) : (
+        <Flex
+          flexDirection="column"
+          justifyContent="space-between"
+          paddingTop="4.5rem"
+          paddingBottom=".5rem"
+          flex={1}
+        >
+          <Flex flexDirection="column" gap=".75rem">
+            <Input
+              label="Category Name"
+              disabled={isPending || isPendingDelete}
+              placeholder="Input Category Name"
+              isError={Boolean(errors.name?.message)}
+              error={errors.name?.message}
+              {...register("name")}
+            />
+            <Input
+              label="Target Daily"
+              disabled={isPending || isPendingDelete}
+              placeholder="Input Target Daily"
+              isError={Boolean(errors.target?.message)}
+              error={errors.target?.message}
+              {...register("target")}
+            />
+          </Flex>
+          <Flex gap="1.5rem">
+            <Button
+              disabled={isPending || isPendingDelete}
+              isBlock
+              size="medium"
+              shape="rounded"
+              onClick={handleSubmit(handleSave)}
+            >
+              Save
+            </Button>
+            <Button
+              disabled={isPending || isPendingDelete}
+              isBlock
+              size="medium"
+              backgroundColor="red400"
+              shape="rounded"
+              onClick={handeDelete}
+            >
+              Delete
+            </Button>
+          </Flex>
         </Flex>
-        <Flex gap="1.5rem">
-          <Button
-            disabled={isPending || isPendingDelete}
-            isBlock
-            size="medium"
-            shape="rounded"
-            onClick={handleSubmit(handleSave)}
-          >
-            Save
-          </Button>
-          <Button
-            disabled={isPending || isPendingDelete}
-            isBlock
-            size="medium"
-            backgroundColor="red400"
-            shape="rounded"
-            onClick={handeDelete}
-          >
-            Delete
-          </Button>
-        </Flex>
-      </Flex>
+      )}
     </Layout>
   );
 };
+
+function LoadingSkeleton() {
+  return (
+    <Flex
+      flexDirection="column"
+      justifyContent="space-between"
+      paddingTop="4.5rem"
+      paddingBottom=".5rem"
+      flex={1}
+    >
+      <Flex flexDirection="column" gap="1.5rem">
+        {Array.from({ length: 2 }).map((_, index: number) => (
+          <Flex flexDirection="column" gap=".5rem" key={index}>
+            <Skeleton height="1rem" width="7.5rem" />
+            <Skeleton height="2.5rem" />
+          </Flex>
+        ))}
+      </Flex>
+
+      <Flex gap="1.5rem">
+        {Array.from({ length: 2 }).map((_, index: number) => (
+          <Skeleton height="2.5rem" key={index} />
+        ))}
+      </Flex>
+    </Flex>
+  );
+}
 
 export default CategoryDetailContainer;
