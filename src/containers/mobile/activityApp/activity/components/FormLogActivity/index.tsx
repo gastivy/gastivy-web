@@ -30,7 +30,7 @@ interface UpdateLogActivityProps {
 }
 
 interface FormActivity {
-  categorySelected: Option["value"];
+  categorySelected: string;
   startDate: Date | null;
   startTime: string | undefined;
   isDone: boolean;
@@ -76,7 +76,7 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
   const handleSelectCategory = (option: Option) => {
     setForm((prev) => ({
       ...prev,
-      categorySelected: option.value,
+      categorySelected: String(option.value),
     }));
   };
 

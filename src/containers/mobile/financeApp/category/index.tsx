@@ -1,12 +1,14 @@
-import { Flex, Icon, useDisclosure } from "astarva-ui";
+import { Flex, Icon, Text, useDisclosure } from "astarva-ui";
 
 import Layout from "@/components/mobile/Layout";
 import { Navbar } from "@/components/mobile/Navbar";
+import { useGetCategoryTransaction } from "@/modules/financeApp/category/hooks/useCategoryTransaction";
 
 import { AddCategoryDrawer } from "./components/AddCategoryDrawer";
 
 const CategoryFinanceContainer = () => {
   const addCategoryDisclosure = useDisclosure({ open: false });
+  const { data } = useGetCategoryTransaction();
   return (
     <Layout _flex={{ paddingBottom: "5.5rem" }}>
       {/* Add Category Drawer */}
@@ -32,6 +34,21 @@ const CategoryFinanceContainer = () => {
           </Flex>
         </Navbar.Suffix>
       </Navbar>
+
+      <Flex flexDirection="column" gap="1rem" paddingTop="64px">
+        {data?.data?.map((item) => {
+          return (
+            <Flex
+              key={item.id}
+              backgroundColor="blue50"
+              padding=".5rem .75rem"
+              borderRadius=".375rem"
+            >
+              <Text variant="medium">{item.name}</Text>
+            </Flex>
+          );
+        })}
+      </Flex>
     </Layout>
   );
 };

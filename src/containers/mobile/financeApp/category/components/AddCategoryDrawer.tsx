@@ -4,10 +4,11 @@ import { Button, Drawer, Flex, Input, Select, Text } from "astarva-ui";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { CategoryTransactionRequest } from "@/modules/financeApp/category/models";
-// import { useForm } from "react-hook-form";
-// import { useCreateCategory } from "@/modules/activityApp/category/hooks/useCategory";
-// import { CategoryRequest } from "@/modules/activityApp/category/models";
+import { useCreateCategoryTransaction } from "@/modules/financeApp/category/hooks/useCategoryTransaction";
+import {
+  CategoryTransactionRequest,
+  TypesTransactions,
+} from "@/modules/financeApp/category/models";
 import { schemaCategoryTransaction } from "@/modules/financeApp/category/schema/category";
 
 interface Props {
@@ -21,12 +22,12 @@ export const AddCategoryDrawer: React.FC<Props> = ({
   // refetch,
   onBack,
 }) => {
-  // const { isPending, mutate } = useCreateCategory({
-  //   onSuccess: () => {
-  //     onBack();
-  //     // refetch();
-  //   },
-  // });
+  const { isPending, mutate } = useCreateCategoryTransaction({
+    onSuccess: () => {
+      onBack();
+      // refetch();
+    },
+  });
   const {
     register,
     control,
@@ -37,18 +38,13 @@ export const AddCategoryDrawer: React.FC<Props> = ({
   });
 
   const handleSave = (form: CategoryTransactionRequest) => {
-    console.log(form);
-    // mutate(form);
+    mutate(form);
   };
 
   const typeTransactionOptions = [
-    { label: "Income", value: "1" },
-    { label: "Expenses", value: "2" },
+    { label: "Income", value: TypesTransactions.INCOME },
+    { label: "Expenses", value: TypesTransactions.EXPENSES },
   ];
-
-  // useEffect(() => {
-  //   queryClient.invalidateQueries({ queryKey: ["all-category"] });
-  // }, []);
 
   return (
     <Drawer
@@ -65,7 +61,7 @@ export const AddCategoryDrawer: React.FC<Props> = ({
         <Input
           size="small"
           label="Category Name"
-          // disabled={isPending}
+          disabled={isPending}
           placeholder="Input Category Name"
           _label={{ variant: "small" }}
           isError={Boolean(errors.name?.message)}
@@ -87,7 +83,7 @@ export const AddCategoryDrawer: React.FC<Props> = ({
           )}
         />
         <Button
-          // disabled={isPending}
+          disabled={isPending}
           isBlock
           shape="semi-round"
           size="medium"

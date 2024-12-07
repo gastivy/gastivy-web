@@ -1,38 +1,18 @@
 import { httpService } from "@/utils/httpService";
 
 import {
-  AllCategoryResponse,
-  CategoryRequest,
-  CategoryResponse,
-  DeleteCategoryRequest,
-  GetCategoryRequest,
-  UpdateCategoryRequest,
+  CategoryTransactionRequest,
+  CategoryTransactionResponse,
 } from "../models";
 
-export const CategoryServices = {
-  getAll: (params?: GetCategoryRequest) =>
+export const CategoryTransactionServices = {
+  get: () =>
     httpService
-      .get<AllCategoryResponse>("/categories", { params })
+      .get<CategoryTransactionResponse>("/finance-app/categories")
       .then((res) => res.data),
 
-  getList: () =>
+  create: (payload: CategoryTransactionRequest) =>
     httpService
-      .get<AllCategoryResponse>("/categories/list")
-      .then((res) => res.data),
-
-  getById: (categoryId: string) =>
-    httpService
-      .get<CategoryResponse>(`/categories/${categoryId}`)
-      .then((res) => res.data),
-
-  create: (payload: CategoryRequest) =>
-    httpService.post("/categories", payload).then((res) => res.data),
-
-  update: (payload: UpdateCategoryRequest) =>
-    httpService.patch("/categories", payload).then((res) => res.data),
-
-  delete: (payload: DeleteCategoryRequest) =>
-    httpService
-      .delete("/categories", { data: payload })
+      .post("/finance-app/categories", payload)
       .then((res) => res.data),
 };
