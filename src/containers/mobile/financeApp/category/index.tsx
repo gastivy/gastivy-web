@@ -1,12 +1,15 @@
 import { Flex, Icon, Text, useDisclosure } from "astarva-ui";
+import { useRouter } from "next/router";
 
 import Layout from "@/components/mobile/Layout";
 import { Navbar } from "@/components/mobile/Navbar";
+import { route } from "@/constants/route";
 import { useGetCategoryTransaction } from "@/modules/financeApp/category/hooks/useCategoryTransaction";
 
 import { AddCategoryDrawer } from "./components/AddCategoryDrawer";
 
 const CategoryFinanceContainer = () => {
+  const router = useRouter();
   const addCategoryDisclosure = useDisclosure({ open: false });
   const { data } = useGetCategoryTransaction();
   return (
@@ -43,6 +46,9 @@ const CategoryFinanceContainer = () => {
               backgroundColor="blue50"
               padding=".5rem .75rem"
               borderRadius=".375rem"
+              onClick={() =>
+                router.push(`${route.financeApp.category.path}/${item.id}`)
+              }
             >
               <Text variant="medium">{item.name}</Text>
             </Flex>

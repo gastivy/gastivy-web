@@ -5,6 +5,16 @@ export interface CategoryTransactionRequest {
   type: number;
 }
 
+export interface UpdateCategoryTransactionRequest {
+  id: string;
+  name: string;
+  type: number;
+}
+
+export interface DeleteCategoryTransactionRequest {
+  categoryId: string;
+}
+
 export enum TypesTransactions {
   INCOME = 1,
   EXPENSES = 2,
@@ -17,3 +27,5 @@ export interface CategoryTransaction {
 }
 
 export type CategoryTransactionResponse = HttpResponse<CategoryTransaction[]>;
+export type DetailCategoryTransactionResponse =
+  HttpResponse<CategoryTransaction>;

@@ -1,14 +1,11 @@
-// import { yupResolver } from "@hookform/resolvers/yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Drawer, Flex, Input, Select, Text } from "astarva-ui";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 
+import { typeTransactionOptions } from "@/constants/transactions";
 import { useCreateCategoryTransaction } from "@/modules/financeApp/category/hooks/useCategoryTransaction";
-import {
-  CategoryTransactionRequest,
-  TypesTransactions,
-} from "@/modules/financeApp/category/models";
+import { CategoryTransactionRequest } from "@/modules/financeApp/category/models";
 import { schemaCategoryTransaction } from "@/modules/financeApp/category/schema/category";
 
 interface Props {
@@ -40,11 +37,6 @@ export const AddCategoryDrawer: React.FC<Props> = ({
   const handleSave = (form: CategoryTransactionRequest) => {
     mutate(form);
   };
-
-  const typeTransactionOptions = [
-    { label: "Income", value: TypesTransactions.INCOME },
-    { label: "Expenses", value: TypesTransactions.EXPENSES },
-  ];
 
   return (
     <Drawer
