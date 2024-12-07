@@ -12,27 +12,31 @@ import {
 export const CategoryServices = {
   getAll: (params?: GetCategoryRequest) =>
     httpService
-      .get<AllCategoryResponse>("/categories", { params })
+      .get<AllCategoryResponse>("/activity-app/categories", { params })
       .then((res) => res.data),
 
   getList: () =>
     httpService
-      .get<AllCategoryResponse>("/categories/list")
+      .get<AllCategoryResponse>("/activity-app/categories/list")
       .then((res) => res.data),
 
   getById: (categoryId: string) =>
     httpService
-      .get<CategoryResponse>(`/categories/${categoryId}`)
+      .get<CategoryResponse>(`/activity-app/categories/${categoryId}`)
       .then((res) => res.data),
 
   create: (payload: CategoryRequest) =>
-    httpService.post("/categories", payload).then((res) => res.data),
+    httpService
+      .post("/activity-app/categories", payload)
+      .then((res) => res.data),
 
   update: (payload: UpdateCategoryRequest) =>
-    httpService.patch("/categories", payload).then((res) => res.data),
+    httpService
+      .patch("/activity-app/categories", payload)
+      .then((res) => res.data),
 
   delete: (payload: DeleteCategoryRequest) =>
     httpService
-      .delete("/categories", { data: payload })
+      .delete("/activity-app/categories", { data: payload })
       .then((res) => res.data),
 };
