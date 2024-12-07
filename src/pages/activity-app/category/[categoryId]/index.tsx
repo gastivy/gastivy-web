@@ -1,11 +1,11 @@
 import { PageRender } from "@/components/base/PageRender";
-import CategoryDetailContainer from "@/containers/mobile/categoryDetail";
+import CategoryDetailContainer from "@/containers/mobile/activityApp/categoryDetail";
 import { PageNotSupport } from "@/containers/web";
 
-const CategoryDetail = () =>
+const ActivityCategoryDetail = () =>
   PageRender({
     mobile: <CategoryDetailContainer />,
     web: <PageNotSupport />,
   });
 
-export default CategoryDetail;
+export default ActivityCategoryDetail;

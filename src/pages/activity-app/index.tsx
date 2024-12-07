@@ -1,11 +1,11 @@
 import { PageRender } from "@/components/base/PageRender";
-import HomeContainer from "@/containers/mobile/home";
+import HomeContainer from "@/containers/mobile/activityApp/home";
 import { PageNotSupport } from "@/containers/web";
 
-const Login = () =>
+const HomeActivity = () =>
   PageRender({
     mobile: <HomeContainer />,
     web: <PageNotSupport />,
   });
 
-export default Login;
+export default HomeActivity;

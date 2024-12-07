@@ -1,47 +1,18 @@
-import { Box, Flex, Icon, IconNames, Text } from "astarva-ui";
+import { Box, Flex, Icon, Text } from "astarva-ui";
 import { useRouter } from "next/router";
 import React from "react";
 
-import { route } from "@/constants/route";
-
-interface BottomBarProps {
-  path: string;
-  name: string;
-  icon: IconNames;
-  iconActive: IconNames;
-}
+import { menuActivityApp, menuFinanceApp } from "@/constants/bottomBar";
 
 export const BottomBar: React.FC = () => {
   const { push, pathname } = useRouter();
-  const { home, statistic, category, activity } = route.activityApp;
 
-  console.log("path", pathname);
-  const menu: BottomBarProps[] = [
-    {
-      path: home.path,
-      name: home.name,
-      icon: "Home-outline",
-      iconActive: "Home-solid",
-    },
-    {
-      path: statistic.path,
-      name: statistic.name,
-      icon: "Chart-outline",
-      iconActive: "Chart-solid",
-    },
-    {
-      path: category.path,
-      name: category.name,
-      icon: "Grid-outline",
-      iconActive: "Grid-solid",
-    },
-    {
-      path: activity.path,
-      name: activity.name,
-      icon: "Line-Chart-outline",
-      iconActive: "Line-Chart-solid",
-    },
-  ];
+  const getBottomBar = () => {
+    if (pathname.includes("activity-app")) return menuActivityApp;
+    if (pathname.includes("finance-app")) return menuFinanceApp;
+    return [];
+  };
+
   return (
     <Flex
       position="fixed"
@@ -54,7 +25,7 @@ export const BottomBar: React.FC = () => {
       boxShadow="0 .0625rem .75rem .0625rem rgba(50, 132, 255, 0.2)"
       overflow="hidden"
     >
-      {menu.map((item, index) => {
+      {getBottomBar().map((item, index) => {
         const isActive = pathname === item.path;
         return (
           <Flex

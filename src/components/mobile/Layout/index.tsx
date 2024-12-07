@@ -14,7 +14,7 @@ const Layout: React.FC<LayoutProps> = ({
   isShowBottomBar = true,
 }) => {
   return (
-    <Flex width="100vw" justifyContent="center" backgroundColor="black50">
+    <Flex width="100vw" justifyContent="center">
       <Flex
         maxWidth="48rem"
         width="100%"
