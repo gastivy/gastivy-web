@@ -22,6 +22,10 @@ export const route = {
       name: "Home",
       path: "/finance-app",
     },
+    wallet: {
+      name: "Wallet",
+      path: "/finance-app/wallet",
+    },
     category: {
       name: "Category",
       path: "/finance-app/category",
@@ -31,7 +35,7 @@ export const route = {
       path: "/finance-app/statistic",
     },
     transactions: {
-      name: "Activity",
+      name: "Transaction",
       path: "/finance-app/transactions",
     },
   },

@@ -52,6 +52,12 @@ export const menuFinanceApp: BottomBarProps[] = [
     iconActive: "Chart-solid",
   },
   {
+    path: financeApp.wallet.path,
+    name: financeApp.wallet.name,
+    icon: "Wallet-outline",
+    iconActive: "Wallet-solid",
+  },
+  {
     path: financeApp.category.path,
     name: financeApp.category.name,
     icon: "Grid-outline",
@@ -60,7 +66,7 @@ export const menuFinanceApp: BottomBarProps[] = [
   {
     path: financeApp.transactions.path,
     name: financeApp.transactions.name,
-    icon: "Line-Chart-outline",
-    iconActive: "Line-Chart-solid",
+    icon: "Coins-outline",
+    iconActive: "Coins-solid",
   },
 ];
