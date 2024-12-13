@@ -40,8 +40,6 @@ const TransactionsFinanceContainer = () => {
     if (type === TypesTransactions.TRANSFER) return "black300";
   };
 
-  console.log(getLogTransaction());
-
   return (
     <Layout _flex={{ paddingBottom: "88px" }}>
       {/* Add Transactions Drawer */}
@@ -69,7 +67,6 @@ const TransactionsFinanceContainer = () => {
 
       <Flex flexDirection="column" paddingTop="80px" gap="2rem">
         {getLogTransaction().map((item, index) => {
-          console.log("item: ", item.key);
           return (
             <Flex flexDirection="column" key={index} gap="12px">
               <Text variant="small" color="black700">

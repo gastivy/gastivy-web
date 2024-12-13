@@ -37,7 +37,7 @@ const WalletContainer = () => {
         </Navbar.Suffix>
       </Navbar>
 
-      <Flex flexDirection="column" gap="1.25rem" padding="5rem 0">
+      <Flex flexDirection="column" gap=".75rem" padding="5rem 0">
         {walletData.map((data, index) => {
           return (
             <Flex

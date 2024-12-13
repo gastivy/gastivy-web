@@ -1,10 +1,12 @@
-import { Flex, Icon, Skeleton, Text, useDisclosure } from "astarva-ui";
+import { Colors, Flex, Icon, Skeleton, Text, useDisclosure } from "astarva-ui";
 import { useRouter } from "next/router";
 
 import Layout from "@/components/mobile/Layout";
 import { Navbar } from "@/components/mobile/Navbar";
 import { route } from "@/constants/route";
+import { typeTransactionOptions } from "@/constants/transactions";
 import { useGetCategoryTransaction } from "@/modules/financeApp/category/hooks/useCategoryTransaction";
+import { TypesTransactions } from "@/modules/financeApp/category/models";
 
 import { AddCategoryDrawer } from "./components/AddCategoryDrawer";
 
@@ -46,14 +48,58 @@ const CategoryFinanceContainer = () => {
               return (
                 <Flex
                   key={item.id}
-                  backgroundColor="blue50"
-                  padding=".5rem .75rem"
-                  borderRadius=".375rem"
+                  backgroundColor="white"
+                  boxShadow="0 .125rem .75rem 0 rgba(50, 132, 255, 0.1)"
+                  padding=".625rem"
+                  borderRadius=".625rem"
+                  alignItems="center"
+                  gap="1rem"
+                  border={`1px solid ${Colors.black50}`}
                   onClick={() =>
                     router.push(`${route.financeApp.category.path}/${item.id}`)
                   }
                 >
-                  <Text variant="medium">{item.name}</Text>
+                  <Flex
+                    justifyContent="center"
+                    alignItems="center"
+                    // backgroundColor="blue50"
+                    backgroundColor={
+                      item.type === TypesTransactions.EXPENSES
+                        ? "red50"
+                        : "blue50"
+                    }
+                    padding=".75rem"
+                    borderRadius=".5rem"
+                  >
+                    <Icon
+                      name={
+                        item.type === TypesTransactions.EXPENSES
+                          ? "Cart-outline"
+                          : "Coins-outline"
+                      }
+                      size="1.75rem"
+                      // color="blue400"
+                      color={
+                        item.type === TypesTransactions.EXPENSES
+                          ? "red400"
+                          : "blue400"
+                      }
+                    />
+                  </Flex>
+                  <Flex flexDirection="column">
+                    <Text variant="medium">{item.name}</Text>
+                    <Text
+                      variant="extra-small"
+                      color="black400"
+                      marginTop=".125rem"
+                    >
+                      {
+                        typeTransactionOptions.find(
+                          (type) => type.value === item.type
+                        )?.label
+                      }
+                    </Text>
+                  </Flex>
                 </Flex>
               );
             })}
