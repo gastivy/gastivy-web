@@ -1,9 +1,9 @@
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   DatePicker,
   Drawer,
   Flex,
-  Icon,
   Input,
   Option,
   Select,
@@ -13,6 +13,8 @@ import {
 } from "astarva-ui";
 import React, { useEffect, useState } from "react";
 
+import { Loading } from "@/components/base/Loading";
+import { Navbar } from "@/components/mobile/Navbar";
 import {
   useCreateActivity,
   useUpdateActivity,
@@ -25,7 +27,6 @@ interface UpdateLogActivityProps {
   logActivity?: LogActivity;
   isEdit?: boolean;
   isVisible: boolean;
-  onRefetch: () => void;
   onClose: () => void;
 }
 
@@ -41,21 +42,35 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
   isEdit = false,
   isVisible,
   onClose,
-  onRefetch,
 }) => {
-  const { mutate } = useUpdateActivity({
+  const queryClient = useQueryClient();
+  const { mutate, isPending: isPendingUpdate } = useUpdateActivity({
     onSuccess: () => {
       onClose();
-      onRefetch();
+      queryClient.invalidateQueries({ queryKey: ["all-category"] });
+      setForm({
+        categorySelected: "",
+        startDate: null,
+        startTime: undefined,
+        isDone: false,
+      });
     },
   });
 
-  const { mutate: addActivity } = useCreateActivity({
-    onSuccess: async () => {
-      onClose();
-      onRefetch();
-    },
-  });
+  const { mutate: addActivity, isPending: isPendingCreate } = useCreateActivity(
+    {
+      onSuccess: async () => {
+        onClose();
+        queryClient.invalidateQueries({ queryKey: ["all-category"] });
+        setForm({
+          categorySelected: "",
+          startDate: null,
+          startTime: undefined,
+          isDone: false,
+        });
+      },
+    }
+  );
   const { data } = useGetListCategory();
   const [seconds, setSeconds] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
@@ -159,25 +174,21 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
 
   return (
     <Drawer
+      isFullHeight
+      gap="1rem"
       isVisible={isVisible}
-      height="max-content"
       padding="1.25rem"
       flexDirection="column"
     >
-      <Flex justifyContent="flex-end">
-        <Flex
-          justifyContent="space-between"
-          alignItems="center"
-          maxWidth="55%"
-          flex={1}
-        >
-          <Text variant="large" weight="medium">
-            {isEdit ? "Edit" : "Add"}
-          </Text>
-          <Icon name="Close-solid" onClick={onClose} />
-        </Flex>
-      </Flex>
-      <Flex padding="1.25rem 0 2rem" flexDirection="column" gap="1.25rem">
+      {/* Loading */}
+      {(isPendingUpdate || isPendingCreate) && <Loading />}
+
+      <Navbar
+        title={isEdit ? "Edit Activity" : "Create Activity"}
+        onBack={onClose}
+      />
+
+      <Flex flex={1} padding="5rem 0 2rem" flexDirection="column" gap="1.25rem">
         {(!!form.categorySelected || !isEdit) && (
           <Select
             label="Category"

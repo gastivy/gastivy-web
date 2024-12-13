@@ -13,7 +13,7 @@ import { FormLogActivity } from "./components/FormLogActivity";
 import { OptionsLogActivity } from "./components/OptionsLogActivity";
 
 const ActivityContainer = () => {
-  const { data, isLoading, refetch } = useGetActivity();
+  const { data, isLoading, isRefetching } = useGetActivity();
   const [activitySelected, setActivitySelected] = useState<
     LogActivity | undefined
   >(undefined);
@@ -68,7 +68,6 @@ const ActivityContainer = () => {
       <FormLogActivity
         isVisible={updateLogActivtyDrawer.isOpen}
         isEdit
-        onRefetch={refetch}
         logActivity={activitySelected}
         onClose={updateLogActivtyDrawer.onClose}
       />
@@ -76,7 +75,6 @@ const ActivityContainer = () => {
       {/* Add Log Activity */}
       <FormLogActivity
         isVisible={addActivityDrawer.isOpen}
-        onRefetch={refetch}
         onClose={addActivityDrawer.onClose}
       />
 
@@ -97,8 +95,8 @@ const ActivityContainer = () => {
         </Navbar.Suffix>
       </Navbar>
 
-      <Flex flexDirection="column" gap="1.25rem" padding="4.5rem 0 5rem">
-        {isLoading
+      <Flex flexDirection="column" gap="1.25rem" padding="5rem 0">
+        {isLoading || isRefetching
           ? Array.from({ length: 20 }).map((_, index: number) => (
               <Skeleton key={index} minHeight="50px" />
             ))

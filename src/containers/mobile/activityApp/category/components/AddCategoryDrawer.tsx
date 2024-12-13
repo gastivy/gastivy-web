@@ -1,9 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button, Drawer, Flex, Input, Text } from "astarva-ui";
+import { Button, Drawer, Flex, Input } from "astarva-ui";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
+import { Loading } from "@/components/base/Loading";
+import { Navbar } from "@/components/mobile/Navbar";
 import { useCreateCategory } from "@/modules/activityApp/category/hooks/useCategory";
 import { CategoryRequest } from "@/modules/activityApp/category/models";
 import { schemaCategory } from "@/modules/activityApp/category/schema/category";
@@ -43,21 +45,20 @@ export const AddCategoryDrawer: React.FC<Props> = ({
   }, []);
 
   return (
-    <Drawer
-      padding="1rem"
-      gap="1.5rem"
-      isVisible={isVisible}
-      closeable
-      onClose={onBack}
-    >
-      <Text textAlign="center" weight="medium">
-        Add Category
-      </Text>
-      <Flex flexDirection="column" gap="1.5rem" width="100%">
+    <Drawer padding="1rem" isFullHeight gap="1.5rem" isVisible={isVisible}>
+      {isPending && <Loading />}
+      <Navbar title="Add Category" onBack={onBack} />
+
+      <Flex
+        flex={1}
+        flexDirection="column"
+        gap="1.5rem"
+        width="100%"
+        paddingTop="5rem"
+      >
         <Input
           size="small"
           label="Category Name"
-          disabled={isPending}
           placeholder="Input Category Name"
           _label={{ variant: "small" }}
           isError={Boolean(errors.name?.message)}
@@ -67,13 +68,14 @@ export const AddCategoryDrawer: React.FC<Props> = ({
         <Input
           size="small"
           label="Target Daily"
-          disabled={isPending}
           _label={{ variant: "small" }}
           placeholder="Input Target Daily"
           isError={Boolean(errors.target?.message)}
           error={errors.target?.message}
           {...register("target")}
         />
+      </Flex>
+      <Flex padding="1rem">
         <Button
           disabled={isPending}
           isBlock

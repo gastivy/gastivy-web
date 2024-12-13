@@ -1,4 +1,4 @@
-import { Flex, Icon, Text, useDisclosure } from "astarva-ui";
+import { Flex, Icon, Skeleton, Text, useDisclosure } from "astarva-ui";
 import { useRouter } from "next/router";
 
 import Layout from "@/components/mobile/Layout";
@@ -11,13 +11,12 @@ import { AddCategoryDrawer } from "./components/AddCategoryDrawer";
 const CategoryFinanceContainer = () => {
   const router = useRouter();
   const addCategoryDisclosure = useDisclosure({ open: false });
-  const { data } = useGetCategoryTransaction();
+  const { data, isLoading, isRefetching } = useGetCategoryTransaction();
   return (
     <Layout _flex={{ paddingBottom: "5.5rem" }}>
       {/* Add Category Drawer */}
       <AddCategoryDrawer
         isVisible={addCategoryDisclosure.isOpen}
-        // refetch={refetch}
         onBack={addCategoryDisclosure.onClose}
       />
 
@@ -39,21 +38,25 @@ const CategoryFinanceContainer = () => {
       </Navbar>
 
       <Flex flexDirection="column" gap="1rem" paddingTop="64px">
-        {data?.data?.map((item) => {
-          return (
-            <Flex
-              key={item.id}
-              backgroundColor="blue50"
-              padding=".5rem .75rem"
-              borderRadius=".375rem"
-              onClick={() =>
-                router.push(`${route.financeApp.category.path}/${item.id}`)
-              }
-            >
-              <Text variant="medium">{item.name}</Text>
-            </Flex>
-          );
-        })}
+        {isLoading || isRefetching
+          ? Array.from({ length: 5 }).map((_, index: number) => (
+              <Skeleton backgroundColor="black50" height="5rem" key={index} />
+            ))
+          : data?.data?.map((item) => {
+              return (
+                <Flex
+                  key={item.id}
+                  backgroundColor="blue50"
+                  padding=".5rem .75rem"
+                  borderRadius=".375rem"
+                  onClick={() =>
+                    router.push(`${route.financeApp.category.path}/${item.id}`)
+                  }
+                >
+                  <Text variant="medium">{item.name}</Text>
+                </Flex>
+              );
+            })}
       </Flex>
     </Layout>
   );

@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Button, Flex, Icon, Modal, Text } from "astarva-ui";
 
+import { Loading } from "@/components/base/Loading";
 import { useDeleteActivity } from "@/modules/activityApp/activity/hooks/useActivity";
 import { LogActivity } from "@/modules/activityApp/activity/models";
 import { dateTime } from "@/utils/dateTime";
@@ -27,8 +28,8 @@ export const ConfirmDeleteDrawer: React.FC<Props> = ({
 
   const queryClient = useQueryClient();
 
-  const { mutate } = useDeleteActivity({
-    onSettled: () => {
+  const { mutate, isPending } = useDeleteActivity({
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["all-category"] });
       onClose();
     },
@@ -37,6 +38,8 @@ export const ConfirmDeleteDrawer: React.FC<Props> = ({
   const handleDelete = () => {
     if (id) mutate(id);
   };
+
+  if (isPending) return <Loading />;
 
   return (
     <Modal

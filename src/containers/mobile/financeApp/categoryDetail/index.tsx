@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 
+import { Loading } from "@/components/base/Loading";
 import Layout from "@/components/mobile/Layout";
 import { Navbar } from "@/components/mobile/Navbar";
 import { route } from "@/constants/route";
@@ -63,6 +64,8 @@ const CategoryDetailTransactionContainer: React.FC = () => {
 
   return (
     <Layout isShowBottomBar={false}>
+      {(isPending || isPendingDelete) && <Loading />}
+
       <Navbar
         title="Category Transaction Detail"
         onBack={() => push(route.financeApp.category.path)}
@@ -74,14 +77,13 @@ const CategoryDetailTransactionContainer: React.FC = () => {
         <Flex
           flexDirection="column"
           justifyContent="space-between"
-          paddingTop="4.5rem"
+          paddingTop="5rem"
           paddingBottom=".5rem"
           flex={1}
         >
           <Flex flexDirection="column" gap=".75rem">
             <Input
               label="Category Name"
-              disabled={isPending || isPendingDelete}
               placeholder="Input Category Name"
               isError={Boolean(errors.name?.message)}
               error={errors.name?.message}
@@ -104,7 +106,6 @@ const CategoryDetailTransactionContainer: React.FC = () => {
           </Flex>
           <Flex gap="1.5rem">
             <Button
-              disabled={isPending || isPendingDelete}
               isBlock
               size="medium"
               shape="rounded"
@@ -113,7 +114,6 @@ const CategoryDetailTransactionContainer: React.FC = () => {
               Save
             </Button>
             <Button
-              disabled={isPending || isPendingDelete}
               isBlock
               size="medium"
               backgroundColor="red400"
@@ -134,7 +134,7 @@ function LoadingSkeleton() {
     <Flex
       flexDirection="column"
       justifyContent="space-between"
-      paddingTop="4.5rem"
+      paddingTop="5rem"
       paddingBottom=".5rem"
       flex={1}
     >

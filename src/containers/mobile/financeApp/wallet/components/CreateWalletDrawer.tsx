@@ -1,9 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button, Drawer, Flex, Icon, Input, Text } from "astarva-ui";
+import { Button, Drawer, Flex, Input, Text } from "astarva-ui";
 import React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
+import { Loading } from "@/components/base/Loading";
+import { Navbar } from "@/components/mobile/Navbar";
 import { useCreateWallet } from "@/modules/financeApp/wallet/hooks/useWallet";
 import { CreateWalletRequest } from "@/modules/financeApp/wallet/models";
 import { schemaWallet } from "@/modules/financeApp/wallet/schema";
@@ -15,10 +17,10 @@ interface Props {
 
 export const CreateWalletDrawer: React.FC<Props> = ({ isVisible, onBack }) => {
   const queryClient = useQueryClient();
-  const { mutate } = useCreateWallet({
+  const { mutate, isPending } = useCreateWallet({
     onSuccess: () => {
-      onBack();
       reset();
+      onBack();
       queryClient.invalidateQueries({ queryKey: ["wallet"] });
     },
   });
@@ -37,32 +39,21 @@ export const CreateWalletDrawer: React.FC<Props> = ({ isVisible, onBack }) => {
     mutate(form);
   };
 
+  if (isPending) return <Loading />;
+
   return (
-    <Drawer
-      isFullHeight
-      padding="0"
-      gap="1rem"
-      isVisible={isVisible}
-      onClose={onBack}
-    >
-      <Flex justifyContent="space-between" alignItems="center" padding="1rem">
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          padding=".25rem"
-          borderRadius=".5rem"
-          boxShadow="0 .0625rem .625rem 0 rgba(50, 132, 255, 0.25)"
-          onClick={onBack}
-        >
-          <Icon name="Left-outline" size="1.25rem" />
-        </Flex>
-        <Text textAlign="center" weight="medium">
-          Create Wallet
-        </Text>
-        <Button size="small" shape="rounded" onClick={handleSubmit(handleSave)}>
-          Save
-        </Button>
-      </Flex>
+    <Drawer isFullHeight padding="0" gap="1rem" isVisible={isVisible}>
+      <Navbar title="Create Wallet" onBack={onBack}>
+        <Navbar.Suffix>
+          <Button
+            size="small"
+            shape="rounded"
+            onClick={handleSubmit(handleSave)}
+          >
+            Save
+          </Button>
+        </Navbar.Suffix>
+      </Navbar>
 
       <Flex
         flexDirection="column"
@@ -70,6 +61,7 @@ export const CreateWalletDrawer: React.FC<Props> = ({ isVisible, onBack }) => {
         width="100%"
         backgroundColor="white"
         padding="1rem"
+        paddingTop="5rem"
       >
         <Input
           size="small"

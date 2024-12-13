@@ -1,4 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   Colors,
@@ -21,6 +22,7 @@ import {
   useForm,
 } from "react-hook-form";
 
+import { Loading } from "@/components/base/Loading";
 import { useDisclosureProps } from "@/hooks/useDisclosure";
 import { useGetCategoryTransaction } from "@/modules/financeApp/category/hooks/useCategoryTransaction";
 import { schemaTransaction } from "@/modules/financeApp/category/schema/category";
@@ -32,18 +34,23 @@ import { formatter } from "@/utils/formatter";
 
 interface Props {
   isVisible: boolean;
-  // refetch: () => void;
   onBack: () => void;
 }
 
 export const AddTransactionsDrawer: React.FC<Props> = ({
   isVisible,
-  // refetch,
   onBack,
 }) => {
+  const queryClient = useQueryClient();
   const { data } = useGetCategoryTransaction();
   const { data: wallets } = useGetWallet();
-  const { mutate } = useCreateTransactions();
+  const { mutate, isPending } = useCreateTransactions({
+    onSuccess: () => {
+      reset();
+      onBack();
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+    },
+  });
 
   const categoryTransactionOptions = useMemo(() => {
     return (
@@ -77,6 +84,7 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
     watch,
     handleSubmit,
     setValue,
+    reset,
     resetField,
     formState: { errors },
   } = useForm({
@@ -142,6 +150,8 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
       isVisible={isVisible}
       onClose={onBack}
     >
+      {isPending && <Loading />}
+
       <Flex justifyContent="space-between" alignItems="center" padding="1rem">
         <Flex
           justifyContent="center"
@@ -198,7 +208,7 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                       </Text>
                     </Flex>
                     <Flex justifyContent="center" paddingBottom=".5rem">
-                      <Icon name="Up-outline" />
+                      <Icon name={isOpen ? "Down-outline" : "Up-outline"} />
                     </Flex>
                   </Flex>
 

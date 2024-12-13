@@ -1,6 +1,7 @@
 import { Button, Drawer, Flex, Icon, Text } from "astarva-ui";
 import React, { useEffect, useState } from "react";
 
+import { Loading } from "@/components/base/Loading";
 import useDisclosure from "@/hooks/useDisclosure";
 import useStopwatch, { Timer } from "@/hooks/useStopwatch";
 import { useCreateActivity } from "@/modules/activityApp/activity/hooks/useActivity";
@@ -33,7 +34,7 @@ export const AddActivityDrawer: React.FC<Props> = ({
   const lastItem = times[times.length - 1];
   const disabled = !times.at(-1)?.end_date;
 
-  const { mutate } = useCreateActivity({
+  const { mutate, isPending } = useCreateActivity({
     onSuccess: async () => {
       await IndexedDB.delete("activities", categoryId);
       onBack();
@@ -126,6 +127,9 @@ export const AddActivityDrawer: React.FC<Props> = ({
 
   return (
     <Drawer isFullHeight isVisible={isVisible}>
+      {/* Loading */}
+      {isPending && <Loading />}
+
       {/* Modal Confirm */}
       <ModalConfirm
         isVisible={modalConfirm.isOpen}
