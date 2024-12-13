@@ -5,6 +5,8 @@ import { Navbar } from "@/components/mobile/Navbar";
 import { useGetWallet } from "@/modules/financeApp/wallet/hooks/useWallet";
 import { formatter } from "@/utils/formatter";
 
+import { CreateWalletDrawer } from "./components/CreateWalletDrawer";
+
 const WalletContainer = () => {
   const createWalletDisclosure = useDisclosure({ open: false });
   const { data } = useGetWallet();
@@ -13,10 +15,10 @@ const WalletContainer = () => {
   return (
     <Layout _flex={{ paddingBottom: "5.5rem" }}>
       {/* Add Transactions Drawer */}
-      {/* <AddTransactionsDrawer
+      <CreateWalletDrawer
         isVisible={createWalletDisclosure.isOpen}
         onBack={createWalletDisclosure.onClose}
-      /> */}
+      />
 
       <Navbar title="Wallet">
         <Navbar.Suffix>

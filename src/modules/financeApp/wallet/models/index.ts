@@ -2,6 +2,11 @@ import { HttpResponse } from "@/types/HttpResponse";
 
 export type WalletResponse = HttpResponse<Wallet[]>;
 
+export interface CreateWalletRequest {
+  name: string;
+  balance: number;
+}
+
 export interface Wallet {
   id: string;
   user_id: string;
