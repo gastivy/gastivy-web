@@ -5,7 +5,11 @@ import { Profile } from "./components/Profile";
 
 const HomeFinanceContainer = () => {
   return (
-    <Layout _flex={{ paddingBottom: "5.5rem" }}>
+    <Layout
+      _flex={{
+        paddingBottom: "5.5rem",
+      }}
+    >
       <Profile />
       <Balance />
     </Layout>
