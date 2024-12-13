@@ -5,29 +5,32 @@ export const schemaCategoryTransaction = Yup.object().shape({
   type: Yup.number().required("Target is required"),
 });
 
-// export const schemaTransaction = Yup.object().shape({
-//   transactions: Yup.array().of(
-//     Yup.object().shape({
-//       category_id: Yup.string().required("Category Transaction is required"),
-//       money: Yup.number().required("Money is required"),
-//       date: Yup.date().required("Date is required"),
-//       description: Yup.string(),
-//       name: Yup.string().required("Name Transaction is required"),
-//     })
-//   ),
-// });
-
 export const schemaTransaction = Yup.object().shape({
   transactions: Yup.array()
     .of(
       Yup.object().shape({
         category_id: Yup.string().required("Category ID is required"),
+        name: Yup.string().required("Name is required"),
+        description: Yup.string(),
         money: Yup.number()
           .required("Money is required")
           .min(1, "Money must be at least 1"),
         date: Yup.date().required("Date is required"),
-        description: Yup.string(),
-        name: Yup.string().required("Name is required"),
+        type: Yup.number().required("Type is required"),
+        from_wallet: Yup.string().when("type", (types: number[], schema) => {
+          const type = types[0];
+          if (typeof type === "number" && (type === 2 || type === 3)) {
+            return schema.required("Origin Wallet is required");
+          }
+          return schema;
+        }),
+        to_wallet: Yup.string().when("type", (types: number[], schema) => {
+          const type = types[0];
+          if (typeof type === "number" && (type === 1 || type === 3)) {
+            return schema.required("Destination Wallet is required");
+          }
+          return schema;
+        }),
       })
     )
     .required("Transactions are required"),

@@ -11,6 +11,7 @@ import {
   ScrollBar,
   Select,
   Text,
+  TextArea,
 } from "astarva-ui";
 import React, { useMemo } from "react";
 import {
@@ -22,10 +23,10 @@ import {
 
 import { useDisclosureProps } from "@/hooks/useDisclosure";
 import { useGetCategoryTransaction } from "@/modules/financeApp/category/hooks/useCategoryTransaction";
-// import { CategoryTransactionRequest } from "@/modules/financeApp/category/models";
 import { schemaTransaction } from "@/modules/financeApp/category/schema/category";
 import { useCreateTransactions } from "@/modules/financeApp/transactions/hooks/useTransaction";
 import { CreateTransactionRequest } from "@/modules/financeApp/transactions/models";
+import { useGetWallet } from "@/modules/financeApp/wallet/hooks/useWallet";
 import { dateTime } from "@/utils/dateTime";
 import { formatter } from "@/utils/formatter";
 
@@ -41,6 +42,7 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
   onBack,
 }) => {
   const { data } = useGetCategoryTransaction();
+  const { data: wallets } = useGetWallet();
   const { mutate } = useCreateTransactions();
 
   const categoryTransactionOptions = useMemo(() => {
@@ -52,19 +54,21 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
     );
   }, [data?.data]);
 
-  // const { isPending, mutate } = useCreateCategoryTransaction({
-  //   onSuccess: () => {
-  //     onBack();
-  //     // refetch();
-  //   },
-  // });
+  const walletData = wallets?.data || [];
+  const walletOptions = walletData.map((item) => ({
+    label: item.name,
+    value: item.id,
+  }));
 
   const defaultTransaction = {
     category_id: "",
-    money: 0,
-    date: new Date(),
-    description: undefined,
     name: "",
+    description: undefined,
+    from_wallet: "",
+    to_wallet: "",
+    money: 0,
+    type: 0,
+    date: new Date(),
   };
 
   const {
@@ -72,6 +76,8 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
     control,
     watch,
     handleSubmit,
+    setValue,
+    resetField,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schemaTransaction),
@@ -79,10 +85,13 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
       transactions: [
         {
           category_id: "",
-          money: 0,
-          date: new Date(),
-          description: undefined,
           name: "",
+          description: undefined,
+          from_wallet: "",
+          to_wallet: "",
+          money: 0,
+          type: 0,
+          date: new Date(),
         },
       ],
     },
@@ -95,8 +104,34 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
 
   const fields = watch("transactions");
 
+  const handleResetFieldByIndex = (index: number) => {
+    resetField(`transactions.${index}.name`);
+    resetField(`transactions.${index}.description`);
+    resetField(`transactions.${index}.from_wallet`);
+    resetField(`transactions.${index}.to_wallet`);
+    resetField(`transactions.${index}.money`);
+    setValue(`transactions.${index}.date`, new Date());
+  };
+
+  const getTypeTransaction = (categoryId: string) => {
+    return data?.data.find((category) => category.id === categoryId)?.type || 0;
+  };
+
   const handleSave: SubmitHandler<CreateTransactionRequest> = (form) => {
-    mutate(form);
+    const payload = form.transactions.map((item) => ({
+      category_id: item.category_id,
+      name: item.name,
+      description: item.description,
+      money: item.money,
+      date: item.date,
+      ...(item.from_wallet && {
+        from_wallet: item.from_wallet,
+      }),
+      ...(item.to_wallet && {
+        to_wallet: item.to_wallet,
+      }),
+    }));
+    mutate({ transactions: payload });
   };
 
   return (
@@ -132,7 +167,8 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
         gap="1rem"
         padding="1rem"
       >
-        {fields?.map((field, index) => {
+        {fields?.map((transaction, index) => {
+          const type = getTypeTransaction(transaction.category_id);
           return (
             <Disclosure defaultOpen key={index}>
               {({ isOpen, onToggle }: useDisclosureProps) => (
@@ -153,12 +189,12 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                     onClick={onToggle}
                   >
                     <Flex justifyContent="space-between">
-                      <Text variant="small">{field.name || "-"}</Text>
+                      <Text variant="small">{transaction.name || "-"}</Text>
                       <Text variant="small">
-                        {formatter.currency(field.money)}
+                        {formatter.currency(transaction.money)}
                       </Text>
                       <Text variant="small">
-                        {dateTime.getDate(field.date)}
+                        {dateTime.getDate(transaction.date)}
                       </Text>
                     </Flex>
                     <Flex justifyContent="center" paddingBottom=".5rem">
@@ -173,6 +209,94 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                       width="100%"
                       padding="1rem"
                     >
+                      <Controller
+                        name={`transactions.${index}.category_id`}
+                        control={control}
+                        rules={{ required: "Category is Required" }}
+                        render={({ field }) => (
+                          <Select
+                            value={field.value}
+                            placeholder="Category Transaction"
+                            size="small"
+                            isError={Boolean(
+                              errors.transactions?.[index]?.category_id?.message
+                            )}
+                            error={
+                              errors.transactions?.[index]?.category_id?.message
+                            }
+                            options={categoryTransactionOptions}
+                            onSelect={(option) => {
+                              handleResetFieldByIndex(index);
+                              setValue(
+                                `transactions.${index}.type`,
+                                getTypeTransaction(option.value as string)
+                              );
+                              field.onChange(option.value);
+                            }}
+                          />
+                        )}
+                      />
+
+                      {[2, 3].includes(type || 0) && (
+                        <Controller
+                          name={`transactions.${index}.from_wallet`}
+                          control={control}
+                          rules={{
+                            required: "Origin Wallet is Required",
+                          }}
+                          render={({ field }) => (
+                            <Select
+                              value={field.value || ""}
+                              size="small"
+                              placeholder="Origin Wallet"
+                              isError={Boolean(
+                                errors.transactions?.[index]?.from_wallet
+                                  ?.message
+                              )}
+                              error={
+                                errors.transactions?.[index]?.from_wallet
+                                  ?.message
+                              }
+                              options={walletOptions.filter(
+                                (item) => item.value !== transaction.to_wallet
+                              )}
+                              onSelect={(option) => {
+                                field.onChange(option.value);
+                              }}
+                            />
+                          )}
+                        />
+                      )}
+
+                      {[1, 3].includes(type || 0) && (
+                        <Controller
+                          name={`transactions.${index}.to_wallet`}
+                          control={control}
+                          rules={{
+                            required: "Destination Wallet is Required",
+                          }}
+                          render={({ field }) => (
+                            <Select
+                              value={field.value || ""}
+                              size="small"
+                              placeholder="Destination Wallet"
+                              isError={Boolean(
+                                errors.transactions?.[index]?.to_wallet?.message
+                              )}
+                              error={
+                                errors.transactions?.[index]?.to_wallet?.message
+                              }
+                              options={walletOptions.filter(
+                                (item) => item.value !== transaction.from_wallet
+                              )}
+                              onSelect={(option) =>
+                                field.onChange(option.value)
+                              }
+                            />
+                          )}
+                        />
+                      )}
+
                       <Input
                         size="small"
                         // disabled={isPending}
@@ -198,30 +322,16 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                                 Rp.
                               </Text>
                             }
+                            isError={Boolean(
+                              errors.transactions?.[index]?.money?.message
+                            )}
+                            error={errors.transactions?.[index]?.money?.message}
                             placeholder="Input Money"
                             onChange={(value) => field.onChange(value)}
                           />
                         )}
                       />
-                      <Controller
-                        name={`transactions.${index}.category_id`}
-                        control={control}
-                        rules={{ required: "Category is Required" }}
-                        render={({ field }) => (
-                          <Select
-                            value={field.value}
-                            size="small"
-                            isError={Boolean(
-                              errors.transactions?.[index]?.category_id?.message
-                            )}
-                            error={
-                              errors.transactions?.[index]?.category_id?.message
-                            }
-                            options={categoryTransactionOptions}
-                            onSelect={(option) => field.onChange(option.value)}
-                          />
-                        )}
-                      />
+
                       <Controller
                         name={`transactions.${index}.date`}
                         control={control}
@@ -239,11 +349,9 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                           );
                         }}
                       />
-                      <Input
-                        size="small"
+                      <TextArea
                         // disabled={isPending}
                         placeholder="Input Description"
-                        _label={{ variant: "small" }}
                         isError={Boolean(
                           errors.transactions?.[index]?.description?.message
                         )}
@@ -252,7 +360,6 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                         }
                         {...register(`transactions.${index}.description`)}
                       />
-
                       {(fields?.length || 0) > 1 && (
                         <Button
                           backgroundColor="red400"

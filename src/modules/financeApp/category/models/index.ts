@@ -18,6 +18,7 @@ export interface DeleteCategoryTransactionRequest {
 export enum TypesTransactions {
   INCOME = 1,
   EXPENSES = 2,
+  TRANSFER = 3,
 }
 
 export interface CategoryTransaction {

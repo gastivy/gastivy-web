@@ -1,9 +1,11 @@
 interface TransactionRequest {
   category_id: string;
+  name: string;
+  description?: string;
+  from_wallet?: string;
+  to_wallet?: string;
   money: number;
   date: Date;
-  description?: string;
-  name: string;
 }
 
 export interface CreateTransactionRequest {
