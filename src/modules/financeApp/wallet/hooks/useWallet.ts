@@ -6,7 +6,11 @@ import {
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-import { CreateWalletRequest, WalletResponse } from "../models";
+import {
+  BalanceResponse,
+  CreateWalletRequest,
+  WalletResponse,
+} from "../models";
 import { WalletServices } from "../services";
 
 export const useGetWallet = (options?: UseQueryOptions<WalletResponse>) =>
@@ -21,5 +25,12 @@ export const useCreateWallet = (
 ) =>
   useMutation({
     mutationFn: (data) => WalletServices.create(data),
+    ...options,
+  });
+
+export const useGetBalance = (options?: UseQueryOptions<BalanceResponse>) =>
+  useQuery({
+    queryKey: ["balance"],
+    queryFn: () => WalletServices.getBalance(),
     ...options,
   });

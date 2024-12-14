@@ -35,11 +35,13 @@ import { formatter } from "@/utils/formatter";
 
 interface Props {
   isVisible: boolean;
+  typeTransaction?: TypesTransactions;
   onBack: () => void;
 }
 
 export const AddTransactionsDrawer: React.FC<Props> = ({
   isVisible,
+  typeTransaction = 0,
   onBack,
 }) => {
   const queryClient = useQueryClient();
@@ -50,15 +52,28 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
       reset();
       onBack();
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["balance"] });
     },
   });
 
   const categoryTransactionOptions = useMemo(() => {
+    if (typeTransaction) {
+      return (
+        data?.data
+          .filter((item) => item.type === typeTransaction)
+          .map((transaction) => ({
+            label: transaction.name,
+            value: transaction.id,
+          })) || []
+      );
+    }
     return (
-      data?.data.map((transaction) => ({
-        label: transaction.name,
-        value: transaction.id,
-      })) || []
+      data?.data
+        .filter((item) => item.type !== TypesTransactions.FEE_TRANSFER)
+        .map((transaction) => ({
+          label: transaction.name,
+          value: transaction.id,
+        })) || []
     );
   }, [data?.data]);
 

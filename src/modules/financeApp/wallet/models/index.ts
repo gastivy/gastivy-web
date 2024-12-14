@@ -1,6 +1,7 @@
 import { HttpResponse } from "@/types/HttpResponse";
 
 export type WalletResponse = HttpResponse<Wallet[]>;
+export type BalanceResponse = HttpResponse<Balance>;
 
 export interface CreateWalletRequest {
   name: string;
@@ -15,4 +16,8 @@ export interface Wallet {
   deleted_at: Date | null;
   created_at: Date;
   updated_at: Date;
+}
+
+export interface Balance {
+  balance: number;
 }

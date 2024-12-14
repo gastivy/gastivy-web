@@ -1,9 +1,49 @@
-import { Box, Flex, Icon, IconNames, Text } from "astarva-ui";
+import { Box, Flex, Icon, IconNames, Skeleton, Text } from "astarva-ui";
 import React from "react";
 
-import { MenuTransactions } from "@/constants/transactions";
+import { TypesTransactions } from "@/modules/financeApp/category/models";
+import { useGetBalance } from "@/modules/financeApp/wallet/hooks/useWallet";
+import { formatter } from "@/utils/formatter";
 
-export const Balance: React.FC = () => {
+interface BalanceProps {
+  onTransfer: () => void;
+  onIncome: () => void;
+  onExpenses: () => void;
+}
+
+export const Balance: React.FC<BalanceProps> = ({
+  onIncome,
+  onExpenses,
+  onTransfer,
+}) => {
+  const { data, isLoading, isRefetching } = useGetBalance();
+  const MenuTransactions = [
+    {
+      label: "Income",
+      value: TypesTransactions.INCOME,
+      icon: "Arrow-Down-outline",
+      color: "green400",
+      backgroundColor: "green50",
+      onClick: () => onIncome(),
+    },
+    {
+      label: "Expenses",
+      value: TypesTransactions.EXPENSES,
+      icon: "Arrow-Up-outline",
+      color: "red400",
+      backgroundColor: "red50",
+      onClick: () => onExpenses(),
+    },
+    {
+      label: "Transfer",
+      value: TypesTransactions.TRANSFER,
+      icon: "Swap-Horizontal-outline",
+      color: "blue400",
+      backgroundColor: "blue50",
+      onClick: () => onTransfer(),
+    },
+  ];
+
   return (
     <Flex
       flexDirection="column"
@@ -56,9 +96,13 @@ export const Balance: React.FC = () => {
           <Text color="white" variant="small">
             Current Balance
           </Text>
-          <Text color="white" variant="heading6" weight="medium">
-            Rp 5.000.000
-          </Text>
+          {isLoading || isRefetching ? (
+            <Skeleton width="10rem" height="1.5rem" marginTop=".25rem" />
+          ) : (
+            <Text color="white" variant="heading6" weight="medium">
+              {formatter.currency(data?.data?.balance)}
+            </Text>
+          )}
         </Flex>
 
         <Flex
@@ -75,6 +119,7 @@ export const Balance: React.FC = () => {
                 justifyContent="center"
                 alignItems="center"
                 gap=".375rem"
+                onClick={item.onClick}
               >
                 <Flex
                   backgroundColor="blue50"
