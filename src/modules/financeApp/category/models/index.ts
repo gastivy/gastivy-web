@@ -19,6 +19,7 @@ export enum TypesTransactions {
   INCOME = 1,
   EXPENSES = 2,
   TRANSFER = 3,
+  FEE_TRANSFER = 4,
 }
 
 export interface CategoryTransaction {

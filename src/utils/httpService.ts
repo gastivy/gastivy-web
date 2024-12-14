@@ -39,6 +39,7 @@ httpService.interceptors.response.use(
 
       // Redirect to login page if not authenticated
       if (windowObj) {
+        cookies.deleteCookie("GSTID");
         windowObj.location.href = `${baseUrl}/login?referrer=${currentUrl}`;
       }
     } else {

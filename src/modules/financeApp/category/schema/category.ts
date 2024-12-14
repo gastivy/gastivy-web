@@ -12,6 +12,7 @@ export const schemaTransaction = Yup.object().shape({
         category_id: Yup.string().required("Category ID is required"),
         name: Yup.string().required("Name is required"),
         description: Yup.string(),
+        fee: Yup.number(),
         money: Yup.number()
           .required("Money is required")
           .min(1, "Money must be at least 1"),

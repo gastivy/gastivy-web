@@ -34,10 +34,31 @@ const TransactionsFinanceContainer = () => {
     }));
   };
 
-  const getTextColor = (type: TypesTransactions): colorIndex => {
-    if (type === TypesTransactions.INCOME) return "green400";
-    if (type === TypesTransactions.EXPENSES) return "red400";
-    if (type === TypesTransactions.TRANSFER) return "black300";
+  const getValueTransaction = (type: TypesTransactions, value?: number) => {
+    if (type === TypesTransactions.INCOME) {
+      return {
+        color: "green400" as colorIndex,
+        money: `+${formatter.currency(value)}`,
+      };
+    }
+
+    if (
+      [TypesTransactions.EXPENSES, TypesTransactions.FEE_TRANSFER].includes(
+        type
+      )
+    ) {
+      return {
+        color: "red400",
+        money: `-${formatter.currency(value)}`,
+      };
+    }
+
+    if (type === TypesTransactions.TRANSFER) {
+      return {
+        color: "black300",
+        money: formatter.currency(value),
+      };
+    }
   };
 
   return (
@@ -101,7 +122,10 @@ const TransactionsFinanceContainer = () => {
                           </Text>
                         )}
 
-                        {TypesTransactions.EXPENSES === transaction.type && (
+                        {[
+                          TypesTransactions.EXPENSES,
+                          TypesTransactions.FEE_TRANSFER,
+                        ].includes(transaction.type) && (
                           <Text
                             variant="extra-small"
                             color="blue400"
@@ -129,11 +153,15 @@ const TransactionsFinanceContainer = () => {
                       </Flex>
                       <Text
                         variant="small"
-                        color={getTextColor(transaction.type)}
+                        color={getValueTransaction(transaction.type)?.color}
                         weight="medium"
                       >
-                        {transaction.type === 2 ? "- " : ""}
-                        {formatter.currency(transaction.money)}
+                        {
+                          getValueTransaction(
+                            transaction.type,
+                            transaction.money
+                          )?.money
+                        }
                       </Text>
                     </Flex>
                   );

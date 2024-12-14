@@ -25,6 +25,7 @@ import {
 import { Loading } from "@/components/base/Loading";
 import { useDisclosureProps } from "@/hooks/useDisclosure";
 import { useGetCategoryTransaction } from "@/modules/financeApp/category/hooks/useCategoryTransaction";
+import { TypesTransactions } from "@/modules/financeApp/category/models";
 import { schemaTransaction } from "@/modules/financeApp/category/schema/category";
 import { useCreateTransactions } from "@/modules/financeApp/transactions/hooks/useTransaction";
 import { CreateTransactionRequest } from "@/modules/financeApp/transactions/models";
@@ -74,6 +75,7 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
     from_wallet: "",
     to_wallet: "",
     money: 0,
+    fee: 0,
     type: 0,
     date: new Date(),
   };
@@ -98,6 +100,7 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
           from_wallet: "",
           to_wallet: "",
           money: 0,
+          fee: 0,
           type: 0,
           date: new Date(),
         },
@@ -117,6 +120,7 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
     resetField(`transactions.${index}.description`);
     resetField(`transactions.${index}.from_wallet`);
     resetField(`transactions.${index}.to_wallet`);
+    resetField(`transactions.${index}.fee`);
     resetField(`transactions.${index}.money`);
     setValue(`transactions.${index}.date`, new Date());
   };
@@ -132,6 +136,9 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
       description: item.description,
       money: item.money,
       date: item.date,
+      ...(item.fee && {
+        fee: item.fee,
+      }),
       ...(item.from_wallet && {
         from_wallet: item.from_wallet,
       }),
@@ -225,6 +232,7 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                         rules={{ required: "Category is Required" }}
                         render={({ field }) => (
                           <Select
+                            label="Category Transaction"
                             value={field.value}
                             placeholder="Category Transaction"
                             size="small"
@@ -256,9 +264,10 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                           }}
                           render={({ field }) => (
                             <Select
+                              label="Origin Wallet"
                               value={field.value || ""}
                               size="small"
-                              placeholder="Origin Wallet"
+                              placeholder="Select Origin Wallet"
                               isError={Boolean(
                                 errors.transactions?.[index]?.from_wallet
                                   ?.message
@@ -287,9 +296,10 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                           }}
                           render={({ field }) => (
                             <Select
+                              label="Destination Wallet"
                               value={field.value || ""}
                               size="small"
-                              placeholder="Destination Wallet"
+                              placeholder="Select Destination Wallet"
                               isError={Boolean(
                                 errors.transactions?.[index]?.to_wallet?.message
                               )}
@@ -308,9 +318,9 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                       )}
 
                       <Input
+                        label="Note"
                         size="small"
-                        // disabled={isPending}
-                        placeholder="Input Title"
+                        placeholder="Input Note"
                         autoComplete="off"
                         _label={{ variant: "small" }}
                         isError={Boolean(
@@ -319,12 +329,14 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                         error={errors.transactions?.[index]?.name?.message}
                         {...register(`transactions.${index}.name`)}
                       />
+
                       <Controller
                         name={`transactions.${index}.money`}
                         control={control}
                         rules={{ required: "Money is Required" }}
                         render={({ field }) => (
                           <Input.Number
+                            label="Money"
                             value={String(field.value || 0)}
                             size="small"
                             prefix={
@@ -342,6 +354,32 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                         )}
                       />
 
+                      {type === TypesTransactions.TRANSFER && (
+                        <Controller
+                          name={`transactions.${index}.fee`}
+                          control={control}
+                          rules={{ required: "Fee Transfer is Required" }}
+                          render={({ field }) => (
+                            <Input.Number
+                              label="Fee Transfer"
+                              value={String(field.value || 0)}
+                              size="small"
+                              prefix={
+                                <Text variant="extra-small" weight="medium">
+                                  Rp.
+                                </Text>
+                              }
+                              isError={Boolean(
+                                errors.transactions?.[index]?.fee?.message
+                              )}
+                              error={errors.transactions?.[index]?.fee?.message}
+                              placeholder="Input Fee Transfer"
+                              onChange={(value) => field.onChange(value)}
+                            />
+                          )}
+                        />
+                      )}
+
                       <Controller
                         name={`transactions.${index}.date`}
                         control={control}
@@ -353,6 +391,7 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
 
                           return (
                             <DatePicker
+                              label="Date"
                               selected={currentDate}
                               onSelect={(val) => field.onChange(val)}
                             />
@@ -360,7 +399,7 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                         }}
                       />
                       <TextArea
-                        // disabled={isPending}
+                        label="Description"
                         placeholder="Input Description"
                         isError={Boolean(
                           errors.transactions?.[index]?.description?.message
@@ -374,7 +413,6 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                         <Button
                           backgroundColor="red400"
                           backgroundColorHover="red700"
-                          // disabled={isPending}
                           isBlock
                           shape="semi-round"
                           size="medium"

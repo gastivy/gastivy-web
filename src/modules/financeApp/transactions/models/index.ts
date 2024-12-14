@@ -8,6 +8,7 @@ interface TransactionRequest {
   to_wallet?: string;
   money: number;
   date: Date;
+  fee?: number;
 }
 
 export interface CreateTransactionRequest {
