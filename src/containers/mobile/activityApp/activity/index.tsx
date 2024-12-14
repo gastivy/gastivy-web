@@ -98,7 +98,7 @@ const ActivityContainer = () => {
       <Flex flexDirection="column" gap="1.25rem" padding="5rem 0">
         {isLoading || isRefetching
           ? Array.from({ length: 20 }).map((_, index: number) => (
-              <Skeleton key={index} minHeight="50px" />
+              <Skeleton key={index} minHeight="3.125rem" />
             ))
           : getLogActivity().map((item, key) => {
               return (

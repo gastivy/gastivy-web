@@ -209,13 +209,13 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                   gap="1.5rem"
                   width="100%"
                   backgroundColor="white"
-                  boxShadow="0 .0625rem .625rem 0px rgba(131, 133, 132, 0.25)"
+                  boxShadow="0 .0625rem .625rem 0 rgba(131, 133, 132, 0.25)"
                   borderRadius=".625rem"
                 >
                   <Flex
                     flexDirection="column"
                     gap="1rem"
-                    padding="24px 16px 0"
+                    padding="1.5rem 1rem 0"
                     borderBottom={`.0625rem solid ${Colors.black100}`}
                     borderRadius=".625rem"
                     onClick={onToggle}

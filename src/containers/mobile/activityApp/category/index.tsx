@@ -40,7 +40,7 @@ const CategoryContainer: React.FC = () => {
         </Navbar.Suffix>
       </Navbar>
 
-      <Flex flexDirection="column" gap="1rem" paddingY="72px">
+      <Flex flexDirection="column" gap="1rem" paddingY="4.5rem">
         {isLoading || isRefetching
           ? Array.from({ length: 3 }).map((_, index: number) => (
               <Skeleton backgroundColor="black50" height="5rem" key={index} />

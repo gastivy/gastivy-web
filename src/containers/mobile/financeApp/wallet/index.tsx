@@ -48,14 +48,14 @@ const WalletContainer = () => {
               borderRadius=".625rem"
               alignItems="center"
               gap="1rem"
-              border={`1px solid ${Colors.black50}`}
+              border={`.0625rem solid ${Colors.black50}`}
             >
               <Flex
                 justifyContent="center"
                 alignItems="center"
                 backgroundColor="blue50"
                 padding=".75rem"
-                borderRadius="8px"
+                borderRadius=".5rem"
               >
                 <Icon name="Wallet-outline" size="1.75rem" color="blue400" />
               </Flex>

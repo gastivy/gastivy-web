@@ -6,7 +6,11 @@ import {
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-import { CreateTransactionRequest, TransactionsResponse } from "../models";
+import {
+  CreateTransactionRequest,
+  GetTransactionRequest,
+  TransactionsResponse,
+} from "../models";
 import { TransactionServices } from "../services";
 
 export const useCreateTransactions = (
@@ -18,10 +22,11 @@ export const useCreateTransactions = (
   });
 
 export const useGetTransactions = (
+  params?: GetTransactionRequest,
   options?: UseQueryOptions<TransactionsResponse>
 ) =>
   useQuery({
-    queryKey: ["transactions"],
-    queryFn: () => TransactionServices.get(),
+    queryKey: ["transactions", params],
+    queryFn: () => TransactionServices.get(params),
     ...options,
   });

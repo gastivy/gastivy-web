@@ -6,6 +6,7 @@ import { TypesTransactions } from "@/modules/financeApp/category/models";
 import { AddTransactionsDrawer } from "../transactions/components/AddTransactionDrawer";
 import { Balance } from "./components/Balance";
 import { Profile } from "./components/Profile";
+import { Transactions } from "./components/Transaction";
 
 const HomeFinanceContainer = () => {
   const incomeDisclosure = useDisclosure({ open: false });
@@ -44,6 +45,8 @@ const HomeFinanceContainer = () => {
         onExpenses={expensesDisclosure.onOpen}
         onTransfer={transferDisclosure.onOpen}
       />
+
+      <Transactions />
     </Layout>
   );
 };

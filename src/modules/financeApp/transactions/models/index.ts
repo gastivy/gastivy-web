@@ -1,5 +1,7 @@
 import { HttpResponse } from "@/types/HttpResponse";
 
+export type TransactionsResponse = HttpResponse<Transactions[]>;
+
 interface TransactionRequest {
   category_id: string;
   name: string;
@@ -28,4 +30,6 @@ export interface Transactions {
   type: 1 | 2 | 3;
 }
 
-export type TransactionsResponse = HttpResponse<Transactions[]>;
+export interface GetTransactionRequest {
+  limit?: number;
+}

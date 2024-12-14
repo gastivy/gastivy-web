@@ -39,7 +39,7 @@ const CategoryFinanceContainer = () => {
         </Navbar.Suffix>
       </Navbar>
 
-      <Flex flexDirection="column" gap="1rem" paddingTop="64px">
+      <Flex flexDirection="column" gap="1rem" paddingTop="4rem">
         {isLoading || isRefetching
           ? Array.from({ length: 5 }).map((_, index: number) => (
               <Skeleton backgroundColor="black50" height="5rem" key={index} />
@@ -54,7 +54,7 @@ const CategoryFinanceContainer = () => {
                   borderRadius=".625rem"
                   alignItems="center"
                   gap="1rem"
-                  border={`1px solid ${Colors.black50}`}
+                  border={`.0625rem solid ${Colors.black50}`}
                   onClick={() =>
                     router.push(`${route.financeApp.category.path}/${item.id}`)
                   }
@@ -62,7 +62,6 @@ const CategoryFinanceContainer = () => {
                   <Flex
                     justifyContent="center"
                     alignItems="center"
-                    // backgroundColor="blue50"
                     backgroundColor={
                       item.type === TypesTransactions.EXPENSES
                         ? "red50"
@@ -78,7 +77,6 @@ const CategoryFinanceContainer = () => {
                           : "Coins-outline"
                       }
                       size="1.75rem"
-                      // color="blue400"
                       color={
                         item.type === TypesTransactions.EXPENSES
                           ? "red400"

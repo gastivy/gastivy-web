@@ -1,11 +1,15 @@
 import { httpService } from "@/utils/httpService";
 
-import { CreateTransactionRequest, TransactionsResponse } from "../models";
+import {
+  CreateTransactionRequest,
+  GetTransactionRequest,
+  TransactionsResponse,
+} from "../models";
 
 export const TransactionServices = {
-  get: () =>
+  get: (params?: GetTransactionRequest) =>
     httpService
-      .get<TransactionsResponse>("/finance-app/transactions")
+      .get<TransactionsResponse>("/finance-app/transactions", { params })
       .then((res) => res.data),
 
   create: (payload: CreateTransactionRequest) =>

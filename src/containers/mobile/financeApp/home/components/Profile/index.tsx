@@ -39,11 +39,11 @@ export const Profile = () => {
         <Flex
           borderRadius="1.875rem"
           padding=".5rem"
-          backgroundColor="white"
-          boxShadow="0 .0625rem .625rem 0px rgba(131, 133, 132, 0.25)"
+          backgroundColor="blue50"
+          boxShadow="0 .0625rem .25rem 0 rgba(131, 133, 132, 0.2)"
           onClick={onOpen}
         >
-          <Icon name="Person-solid" size="1.5rem" />
+          <Icon name="Person-solid" size="1.5rem" color="blue400" />
         </Flex>
         <Flex flexDirection="column">
           <Text variant="medium">Hi, Ganna</Text>
@@ -67,7 +67,7 @@ export const Profile = () => {
           backgroundColor="white"
           borderRadius=".375rem"
           padding=".375rem .75rem"
-          boxShadow="0 .0625rem .625rem 0px rgba(131, 133, 132, 0.25)"
+          boxShadow="0 .0625rem .625rem 0 rgba(131, 133, 132, 0.25)"
         >
           {dropdownProfile.map((item, index) => {
             return (

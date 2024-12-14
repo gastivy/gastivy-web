@@ -48,7 +48,7 @@ export const Balance: React.FC<BalanceProps> = ({
     <Flex
       flexDirection="column"
       width="100%"
-      height="280px"
+      height="17.5rem"
       marginX="auto"
       padding="1.25rem 1.5rem"
       backgroundColor="blue400"
@@ -83,7 +83,7 @@ export const Balance: React.FC<BalanceProps> = ({
         left="0"
         right="0"
         bottom="0"
-        zIndex="1"
+        zIndex="0"
         flexDirection="column"
         padding="1rem"
         gap="2rem"
