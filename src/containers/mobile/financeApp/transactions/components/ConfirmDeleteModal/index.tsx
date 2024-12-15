@@ -1,36 +1,38 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { Button, Flex, Icon, Modal, Text } from "astarva-ui";
+import { Button, Flex, Modal, Text } from "astarva-ui";
 
 import { Loading } from "@/components/base/Loading";
-import { useDeleteActivity } from "@/modules/activityApp/activity/hooks/useActivity";
-import { LogActivity } from "@/modules/activityApp/activity/models";
+import { useDeleteTransaction } from "@/modules/financeApp/transactions/hooks/useTransaction";
+import { Transactions } from "@/modules/financeApp/transactions/models";
 import { dateTime } from "@/utils/dateTime";
+import { formatter } from "@/utils/formatter";
 
-interface Props {
+interface ConfirmDeleteModalProps {
   isVisible: boolean;
-  logActivity?: LogActivity;
+  transactionSelected?: Transactions;
   onClose: () => void;
 }
 
-export const ConfirmDeleteModal: React.FC<Props> = ({
+export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
   isVisible,
-  logActivity,
+  transactionSelected,
   onClose,
 }) => {
   const {
     category_name,
-    end_date,
+    date,
     id,
-    is_done,
-    seconds = 0,
-    start_date,
-  } = logActivity || {};
+    money,
+    name,
+    from_wallet_name,
+    to_wallet_name,
+  } = transactionSelected || {};
 
   const queryClient = useQueryClient();
 
-  const { mutate, isPending } = useDeleteActivity({
+  const { mutate, isPending } = useDeleteTransaction({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["all-category"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
       onClose();
     },
   });
@@ -47,26 +49,27 @@ export const ConfirmDeleteModal: React.FC<Props> = ({
       verticalCentered
       padding="1.25rem"
       width="17.5rem"
+      boxSizing="content-box"
       onClose={onClose}
     >
       <Flex flex={1} flexDirection="column" alignItems="center">
         <Text>Are you sure want to delete</Text>
-        <Text weight="semi-bold">{category_name}?</Text>
+        <Text weight="semi-bold">{name}?</Text>
 
         <Flex
           flex={1}
-          width="12.5rem"
+          width="15rem"
           flexDirection="column"
           gap=".5rem"
-          padding=".75rem 0"
+          padding="2rem 0"
         >
           <Flex gap=".5rem" justifyContent="space-between" alignItems="center">
-            <Text variant="small" color="black400">
+            <Text variant="extra-small" color="black400">
               Date
             </Text>
-            <Text variant="small" color="black400">
+            <Text variant="extra-small" color="black400">
               {dateTime.getDate(
-                start_date ? new Date(String(start_date)) : new Date(),
+                date ? new Date(String(date)) : new Date(),
                 "en-GB",
                 {
                   dateStyle: "long",
@@ -76,50 +79,58 @@ export const ConfirmDeleteModal: React.FC<Props> = ({
           </Flex>
 
           <Flex gap=".5rem" justifyContent="space-between" alignItems="center">
-            <Text variant="small" color="black400">
-              State
+            <Text variant="extra-small" color="black400">
+              Money
             </Text>
-            <Flex alignItems="center" gap=".5rem">
-              <Icon
-                name={is_done ? "Instant-outline" : "Time-Square-outline"}
-                color={is_done ? "blue400" : "black300"}
-                size={is_done ? "1.25rem" : "1rem"}
-              />
-              <Text variant="small" color={is_done ? "blue400" : "black400"}>
-                {is_done ? "Done" : "Pause"}
-              </Text>
-            </Flex>
+            <Text variant="extra-small" color="black400">
+              {formatter.currency(money)}
+            </Text>
           </Flex>
 
-          {start_date && end_date && (
+          <Flex gap=".5rem" justifyContent="space-between" alignItems="center">
+            <Text variant="extra-small" color="black400">
+              Category
+            </Text>
+            <Text variant="extra-small" color="black400">
+              {category_name}
+            </Text>
+          </Flex>
+
+          {from_wallet_name && (
             <Flex
               gap=".5rem"
               justifyContent="space-between"
               alignItems="center"
             >
-              <Text variant="small" color="black400">
-                Time
+              <Text variant="extra-small" color="black400">
+                Origin Wallet
               </Text>
-              <Text variant="small" color="black400">
-                {dateTime.getRangeTime(String(start_date), String(end_date))}
+              <Text variant="extra-small" color="black400">
+                {from_wallet_name}
               </Text>
             </Flex>
           )}
 
-          <Flex gap=".5rem" justifyContent="space-between" alignItems="center">
-            <Text variant="small" color="black400">
-              Seconds
-            </Text>
-            <Text variant="small" color="black400">
-              {dateTime.convertSecondsToTimeFormat(seconds)}
-            </Text>
-          </Flex>
+          {to_wallet_name && (
+            <Flex
+              gap=".5rem"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Text variant="extra-small" color="black400">
+                Destination Wallet
+              </Text>
+              <Text variant="extra-small" color="black400">
+                {to_wallet_name}
+              </Text>
+            </Flex>
+          )}
         </Flex>
 
         <Flex
           flexDirection="column"
           gap=".5rem"
-          width="15rem"
+          width="17.5rem"
           marginTop="1.25rem"
         >
           <Button

@@ -1,4 +1,5 @@
 import { Flex, Icon, Text, useDisclosure } from "astarva-ui";
+import { useState } from "react";
 
 import Layout from "@/components/mobile/Layout";
 import { Navbar } from "@/components/mobile/Navbar";
@@ -8,9 +9,16 @@ import { Transactions } from "@/modules/financeApp/transactions/models";
 import { dateTime } from "@/utils/dateTime";
 
 import { AddTransactionsDrawer } from "./components/AddTransactionDrawer";
+import { ConfirmDeleteModal } from "./components/ConfirmDeleteModal";
+import { OptionsLogTransaction } from "./components/OptionsLogTransaction";
 
 const TransactionsFinanceContainer = () => {
   const addTransactionDisclosure = useDisclosure({ open: false });
+  const optionsLogActivity = useDisclosure({ open: false });
+  const confirmDeleteModal = useDisclosure({ open: false });
+  const [transactionSelected, setTransactionSelected] = useState<
+    Transactions | undefined
+  >(undefined);
   const { data } = useGetTransactions();
 
   const getLogTransaction = () => {
@@ -33,8 +41,28 @@ const TransactionsFinanceContainer = () => {
     }));
   };
 
+  const handleClickTransaction = (transaction: Transactions) => {
+    setTransactionSelected(transaction);
+    optionsLogActivity.onOpen();
+  };
+
   return (
     <Layout _flex={{ paddingBottom: "5.5rem" }}>
+      {/* Drawer Options Log Activity */}
+      <OptionsLogTransaction
+        isVisible={optionsLogActivity.isOpen}
+        onConfirmDelete={confirmDeleteModal.onOpen}
+        onClose={optionsLogActivity.onClose}
+        // onUpdateActivity={updateLogActivtyDrawer.onOpen}
+      />
+
+      {/* Modal Confirm Delete */}
+      <ConfirmDeleteModal
+        isVisible={confirmDeleteModal.isOpen}
+        transactionSelected={transactionSelected}
+        onClose={confirmDeleteModal.onClose}
+      />
+
       {/* Add Transactions Drawer */}
       <AddTransactionsDrawer
         isVisible={addTransactionDisclosure.isOpen}
@@ -74,6 +102,7 @@ const TransactionsFinanceContainer = () => {
                     <CardTransaction
                       transaction={transaction}
                       key={indexTransaction}
+                      onClick={() => handleClickTransaction(transaction)}
                     />
                   );
                 })}

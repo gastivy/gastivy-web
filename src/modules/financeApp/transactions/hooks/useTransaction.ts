@@ -30,3 +30,11 @@ export const useGetTransactions = (
     queryFn: () => TransactionServices.get(params),
     ...options,
   });
+
+export const useDeleteTransaction = (
+  options?: UseMutationOptions<void, AxiosError, string>
+) =>
+  useMutation({
+    mutationFn: (transactionId) => TransactionServices.delete(transactionId),
+    ...options,
+  });

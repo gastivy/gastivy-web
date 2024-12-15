@@ -37,6 +37,11 @@ const CategoryDetailTransactionContainer: React.FC = () => {
   );
   const { name = "", type = TypesTransactions.INCOME } = data?.data || {};
 
+  const disabled = [
+    TypesTransactions.TRANSFER,
+    TypesTransactions.FEE_TRANSFER,
+  ].includes(type);
+
   const {
     control,
     register,
@@ -84,6 +89,8 @@ const CategoryDetailTransactionContainer: React.FC = () => {
           <Flex flexDirection="column" gap=".75rem">
             <Input
               label="Category Name"
+              disabled={disabled}
+              size="small"
               placeholder="Input Category Name"
               isError={Boolean(errors.name?.message)}
               error={errors.name?.message}
@@ -97,6 +104,7 @@ const CategoryDetailTransactionContainer: React.FC = () => {
                 <Select
                   label="Type Transactions"
                   value={field.value}
+                  disabled={disabled}
                   size="small"
                   options={typeTransactionOptions}
                   onSelect={(option) => field.onChange(option.value)}
@@ -108,6 +116,7 @@ const CategoryDetailTransactionContainer: React.FC = () => {
             <Button
               isBlock
               size="medium"
+              disabled={disabled}
               shape="rounded"
               onClick={handleSubmit(handleSave)}
             >
@@ -116,6 +125,7 @@ const CategoryDetailTransactionContainer: React.FC = () => {
             <Button
               isBlock
               size="medium"
+              disabled={disabled}
               backgroundColor="red400"
               shape="rounded"
               onClick={handeDelete}

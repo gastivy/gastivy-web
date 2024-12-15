@@ -337,7 +337,6 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                         size="small"
                         placeholder="Input Note"
                         autoComplete="off"
-                        _label={{ variant: "small" }}
                         isError={Boolean(
                           errors.transactions?.[index]?.name?.message
                         )}

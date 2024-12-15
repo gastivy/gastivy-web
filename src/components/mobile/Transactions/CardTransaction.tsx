@@ -7,10 +7,12 @@ import { formatter } from "@/utils/formatter";
 
 interface CardTransactionProps {
   transaction: Transactions;
+  onClick?: () => void;
 }
 
 export const CardTransaction: React.FC<CardTransactionProps> = ({
   transaction,
+  onClick,
 }) => {
   const getValueTransaction = (type: TypesTransactions, value?: number) => {
     if (type === TypesTransactions.INCOME) {
@@ -45,6 +47,7 @@ export const CardTransaction: React.FC<CardTransactionProps> = ({
       padding=".625rem 1rem"
       borderRadius=".5rem"
       justifyContent="space-between"
+      onClick={onClick}
     >
       <Flex flexDirection="column" gap=".25rem">
         <Text variant="small">{transaction.name}</Text>

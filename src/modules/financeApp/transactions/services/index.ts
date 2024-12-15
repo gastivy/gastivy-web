@@ -16,4 +16,9 @@ export const TransactionServices = {
     httpService
       .post("/finance-app/transactions", payload)
       .then((res) => res.data),
+
+  delete: (transactionId: string) =>
+    httpService
+      .delete(`/finance-app/transactions/${transactionId}`)
+      .then((res) => res.data),
 };

@@ -8,7 +8,7 @@ import { useGetActivity } from "@/modules/activityApp/activity/hooks/useActivity
 import { LogActivity } from "@/modules/activityApp/activity/models";
 import { dateTime } from "@/utils/dateTime";
 
-import { ConfirmDeleteDrawer } from "./components/ConfirmDeleteModal";
+import { ConfirmDeleteModal } from "./components/ConfirmDeleteModal";
 import { FormLogActivity } from "./components/FormLogActivity";
 import { OptionsLogActivity } from "./components/OptionsLogActivity";
 
@@ -58,7 +58,7 @@ const ActivityContainer = () => {
       />
 
       {/* Modal Confirm Delete */}
-      <ConfirmDeleteDrawer
+      <ConfirmDeleteModal
         isVisible={confirmDeleteModal.isOpen}
         logActivity={activitySelected}
         onClose={confirmDeleteModal.onClose}
