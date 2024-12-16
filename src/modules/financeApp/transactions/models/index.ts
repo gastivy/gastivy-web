@@ -1,6 +1,7 @@
 import { HttpResponse } from "@/types/HttpResponse";
 
 export type TransactionsResponse = HttpResponse<Transactions[]>;
+export type DetailTransactionsResponse = HttpResponse<DetailTransaction>;
 
 interface TransactionRequest {
   category_id: string;
@@ -17,6 +18,8 @@ export interface CreateTransactionRequest {
   transactions: TransactionRequest[];
 }
 
+export interface UpdateTransactionRequest extends TransactionRequest {}
+
 export interface Transactions {
   id: string;
   category_id: string;
@@ -28,6 +31,20 @@ export interface Transactions {
   from_wallet_name: string | null;
   to_wallet_name: string | null;
   type: 1 | 2 | 3;
+}
+
+export interface DetailTransaction {
+  id: string;
+  category_id: string;
+  category_name: string;
+  name: string;
+  description: string | null;
+  money: number;
+  date: Date;
+  from_wallet: string | null;
+  to_wallet: string | null;
+  type: 1 | 2 | 3;
+  fee?: number;
 }
 
 export interface GetTransactionRequest {

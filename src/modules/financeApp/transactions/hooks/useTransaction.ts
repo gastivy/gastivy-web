@@ -8,8 +8,10 @@ import { AxiosError } from "axios";
 
 import {
   CreateTransactionRequest,
+  DetailTransactionsResponse,
   GetTransactionRequest,
   TransactionsResponse,
+  UpdateTransactionRequest,
 } from "../models";
 import { TransactionServices } from "../services";
 
@@ -31,10 +33,28 @@ export const useGetTransactions = (
     ...options,
   });
 
+export const useGetDetailTransactions = (
+  transactionId: string,
+  options?: UseQueryOptions<DetailTransactionsResponse>
+) =>
+  useQuery({
+    queryKey: ["detail-transaction"],
+    queryFn: () => TransactionServices.getDetail(transactionId),
+    ...options,
+  });
+
 export const useDeleteTransaction = (
   options?: UseMutationOptions<void, AxiosError, string>
 ) =>
   useMutation({
     mutationFn: (transactionId) => TransactionServices.delete(transactionId),
+    ...options,
+  });
+
+export const useUpdateTransactions = (
+  options?: UseMutationOptions<void, AxiosError, UpdateTransactionRequest>
+) =>
+  useMutation({
+    mutationFn: (data) => TransactionServices.update(data),
     ...options,
   });

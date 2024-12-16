@@ -11,10 +11,12 @@ import { dateTime } from "@/utils/dateTime";
 import { AddTransactionsDrawer } from "./components/AddTransactionDrawer";
 import { ConfirmDeleteModal } from "./components/ConfirmDeleteModal";
 import { OptionsLogTransaction } from "./components/OptionsLogTransaction";
+import { UpdateTransactionsDrawer } from "./components/UpdateTransactionDrawer";
 
 const TransactionsFinanceContainer = () => {
   const addTransactionDisclosure = useDisclosure({ open: false });
-  const optionsLogActivity = useDisclosure({ open: false });
+  const updateTransactionDrawer = useDisclosure({ open: false });
+  const optionsLogTransaction = useDisclosure({ open: false });
   const confirmDeleteModal = useDisclosure({ open: false });
   const [transactionSelected, setTransactionSelected] = useState<
     Transactions | undefined
@@ -43,17 +45,17 @@ const TransactionsFinanceContainer = () => {
 
   const handleClickTransaction = (transaction: Transactions) => {
     setTransactionSelected(transaction);
-    optionsLogActivity.onOpen();
+    optionsLogTransaction.onOpen();
   };
 
   return (
     <Layout _flex={{ paddingBottom: "5.5rem" }}>
       {/* Drawer Options Log Activity */}
       <OptionsLogTransaction
-        isVisible={optionsLogActivity.isOpen}
+        isVisible={optionsLogTransaction.isOpen}
         onConfirmDelete={confirmDeleteModal.onOpen}
-        onClose={optionsLogActivity.onClose}
-        // onUpdateActivity={updateLogActivtyDrawer.onOpen}
+        onClose={optionsLogTransaction.onClose}
+        onUpdate={updateTransactionDrawer.onOpen}
       />
 
       {/* Modal Confirm Delete */}
@@ -67,6 +69,13 @@ const TransactionsFinanceContainer = () => {
       <AddTransactionsDrawer
         isVisible={addTransactionDisclosure.isOpen}
         onBack={addTransactionDisclosure.onClose}
+      />
+
+      {/* Update Transactions Drawer */}
+      <UpdateTransactionsDrawer
+        transactionId={transactionSelected?.id}
+        isVisible={updateTransactionDrawer.isOpen}
+        onBack={updateTransactionDrawer.onClose}
       />
 
       <Navbar title="Transactions">

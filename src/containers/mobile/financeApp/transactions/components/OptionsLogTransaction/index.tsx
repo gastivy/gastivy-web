@@ -4,14 +4,14 @@ interface Props {
   isVisible: boolean;
   onClose: () => void;
   onConfirmDelete: () => void;
-  // onUpdateActivity: () => void;
+  onUpdate: () => void;
 }
 
 export const OptionsLogTransaction: React.FC<Props> = ({
   isVisible,
   onClose,
   onConfirmDelete,
-  // onUpdateActivity,
+  onUpdate,
 }) => {
   const options = [
     {
@@ -19,7 +19,7 @@ export const OptionsLogTransaction: React.FC<Props> = ({
       key: "edit",
       onClick: () => {
         onClose();
-        // onUpdateActivity();
+        onUpdate();
       },
     },
     {

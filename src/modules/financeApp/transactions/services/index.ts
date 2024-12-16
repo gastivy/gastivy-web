@@ -2,14 +2,23 @@ import { httpService } from "@/utils/httpService";
 
 import {
   CreateTransactionRequest,
+  DetailTransactionsResponse,
   GetTransactionRequest,
   TransactionsResponse,
+  UpdateTransactionRequest,
 } from "../models";
 
 export const TransactionServices = {
   get: (params?: GetTransactionRequest) =>
     httpService
       .get<TransactionsResponse>("/finance-app/transactions", { params })
+      .then((res) => res.data),
+
+  getDetail: (transactionId: string) =>
+    httpService
+      .get<DetailTransactionsResponse>(
+        `/finance-app/transactions/${transactionId}`
+      )
       .then((res) => res.data),
 
   create: (payload: CreateTransactionRequest) =>
@@ -20,5 +29,10 @@ export const TransactionServices = {
   delete: (transactionId: string) =>
     httpService
       .delete(`/finance-app/transactions/${transactionId}`)
+      .then((res) => res.data),
+
+  update: (payload: UpdateTransactionRequest) =>
+    httpService
+      .patch(`/finance-app/transactions`, payload)
       .then((res) => res.data),
 };
