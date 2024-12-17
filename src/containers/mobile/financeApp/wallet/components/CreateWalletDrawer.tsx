@@ -1,11 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button, Drawer, Flex, Input, Text } from "astarva-ui";
+import { Button, Drawer, Flex, Input, Select, Text } from "astarva-ui";
 import React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { Loading } from "@/components/base/Loading";
 import { Navbar } from "@/components/mobile/Navbar";
+import { typeWalletOptions } from "@/constants/wallets";
 import { useCreateWallet } from "@/modules/financeApp/wallet/hooks/useWallet";
 import { CreateWalletRequest } from "@/modules/financeApp/wallet/models";
 import { schemaWallet } from "@/modules/financeApp/wallet/schema";
@@ -64,10 +65,9 @@ export const CreateWalletDrawer: React.FC<Props> = ({ isVisible, onBack }) => {
         paddingTop="5rem"
       >
         <Input
-          size="small"
-          placeholder="Input Name Wallet"
+          label="Wallet Name"
+          placeholder="Input Wallet Name"
           autoComplete="off"
-          _label={{ variant: "small" }}
           isError={Boolean(errors.name?.message)}
           error={errors.name?.message}
           {...register(`name`)}
@@ -79,8 +79,8 @@ export const CreateWalletDrawer: React.FC<Props> = ({ isVisible, onBack }) => {
           rules={{ required: "Money is Required" }}
           render={({ field }) => (
             <Input.Number
+              label="Balance"
               value={String(field.value || 0)}
-              size="small"
               prefix={
                 <Text variant="extra-small" weight="medium">
                   Rp.
@@ -90,6 +90,21 @@ export const CreateWalletDrawer: React.FC<Props> = ({ isVisible, onBack }) => {
               error={errors.balance?.message}
               placeholder="Input Money"
               onChange={(value) => field.onChange(value)}
+            />
+          )}
+        />
+
+        <Controller
+          name="type"
+          control={control}
+          rules={{ required: "Type is Required" }}
+          render={({ field }) => (
+            <Select
+              label="Type Wallet"
+              value={field.value}
+              size="small"
+              options={typeWalletOptions}
+              onSelect={(option) => field.onChange(option.value)}
             />
           )}
         />

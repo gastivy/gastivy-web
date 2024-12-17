@@ -113,20 +113,13 @@ export const UpdateTransactionsDrawer: React.FC<Props> = ({
   };
 
   const handleUpdate: SubmitHandler<UpdateTransactionRequest> = (form) => {
-    const formDate = new Date(form.date);
-    const today = new Date();
-    const hours = today.getHours();
-    const minutes = today.getMinutes();
-    const seconds = today.getSeconds();
-    formDate.setHours(hours, minutes, seconds);
-
     const payload = {
       id: transactionId,
       category_id: form.category_id,
       name: form.name,
       description: form.description,
       money: form.money,
-      date: formDate,
+      date: form.date,
       ...(form.fee && {
         fee: form.fee,
       }),

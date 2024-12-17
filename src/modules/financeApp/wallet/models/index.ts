@@ -8,6 +8,13 @@ export interface CreateWalletRequest {
   balance: number;
 }
 
+export enum WalletsType {
+  CASH = 1,
+  ATM = 2,
+  E_MONEY = 3,
+  ASSETS = 4,
+}
+
 export interface Wallet {
   id: string;
   user_id: string;
