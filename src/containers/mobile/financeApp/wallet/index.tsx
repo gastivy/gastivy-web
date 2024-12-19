@@ -1,23 +1,45 @@
-import { Colors, Flex, Icon, Text, useDisclosure } from "astarva-ui";
+import { Colors, Flex, Icon, Skeleton, Text, useDisclosure } from "astarva-ui";
+import { useState } from "react";
 
+import { Loading } from "@/components/base/Loading";
 import Layout from "@/components/mobile/Layout";
 import { Navbar } from "@/components/mobile/Navbar";
 import { useGetWallet } from "@/modules/financeApp/wallet/hooks/useWallet";
 import { formatter } from "@/utils/formatter";
 
 import { CreateWalletDrawer } from "./components/CreateWalletDrawer";
+import { UpdateWalletDrawer } from "./components/UpdateWalletDrawer";
 
 const WalletContainer = () => {
   const createWalletDisclosure = useDisclosure({ open: false });
-  const { data } = useGetWallet();
+  const updateWalletDisclosure = useDisclosure({ open: false });
+  const [walletId, setWalletId] = useState("");
+  const { data, isRefetching, isLoading } = useGetWallet();
 
   const walletData = data?.data || [];
+
+  const handleSelect = (id?: string) => {
+    if (id) {
+      setWalletId(id);
+      updateWalletDisclosure.onOpen();
+    }
+  };
+
   return (
     <Layout _flex={{ paddingBottom: "5.5rem" }}>
-      {/* Add Transactions Drawer */}
+      {isRefetching && <Loading />}
+
+      {/* Add Wallet Drawer */}
       <CreateWalletDrawer
         isVisible={createWalletDisclosure.isOpen}
         onBack={createWalletDisclosure.onClose}
+      />
+
+      {/* Update Wallet */}
+      <UpdateWalletDrawer
+        walletId={walletId}
+        isVisible={updateWalletDisclosure.isOpen}
+        onBack={updateWalletDisclosure.onClose}
       />
 
       <Navbar title="Wallet">
@@ -37,40 +59,55 @@ const WalletContainer = () => {
         </Navbar.Suffix>
       </Navbar>
 
-      <Flex flexDirection="column" gap=".75rem" padding="5rem 0">
-        {walletData.map((data, index) => {
-          return (
-            <Flex
-              key={index}
-              backgroundColor="white"
-              boxShadow="0 .125rem .75rem 0 rgba(50, 132, 255, 0.1)"
-              padding=".625rem"
-              borderRadius=".625rem"
-              alignItems="center"
-              gap="1rem"
-              border={`.0625rem solid ${Colors.black50}`}
-            >
+      <Flex flexDirection="column" gap=".75rem" padding="5rem 0 0">
+        {isLoading ? (
+          <LoadingSkeleton />
+        ) : (
+          walletData.map((data, index) => {
+            return (
               <Flex
-                justifyContent="center"
+                key={index}
+                backgroundColor="white"
+                boxShadow="0 .125rem .375rem 0 rgba(50, 132, 255, 0.1)"
+                padding=".625rem"
+                borderRadius=".625rem"
                 alignItems="center"
-                backgroundColor="blue50"
-                padding=".75rem"
-                borderRadius=".5rem"
+                gap="1rem"
+                border={`.0625rem solid ${Colors.black50}`}
+                onClick={() => handleSelect(data.id)}
               >
-                <Icon name="Wallet-outline" size="1.75rem" color="blue400" />
+                <Flex
+                  justifyContent="center"
+                  alignItems="center"
+                  backgroundColor="blue50"
+                  padding=".75rem"
+                  borderRadius=".5rem"
+                >
+                  <Icon name="Wallet-outline" size="1.75rem" color="blue400" />
+                </Flex>
+                <Flex flexDirection="column">
+                  <Text variant="medium">{data.name}</Text>
+                  <Text variant="small" color="black400">
+                    {formatter.currency(data.balance)}
+                  </Text>
+                </Flex>
               </Flex>
-              <Flex flexDirection="column">
-                <Text variant="medium">{data.name}</Text>
-                <Text variant="small" color="black400">
-                  {formatter.currency(data.balance)}
-                </Text>
-              </Flex>
-            </Flex>
-          );
-        })}
+            );
+          })
+        )}
       </Flex>
     </Layout>
   );
 };
+
+function LoadingSkeleton() {
+  return (
+    <Flex flexDirection="column" gap="1rem">
+      {Array.from({ length: 8 }).map((_, index: number) => (
+        <Skeleton height="5rem" key={index} />
+      ))}
+    </Flex>
+  );
+}
 
 export default WalletContainer;

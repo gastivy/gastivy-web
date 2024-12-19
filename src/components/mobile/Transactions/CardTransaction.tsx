@@ -15,7 +15,7 @@ export const CardTransaction: React.FC<CardTransactionProps> = ({
   onClick,
 }) => {
   const getValueTransaction = (type: TypesTransactions, value?: number) => {
-    if (type === TypesTransactions.INCOME) {
+    if ([TypesTransactions.INCOME, TypesTransactions.PROFIT].includes(type)) {
       return {
         color: "green400" as colorIndex,
         money: `+${formatter.currency(value)}`,
@@ -23,9 +23,11 @@ export const CardTransaction: React.FC<CardTransactionProps> = ({
     }
 
     if (
-      [TypesTransactions.EXPENSES, TypesTransactions.FEE_TRANSFER].includes(
-        type
-      )
+      [
+        TypesTransactions.EXPENSES,
+        TypesTransactions.FEE_TRANSFER,
+        TypesTransactions.LOSS,
+      ].includes(type)
     ) {
       return {
         color: "red400",
@@ -55,15 +57,19 @@ export const CardTransaction: React.FC<CardTransactionProps> = ({
           {transaction.category_name}
         </Text>
 
-        {TypesTransactions.INCOME === transaction.type && (
+        {[TypesTransactions.INCOME, TypesTransactions.PROFIT].includes(
+          transaction.type
+        ) && (
           <Text variant="extra-small" color="blue400" marginTop=".25rem">
             {transaction.to_wallet_name}
           </Text>
         )}
 
-        {[TypesTransactions.EXPENSES, TypesTransactions.FEE_TRANSFER].includes(
-          transaction.type
-        ) && (
+        {[
+          TypesTransactions.EXPENSES,
+          TypesTransactions.FEE_TRANSFER,
+          TypesTransactions.LOSS,
+        ].includes(transaction.type) && (
           <Text variant="extra-small" color="blue400" marginTop=".25rem">
             {transaction.from_wallet_name}
           </Text>

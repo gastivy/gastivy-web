@@ -1,24 +1,40 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button, Drawer, Flex, Input, Select, Text } from "astarva-ui";
-import React from "react";
+import React, { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { Loading } from "@/components/base/Loading";
 import { Navbar } from "@/components/mobile/Navbar";
 import { typeWalletOptions } from "@/constants/wallets";
-import { useCreateWallet } from "@/modules/financeApp/wallet/hooks/useWallet";
-import { CreateWalletRequest } from "@/modules/financeApp/wallet/models";
+import {
+  useGetDetailWallet,
+  useUpdateWallet,
+} from "@/modules/financeApp/wallet/hooks/useWallet";
+import {
+  UpdateWalletRequest,
+  WalletsType,
+} from "@/modules/financeApp/wallet/models";
 import { schemaWallet } from "@/modules/financeApp/wallet/schema";
 
 interface Props {
   isVisible: boolean;
+  walletId: string;
   onBack: () => void;
 }
 
-export const CreateWalletDrawer: React.FC<Props> = ({ isVisible, onBack }) => {
+export const UpdateWalletDrawer: React.FC<Props> = ({
+  isVisible,
+  walletId,
+  onBack,
+}) => {
   const queryClient = useQueryClient();
-  const { mutate, isPending } = useCreateWallet({
+  const { data } = useGetDetailWallet(walletId, {
+    enabled: Boolean(walletId) && isVisible,
+    queryKey: ["wallet-detail"],
+  });
+
+  const { mutate, isPending } = useUpdateWallet({
     onSuccess: () => {
       reset();
       onBack();
@@ -30,28 +46,40 @@ export const CreateWalletDrawer: React.FC<Props> = ({ isVisible, onBack }) => {
     handleSubmit,
     register,
     reset,
+    setValue,
+    watch,
     control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schemaWallet),
   });
 
-  const handleSave: SubmitHandler<CreateWalletRequest> = (form) => {
-    mutate(form);
+  const fields = watch();
+
+  const handleSave: SubmitHandler<UpdateWalletRequest> = (form) => {
+    mutate({ ...form, id: data?.data?.id });
   };
+
+  useEffect(() => {
+    if (data?.data) {
+      setValue("name", data?.data.name);
+      setValue("balance", data?.data.balance);
+      setValue("type", data?.data.type);
+    }
+  }, [data?.data]);
 
   if (isPending) return <Loading />;
 
   return (
     <Drawer isFullHeight padding="0" gap="1rem" isVisible={isVisible}>
-      <Navbar title="Create Wallet" onBack={onBack}>
+      <Navbar title="Update Wallet" onBack={onBack}>
         <Navbar.Suffix>
           <Button
             size="small"
             shape="rounded"
             onClick={handleSubmit(handleSave)}
           >
-            Save
+            Update
           </Button>
         </Navbar.Suffix>
       </Navbar>
@@ -80,6 +108,7 @@ export const CreateWalletDrawer: React.FC<Props> = ({ isVisible, onBack }) => {
           render={({ field }) => (
             <Input.Number
               label="Balance"
+              disabled={fields.type !== WalletsType.ASSETS}
               value={String(field.value || 0)}
               prefix={
                 <Text variant="extra-small" weight="medium">

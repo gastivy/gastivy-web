@@ -3,6 +3,8 @@ import { httpService } from "@/utils/httpService";
 import {
   BalanceResponse,
   CreateWalletRequest,
+  UpdateWalletRequest,
+  WalletDetailResponse,
   WalletResponse,
 } from "../models";
 
@@ -17,6 +19,14 @@ export const WalletServices = {
       .get<BalanceResponse>("/finance-app/wallet/balance")
       .then((res) => res.data),
 
+  getDetail: (walletId: string) =>
+    httpService
+      .get<WalletDetailResponse>(`/finance-app/wallet/${walletId}`)
+      .then((res) => res.data),
+
   create: (payload: CreateWalletRequest) =>
     httpService.post("/finance-app/wallet", payload).then((res) => res.data),
+
+  update: (payload: UpdateWalletRequest) =>
+    httpService.patch("/finance-app/wallet", payload).then((res) => res.data),
 };
