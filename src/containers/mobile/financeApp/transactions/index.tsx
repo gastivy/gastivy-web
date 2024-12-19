@@ -1,6 +1,7 @@
-import { Flex, Icon, Text, useDisclosure } from "astarva-ui";
+import { Flex, Icon, Skeleton, Text, useDisclosure } from "astarva-ui";
 import { useState } from "react";
 
+import { Loading } from "@/components/base/Loading";
 import Layout from "@/components/mobile/Layout";
 import { Navbar } from "@/components/mobile/Navbar";
 import { CardTransaction } from "@/components/mobile/Transactions/CardTransaction";
@@ -21,7 +22,7 @@ const TransactionsFinanceContainer = () => {
   const [transactionSelected, setTransactionSelected] = useState<
     Transactions | undefined
   >(undefined);
-  const { data } = useGetTransactions();
+  const { isLoading, isRefetching, data, refetch } = useGetTransactions();
 
   const getLogTransaction = () => {
     const grouped: { [key: string]: Transactions[] } = {};
@@ -50,6 +51,8 @@ const TransactionsFinanceContainer = () => {
 
   return (
     <Layout _flex={{ paddingBottom: "5.5rem" }}>
+      {isRefetching && <Loading />}
+
       {/* Drawer Options Log Activity */}
       <OptionsLogTransaction
         isVisible={optionsLogTransaction.isOpen}
@@ -68,6 +71,7 @@ const TransactionsFinanceContainer = () => {
       {/* Add Transactions Drawer */}
       <AddTransactionsDrawer
         isVisible={addTransactionDisclosure.isOpen}
+        onRefetch={refetch}
         onBack={addTransactionDisclosure.onClose}
       />
 
@@ -96,32 +100,46 @@ const TransactionsFinanceContainer = () => {
       </Navbar>
 
       <Flex flexDirection="column" paddingTop="5rem" gap="2rem">
-        {getLogTransaction().map((item, index) => {
-          return (
-            <Flex flexDirection="column" key={index} gap=".75rem">
-              <Text variant="small" color="black700">
-                {dateTime.getDate(new Date(item.key), "en-GB", {
-                  dateStyle: "long",
-                })}
-              </Text>
+        {isLoading ? (
+          <LoadingSkeleton />
+        ) : (
+          getLogTransaction().map((item, index) => {
+            return (
+              <Flex flexDirection="column" key={index} gap=".75rem">
+                <Text variant="small" color="black700">
+                  {dateTime.getDate(new Date(item.key), "en-GB", {
+                    dateStyle: "long",
+                  })}
+                </Text>
 
-              <Flex flexDirection="column" gap=".5rem">
-                {item.log.map((transaction, indexTransaction) => {
-                  return (
-                    <CardTransaction
-                      transaction={transaction}
-                      key={indexTransaction}
-                      onClick={() => handleClickTransaction(transaction)}
-                    />
-                  );
-                })}
+                <Flex flexDirection="column" gap=".5rem">
+                  {item.log.map((transaction, indexTransaction) => {
+                    return (
+                      <CardTransaction
+                        transaction={transaction}
+                        key={indexTransaction}
+                        onClick={() => handleClickTransaction(transaction)}
+                      />
+                    );
+                  })}
+                </Flex>
               </Flex>
-            </Flex>
-          );
-        })}
+            );
+          })
+        )}
       </Flex>
     </Layout>
   );
 };
+
+function LoadingSkeleton() {
+  return (
+    <Flex flexDirection="column" gap="1rem">
+      {Array.from({ length: 8 }).map((_, index: number) => (
+        <Skeleton height="5.625rem" key={index} />
+      ))}
+    </Flex>
+  );
+}
 
 export default TransactionsFinanceContainer;

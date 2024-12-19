@@ -36,6 +36,7 @@ import { formatter } from "@/utils/formatter";
 interface Props {
   isVisible: boolean;
   typeTransaction?: TypesTransactions;
+  onRefetch?: () => void;
   onBack: () => void;
 }
 
@@ -43,6 +44,7 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
   isVisible,
   typeTransaction = 0,
   onBack,
+  onRefetch,
 }) => {
   const queryClient = useQueryClient();
   const { data } = useGetCategoryTransaction();
@@ -53,6 +55,7 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
       onBack();
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["balance"] });
+      onRefetch?.();
     },
   });
 
