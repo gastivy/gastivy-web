@@ -8,6 +8,11 @@ export enum Day {
   Saturday = 6,
 }
 
+export interface RangeDate {
+  start_date: string;
+  end_date: string;
+}
+
 export const dateTime = {
   formatDate(date: Date) {
     return new Intl.DateTimeFormat("en-CA", {
@@ -17,7 +22,7 @@ export const dateTime = {
     }).format(date);
   },
 
-  getRangeDaily(): { start_date: string; end_date: string } {
+  getRangeDaily(): RangeDate {
     const today = new Date();
 
     return {
@@ -39,7 +44,7 @@ export const dateTime = {
    *
    * @returns
    */
-  getRangeWeekly(startDay: Day = 5): { start_date: string; end_date: string } {
+  getRangeWeekly(startDay: Day = 5): RangeDate {
     const today = new Date();
 
     /**
@@ -100,10 +105,7 @@ export const dateTime = {
    * @param year
    * @returns
    */
-  getRangeThisYear(year = new Date().getFullYear()): {
-    start_date: string;
-    end_date: string;
-  } {
+  getRangeThisYear(year = new Date().getFullYear()): RangeDate {
     const firstDate = new Date(year, 0, 1);
     const lastDate = new Date(year, 12, 0);
 

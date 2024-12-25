@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 
 import { TypesTransactions } from "@/modules/financeApp/category/models";
 import { useSummaryCategoryTransactions } from "@/modules/financeApp/statistics/hooks/useStatisticsFinance";
-import { dateTime } from "@/utils/dateTime";
+import { dateTime, RangeDate } from "@/utils/dateTime";
 import { formatter } from "@/utils/formatter";
 
-import { RangeDate, Tabs } from "../Tabs";
+import { Tabs } from "../Tabs";
 import { BarChart } from "./BarChart";
 import PieChart from "./PieChart";
 

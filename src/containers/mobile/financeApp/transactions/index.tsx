@@ -1,5 +1,13 @@
-import { Flex, Icon, Skeleton, Text, useDisclosure } from "astarva-ui";
-import { useState } from "react";
+import {
+  Flex,
+  Icon,
+  ScrollBar,
+  Select,
+  Skeleton,
+  Text,
+  useDisclosure,
+} from "astarva-ui";
+import { useEffect, useState } from "react";
 
 import { Loading } from "@/components/base/Loading";
 import Layout from "@/components/mobile/Layout";
@@ -7,8 +15,9 @@ import { Navbar } from "@/components/mobile/Navbar";
 import { CardTransaction } from "@/components/mobile/Transactions/CardTransaction";
 import { useGetTransactions } from "@/modules/financeApp/transactions/hooks/useTransaction";
 import { Transactions } from "@/modules/financeApp/transactions/models";
-import { dateTime } from "@/utils/dateTime";
+import { dateTime, RangeDate } from "@/utils/dateTime";
 
+import { Tabs } from "../statistics/components/Tabs";
 import { AddTransactionsDrawer } from "./components/AddTransactionDrawer";
 import { ConfirmDeleteModal } from "./components/ConfirmDeleteModal";
 import { OptionsLogTransaction } from "./components/OptionsLogTransaction";
@@ -22,7 +31,25 @@ const TransactionsFinanceContainer = () => {
   const [transactionSelected, setTransactionSelected] = useState<
     Transactions | undefined
   >(undefined);
-  const { isLoading, isRefetching, data, refetch } = useGetTransactions();
+
+  const [currentRange, setCurrentRange] = useState<RangeDate>();
+  const [currentYear, setCurrentYear] = useState<number>(
+    new Date().getFullYear()
+  );
+  const yearList = dateTime
+    .generateYears(2020)
+    .map((year) => ({ label: String(year), value: year }));
+  const monthList = dateTime.generateMonths(currentYear);
+
+  const { isLoading, isRefetching, data, refetch } = useGetTransactions(
+    {
+      ...currentRange,
+    },
+    {
+      enabled: Boolean(currentRange),
+      queryKey: ["transactions", currentRange],
+    }
+  );
 
   const getLogTransaction = () => {
     const grouped: { [key: string]: Transactions[] } = {};
@@ -48,6 +75,11 @@ const TransactionsFinanceContainer = () => {
     setTransactionSelected(transaction);
     optionsLogTransaction.onOpen();
   };
+
+  useEffect(() => {
+    const thisMonth = monthList[new Date().getMonth()];
+    setCurrentRange(thisMonth.value);
+  }, [currentYear]);
 
   return (
     <Layout _flex={{ paddingBottom: "5.5rem" }}>
@@ -100,33 +132,59 @@ const TransactionsFinanceContainer = () => {
       </Navbar>
 
       <Flex flexDirection="column" paddingTop="5rem" gap="2rem">
-        {isLoading ? (
-          <LoadingSkeleton />
-        ) : (
-          getLogTransaction().map((item, index) => {
-            return (
-              <Flex flexDirection="column" key={index} gap=".75rem">
-                <Text variant="small" color="black700">
-                  {dateTime.getDate(new Date(item.key), "en-GB", {
-                    dateStyle: "long",
-                  })}
-                </Text>
-
-                <Flex flexDirection="column" gap=".5rem">
-                  {item.log.map((transaction, indexTransaction) => {
-                    return (
-                      <CardTransaction
-                        transaction={transaction}
-                        key={indexTransaction}
-                        onClick={() => handleClickTransaction(transaction)}
-                      />
-                    );
-                  })}
-                </Flex>
-              </Flex>
-            );
-          })
+        <Select
+          value={currentYear}
+          size="small"
+          options={yearList}
+          onSelect={(option) => setCurrentYear(Number(option.value))}
+        />
+        {currentRange && (
+          <Tabs
+            currentTab={currentRange}
+            listTab={monthList}
+            onSetCurrentTab={(val) => {
+              console.log(val);
+              setCurrentRange(val);
+            }}
+          />
         )}
+
+        <ScrollBar
+          flexDirection="column"
+          overflowY="auto"
+          hideScroll
+          gap="2rem"
+          maxHeight="calc(100vh - 20rem)"
+          paddingX=".25rem"
+        >
+          {isLoading ? (
+            <LoadingSkeleton />
+          ) : (
+            getLogTransaction().map((item, index) => {
+              return (
+                <Flex flexDirection="column" key={index} gap=".75rem">
+                  <Text variant="small" color="black700">
+                    {dateTime.getDate(new Date(item.key), "en-GB", {
+                      dateStyle: "long",
+                    })}
+                  </Text>
+
+                  <Flex flexDirection="column" gap=".5rem">
+                    {item.log.map((transaction, indexTransaction) => {
+                      return (
+                        <CardTransaction
+                          transaction={transaction}
+                          key={indexTransaction}
+                          onClick={() => handleClickTransaction(transaction)}
+                        />
+                      );
+                    })}
+                  </Flex>
+                </Flex>
+              );
+            })
+          )}
+        </ScrollBar>
       </Flex>
     </Layout>
   );

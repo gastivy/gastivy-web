@@ -49,4 +49,6 @@ export interface DetailTransaction {
 
 export interface GetTransactionRequest {
   limit?: number;
+  start_date?: string;
+  end_date?: string;
 }

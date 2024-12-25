@@ -1,12 +1,8 @@
 import { Flex, ScrollBar, Text } from "astarva-ui";
 import { useEffect, useRef } from "react";
 
+import { RangeDate } from "@/utils/dateTime";
 import { lodash } from "@/utils/lodash";
-
-export interface RangeDate {
-  start_date: string;
-  end_date: string;
-}
 
 interface ListTabs {
   label: string;
