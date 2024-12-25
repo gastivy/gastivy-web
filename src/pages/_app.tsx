@@ -2,11 +2,31 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Flex } from "astarva-ui";
+import {
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from "chart.js";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 
 import usePageRender from "@/hooks/usePageRender";
 import { GlobalStyle } from "@/styles/global-styled";
+
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  LinearScale
+);
 
 export default function App({ Component, pageProps }: AppProps) {
   const { isReadyMounted } = usePageRender();

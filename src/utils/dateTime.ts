@@ -26,6 +26,19 @@ export const dateTime = {
     };
   },
 
+  /**
+   *
+   * @param startDay
+   * Sunday: 0
+   * Monday: 1
+   * Tuesday: 2
+   * Wednesday: 3
+   * Thursday: 4
+   * Friday: 5
+   * Saturday: 6
+   *
+   * @returns
+   */
   getRangeWeekly(startDay: Day = 5): { start_date: string; end_date: string } {
     const today = new Date();
 
@@ -58,6 +71,13 @@ export const dateTime = {
     };
   },
 
+  /**
+   *
+   * @param year
+   * @param month
+   * month: 1 - 12
+   * @returns
+   */
   getRangeThisMonth(
     year = new Date().getFullYear(),
     month = new Date().getMonth() + 1
@@ -75,6 +95,11 @@ export const dateTime = {
     };
   },
 
+  /**
+   *
+   * @param year
+   * @returns
+   */
   getRangeThisYear(year = new Date().getFullYear()): {
     start_date: string;
     end_date: string;
@@ -88,6 +113,13 @@ export const dateTime = {
     };
   },
 
+  /**
+   *
+   * @param value
+   * @param locale
+   * @param options
+   * @returns
+   */
   getDate(value?: Date, locale = "id", options?: Intl.DateTimeFormatOptions) {
     const dates = new Intl.DateTimeFormat(locale, {
       dateStyle: "medium",
@@ -96,6 +128,11 @@ export const dateTime = {
     return dates;
   },
 
+  /**
+   *
+   * @param utcDateString
+   * @returns
+   */
   formatTimeFromUTC(utcDateString: string): string {
     const date = new Date(utcDateString);
 
@@ -109,6 +146,11 @@ export const dateTime = {
     return `${time[0]}:${time[1]}`;
   },
 
+  /**
+   *
+   * @param utcDateString
+   * @returns
+   */
   convertToLocalTime(utcDateString: string): string {
     const utcDate = new Date(utcDateString);
 
@@ -141,5 +183,41 @@ export const dateTime = {
     if (!hours && !minutes) return `${seconds}s`;
     if (!hours) return `${minutes}m ${seconds}s`;
     return `${hours}h ${minutes}m ${seconds}s`;
+  },
+
+  /**
+   *
+   * @param startYear
+   * @param endYear
+   * @returns
+   *
+   */
+  generateYears(startYear: number, endYear = new Date().getFullYear()) {
+    return Array.from(
+      { length: endYear - startYear + 1 },
+      (_, i) => startYear + i
+    );
+  },
+
+  generateMonths(year = new Date().getFullYear()) {
+    return [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ].map((month, index) => {
+      return {
+        label: month,
+        value: this.getRangeThisMonth(year, index + 1),
+      };
+    });
   },
 };

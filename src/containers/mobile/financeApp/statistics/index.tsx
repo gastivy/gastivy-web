@@ -1,11 +1,14 @@
-import { Text } from "astarva-ui";
-
 import Layout from "@/components/mobile/Layout";
+import { Navbar } from "@/components/mobile/Navbar";
+
+import { SummaryTransactions } from "./components/SummaryTransactions";
 
 const StatisticsFinanceContainer = () => {
   return (
     <Layout _flex={{ paddingBottom: "5.5rem" }}>
-      <Text>Statistics Finance</Text>
+      <Navbar title="Statistics" />
+
+      <SummaryTransactions />
     </Layout>
   );
 };
