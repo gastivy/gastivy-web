@@ -9,6 +9,7 @@ import {
 import { useRouter } from "next/router";
 import { useRef } from "react";
 
+import { KEY_ACCESS_TOKEN } from "@/constants/cookies";
 import { route } from "@/constants/route";
 import { cookies } from "@/utils/cookies";
 
@@ -17,7 +18,7 @@ export const Profile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure({ open: false });
 
   const handleLogout = () => {
-    cookies.deleteCookie("GSTID");
+    cookies.deleteCookie(KEY_ACCESS_TOKEN);
     router.push("/login");
   };
 

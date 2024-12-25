@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import { KEY_ACCESS_TOKEN } from "@/constants/cookies";
+
 import { cookies } from "./cookies";
 
 export const httpService = axios.create({
@@ -12,7 +14,7 @@ export const httpService = axios.create({
 
 httpService.interceptors.request.use(
   (config) => {
-    const token = cookies.getCookie("GSTID");
+    const token = cookies.getCookie(KEY_ACCESS_TOKEN);
 
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
@@ -39,7 +41,7 @@ httpService.interceptors.response.use(
 
       // Redirect to login page if not authenticated
       if (windowObj) {
-        cookies.deleteCookie("GSTID");
+        cookies.deleteCookie(KEY_ACCESS_TOKEN);
         windowObj.location.href = `${baseUrl}/login?referrer=${currentUrl}`;
       }
     } else {

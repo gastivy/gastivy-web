@@ -5,6 +5,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 
 import Layout from "@/components/mobile/Layout";
+import { KEY_ACCESS_TOKEN } from "@/constants/cookies";
 import { route } from "@/constants/route";
 import { useLogin } from "@/modules/auth/hooks/useAuth";
 import { LoginRequest } from "@/modules/auth/models/Auth";
@@ -16,7 +17,7 @@ const LoginContainer: React.FC = () => {
   const { isPending, mutate } = useLogin({
     onSuccess: ({ data }) => {
       if (data.token) {
-        cookies.setCookie({ key: "GSTID", value: data.token });
+        cookies.setCookie({ key: KEY_ACCESS_TOKEN, value: data.token });
         router.push(route.activityApp.home.path);
       }
     },
