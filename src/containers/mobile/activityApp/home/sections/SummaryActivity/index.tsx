@@ -64,7 +64,7 @@ export const SummaryActivity: React.FC<SummaryActivityProps> = ({
         gap="1rem"
         maxHeight="27.5rem"
         overflowY="auto"
-        paddingRight=".75rem"
+        padding=".5rem .25rem"
       >
         {isLoading
           ? Array.from({ length: 6 }).map((_, index) => {
@@ -76,11 +76,12 @@ export const SummaryActivity: React.FC<SummaryActivityProps> = ({
               return (
                 <Flex
                   flexDirection="column"
-                  backgroundColor="blue50"
+                  backgroundColor="white"
                   padding=".625rem"
-                  borderRadius=".625rem"
+                  borderRadius=".5rem"
                   key={key}
                   gap=".75rem"
+                  boxShadow="0 .25rem .5rem 0 rgba(50, 132, 255, 0.15)"
                   onClick={() => onSelectCategory({ ...item, minutes, target })}
                 >
                   <Text variant="medium" color="black900">
@@ -101,7 +102,7 @@ export const SummaryActivity: React.FC<SummaryActivityProps> = ({
                     <Progress.Bar
                       width="100%"
                       color="blue400"
-                      backgroundColor="white"
+                      backgroundColor="blue50"
                       withoutLimit
                       textInside={false}
                       height=".75rem"
