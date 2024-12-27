@@ -48,20 +48,37 @@ const CategoryContainer: React.FC = () => {
           : data?.data.map((item, index) => {
               return (
                 <Flex
-                  flexDirection="column"
-                  backgroundColor="blue50"
+                  backgroundColor="white"
                   padding=".625rem"
-                  borderRadius=".625rem"
+                  borderRadius=".5rem"
                   key={index}
                   gap=".625rem"
+                  boxShadow="0 .125rem .375rem 0 rgba(50, 132, 255, 0.15)"
                   onClick={() =>
                     router.push(`${route.activityApp.category.path}/${item.id}`)
                   }
                 >
-                  <Text color="black800" weight="semi-bold">
-                    {item.name}
-                  </Text>
-                  <Text color="black600">{item.target} minutes</Text>
+                  <Flex
+                    justifyContent="center"
+                    alignItems="center"
+                    backgroundColor="blue50"
+                    padding=".75rem"
+                    borderRadius=".5rem"
+                  >
+                    <Icon
+                      name="Activity-outline"
+                      size="1.75rem"
+                      color="blue400"
+                    />
+                  </Flex>
+                  <Flex flexDirection="column">
+                    <Text color="black800" weight="medium">
+                      {item.name}
+                    </Text>
+                    <Text color="black500" variant="small">
+                      {item.target} minutes
+                    </Text>
+                  </Flex>
                 </Flex>
               );
             })}

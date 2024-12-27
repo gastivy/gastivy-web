@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Flex, Input, Skeleton } from "astarva-ui";
+import { Button, Flex, Input, Skeleton, useDisclosure } from "astarva-ui";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -16,8 +16,11 @@ import {
 import { CategoryRequest } from "@/modules/activityApp/category/models";
 import { schemaCategory } from "@/modules/activityApp/category/schema/category";
 
+import { ConfirmDeleteModal } from "./components/ConfirmDeleteModal";
+
 const CategoryDetailContainer: React.FC = () => {
   const { query, push } = useRouter();
+  const confirmDeleteModal = useDisclosure({ open: false });
   const { data, isLoading } = useGetCategoryById(query.categoryId as string);
   const { isPending: isPendingUpdate, mutate } = useUpdateCategory({
     onSuccess: () => {
@@ -26,7 +29,10 @@ const CategoryDetailContainer: React.FC = () => {
   });
   const { isPending: isPendingDelete, mutate: deleteCategory } =
     useDeleteCategory({
-      onSuccess: () => push(route.activityApp.category.path),
+      onSuccess: () => {
+        confirmDeleteModal.onClose();
+        push(route.activityApp.category.path);
+      },
     });
   const { name = "", target = 0 } = data?.data || {};
 
@@ -56,6 +62,14 @@ const CategoryDetailContainer: React.FC = () => {
 
   return (
     <Layout isShowBottomBar={false}>
+      {/* Modal Confirm Delete */}
+      <ConfirmDeleteModal
+        categoryName={name}
+        isVisible={confirmDeleteModal.isOpen}
+        onClose={confirmDeleteModal.onClose}
+        onDelete={handeDelete}
+      />
+
       {(isPendingUpdate || isPendingDelete) && <Loading />}
       <Navbar
         title="Category Detail"
@@ -88,23 +102,23 @@ const CategoryDetailContainer: React.FC = () => {
               {...register("target")}
             />
           </Flex>
-          <Flex gap="1.5rem">
+          <Flex gap=".5rem">
             <Button
               isBlock
-              size="medium"
-              shape="rounded"
-              onClick={handleSubmit(handleSave)}
+              variant="secondary"
+              size="small"
+              shape="semi-round"
+              onClick={confirmDeleteModal.onOpen}
             >
-              Save
+              Delete
             </Button>
             <Button
               isBlock
-              size="medium"
-              backgroundColor="red400"
-              shape="rounded"
-              onClick={handeDelete}
+              size="small"
+              shape="semi-round"
+              onClick={handleSubmit(handleSave)}
             >
-              Delete
+              Save
             </Button>
           </Flex>
         </Flex>
