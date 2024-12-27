@@ -1,8 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Flex, Input, Text } from "astarva-ui";
+import { AxiosError } from "axios";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { Alert } from "@/components/base/Alert";
 import Layout from "@/components/mobile/Layout";
 import { route } from "@/constants/route";
 import { useRegister } from "@/modules/auth/hooks/useAuth";
@@ -11,8 +14,12 @@ import { schemaRegister } from "@/modules/auth/schema/auth";
 
 const RegisterContainer = () => {
   const router = useRouter();
-  const { isPending, mutate } = useRegister({
+  const [errorMessage, setErrorMessage] = useState("");
+  const { isPending, isError, mutate } = useRegister({
     onSuccess: () => router.push(route.login.path),
+    onError: ({ response }) => {
+      setErrorMessage((response?.data as AxiosError).message);
+    },
   });
   const {
     register,
@@ -26,6 +33,10 @@ const RegisterContainer = () => {
     mutate(form);
   };
 
+  const handleCloseAlert = () => {
+    setErrorMessage("");
+  };
+
   return (
     <Layout
       isShowBottomBar={false}
@@ -37,35 +48,46 @@ const RegisterContainer = () => {
         </Text>
       </Flex>
       <Flex flexDirection="column" padding="1.5rem" gap="1rem">
+        {isError && errorMessage && (
+          <Alert
+            message={errorMessage}
+            variant="error"
+            onClose={handleCloseAlert}
+          />
+        )}
+
         <Input
           label="Full name"
+          autoComplete="off"
           {...register("name")}
           isError={Boolean(errors.name?.message)}
           error={errors.name?.message}
         />
         <Input
           label="Email"
-          autoComplete="new-email"
+          autoComplete="off"
           {...register("email")}
           isError={Boolean(errors.email?.message)}
           error={errors.email?.message}
         />
         <Input.Password
           label="Password"
-          {...register("password")}
+          autoComplete="off"
           isError={Boolean(errors.password?.message)}
           error={errors.password?.message}
+          {...register("password")}
         />
-        <Text>{errors.password?.message}</Text>
-        <Button
-          isBlock
-          variant="primary"
-          shape="semi-round"
-          disabled={isPending}
-          onClick={handleSubmit(handleSubmitForm)}
-        >
-          {isPending ? "Loading..." : "Register"}
-        </Button>
+        <Flex marginTop="1.25rem">
+          <Button
+            isBlock
+            variant="primary"
+            shape="semi-round"
+            disabled={isPending}
+            onClick={handleSubmit(handleSubmitForm)}
+          >
+            {isPending ? "Loading..." : "Register"}
+          </Button>
+        </Flex>
       </Flex>
     </Layout>
   );
