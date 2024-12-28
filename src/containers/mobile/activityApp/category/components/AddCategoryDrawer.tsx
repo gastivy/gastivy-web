@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button, Drawer, Flex, Input } from "astarva-ui";
 import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { Loading } from "@/components/base/Loading";
 import { Navbar } from "@/components/mobile/Navbar";
@@ -24,20 +24,32 @@ export const AddCategoryDrawer: React.FC<Props> = ({
   const queryClient = useQueryClient();
   const { isPending, mutate } = useCreateCategory({
     onSuccess: () => {
-      onBack();
       refetch();
+      handleBack();
     },
   });
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
+    control,
   } = useForm({
     resolver: yupResolver(schemaCategory),
+    defaultValues: {
+      name: "",
+      target: 0,
+    },
   });
 
   const handleSave = (form: CategoryRequest) => {
     mutate(form);
+  };
+
+  const handleBack = () => {
+    reset();
+    onBack();
   };
 
   useEffect(() => {
@@ -47,7 +59,7 @@ export const AddCategoryDrawer: React.FC<Props> = ({
   return (
     <Drawer padding="1rem" isFullHeight gap="1.5rem" isVisible={isVisible}>
       {isPending && <Loading />}
-      <Navbar title="Add Category" onBack={onBack} />
+      <Navbar title="Add Category" onBack={handleBack} />
 
       <Flex
         flex={1}
@@ -65,14 +77,21 @@ export const AddCategoryDrawer: React.FC<Props> = ({
           error={errors.name?.message}
           {...register("name")}
         />
-        <Input
-          size="small"
-          label="Target Daily"
-          _label={{ variant: "small" }}
-          placeholder="Input Target Daily"
-          isError={Boolean(errors.target?.message)}
-          error={errors.target?.message}
-          {...register("target")}
+        <Controller
+          name="target"
+          control={control}
+          rules={{ required: "Target Daily is Required" }}
+          render={({ field }) => (
+            <Input.Number
+              label="Target Daily"
+              value={String(field.value || "")}
+              size="small"
+              isError={Boolean(errors.target?.message)}
+              error={errors.target?.message}
+              placeholder="Input Target Daily"
+              onChange={(value) => field.onChange(value)}
+            />
+          )}
         />
       </Flex>
       <Flex padding="1rem">

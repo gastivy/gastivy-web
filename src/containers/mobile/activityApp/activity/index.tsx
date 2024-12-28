@@ -122,7 +122,10 @@ const ActivityContainer = () => {
                         flexDirection="column"
                         justifyContent="space-between"
                         key={index}
+                        boxShadow="0 .25rem .5rem 0 rgba(50, 132, 255, 0.15)"
                         gap=".25rem"
+                        padding=".75rem .625rem"
+                        borderRadius=".375rem"
                         onClick={() =>
                           handleClickActivity({ is_done, ...activity })
                         }

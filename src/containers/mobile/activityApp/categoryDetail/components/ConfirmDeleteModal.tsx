@@ -45,7 +45,6 @@ export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
             shape="semi-round"
             isBlock
             backgroundColor="blue400"
-            backgroundColorHover="red700"
             onClick={onDelete}
           >
             Yes, Delete it!
@@ -56,7 +55,6 @@ export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
             shape="semi-round"
             isBlock
             backgroundColor="blue400"
-            backgroundColorHover="red700"
             onClick={onClose}
           >
             {`No, Don't delete it!`}

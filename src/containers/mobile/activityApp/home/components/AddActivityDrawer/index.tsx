@@ -9,6 +9,7 @@ import { Activity } from "@/modules/activityApp/activity/models";
 import { IndexedDB } from "@/utils/indexedDB";
 
 import { ModalConfirm } from "./ModalConfirm";
+import { StopwatchWrapper } from "./styled";
 
 interface Props {
   isVisible: boolean;
@@ -155,18 +156,23 @@ export const AddActivityDrawer: React.FC<Props> = ({
           <Text variant="heading4" color="black700">
             {title}
           </Text>
-          <Flex
-            height="17.5rem"
-            width="17.5rem"
-            justifyContent="center"
-            alignItems="center"
-            backgroundColor="blue200"
-            borderRadius="17.5rem"
-            border=".625rem solid"
-            borderColor="blue50"
-          >
-            <Text variant="heading3">{timer}</Text>
-          </Flex>
+          <StopwatchWrapper active={Boolean(Number(timer.split(":").at(-1)))}>
+            <Flex
+              height="17.5rem"
+              width="17.5rem"
+              justifyContent="center"
+              alignItems="center"
+              backgroundColor="blue500"
+              borderRadius="17.5rem"
+              border=".625rem solid"
+              borderColor="blue200"
+              boxShadow="0 .25rem 20px 0 rgba(50, 132, 255, 0.25)"
+            >
+              <Text variant="heading3" color="white">
+                {timer}
+              </Text>
+            </Flex>
+          </StopwatchWrapper>
           <Flex width="12rem">
             <Button
               size="medium"
