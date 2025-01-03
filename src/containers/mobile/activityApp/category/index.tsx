@@ -6,13 +6,15 @@ import { Navbar } from "@/components/mobile/Navbar";
 import { route } from "@/constants/route";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useGetCategory } from "@/modules/activityApp/category/hooks/useCategory";
+import { dateTime } from "@/utils/dateTime";
 
 import { AddCategoryDrawer } from "./components/AddCategoryDrawer";
 
 const CategoryContainer: React.FC = () => {
   const router = useRouter();
   const addCategoryDisclosure = useDisclosure({ open: false });
-  const { data, isLoading, isRefetching, refetch } = useGetCategory();
+  const rangeDaily = dateTime.getRangeDaily();
+  const { data, isLoading, isRefetching, refetch } = useGetCategory(rangeDaily);
 
   return (
     <Layout>
