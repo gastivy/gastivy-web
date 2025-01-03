@@ -23,15 +23,8 @@ const HomeActivityContainer = () => {
   const [categorySelected, setCategorySelected] = useState<Category>();
   const [dataActivity, setDataActivity] = useState<Activity>();
 
-  const {
-    currentTab,
-    data,
-    isLoading,
-    listTab,
-    selectedTypeSummary,
-    refetch,
-    setCurrentTab,
-  } = useSummaryActivity();
+  const { currentTab, data, isLoading, listTab, refetch, setCurrentTab } =
+    useSummaryActivity();
 
   const selectCategory = async (category: Category) => {
     setCategorySelected(category);
@@ -78,7 +71,6 @@ const HomeActivityContainer = () => {
           currentTab={currentTab}
           isLoading={isLoading}
           listTab={listTab}
-          rangeDay={selectedTypeSummary?.day || 0}
           onSelectCategory={selectCategory}
           onSetCurrentTab={setCurrentTab}
         />

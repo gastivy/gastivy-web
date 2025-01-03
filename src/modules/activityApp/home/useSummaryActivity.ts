@@ -13,7 +13,6 @@ export interface ListTab {
   name: string;
   value: string;
   range: Range;
-  day: number;
 }
 
 export const useSummaryActivity = () => {
@@ -24,22 +23,19 @@ export const useSummaryActivity = () => {
   const rangeMonthly = dateTime.getRangeThisMonth();
   const rangeYearly = dateTime.getRangeThisYear();
 
-  const today = new Date();
   const listTab: ListTab[] = [
-    { name: "All", value: "all", range: {}, day: 1 },
-    { name: "Daily", value: "day", range: rangeDaily, day: 1 },
-    { name: "Weekly", value: "week", range: rangeWeekly, day: 7 },
+    { name: "All", value: "all", range: {} },
+    { name: "Daily", value: "day", range: rangeDaily },
+    { name: "Weekly", value: "week", range: rangeWeekly },
     {
       name: "Monthly",
       value: "month",
       range: rangeMonthly,
-      day: new Date(today.getFullYear(), today.getMonth() + 1, 29).getDate(),
     },
     {
       name: "Yearly",
       value: "year",
       range: rangeYearly,
-      day: new Date(today.getFullYear(), 1, 29).getDate() === 29 ? 366 : 365,
     },
   ];
   const selectedTypeSummary = listTab.find((item) => item.value === currentTab);

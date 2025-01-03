@@ -9,7 +9,6 @@ interface SummaryActivityProps {
   isLoading: boolean;
   listTab: ListTab[];
   currentTab: string;
-  rangeDay: number;
   onSetCurrentTab: (tab: string) => void;
   onSelectCategory: (category: Category) => void;
 }
@@ -19,7 +18,6 @@ export const SummaryActivity: React.FC<SummaryActivityProps> = ({
   data = [],
   isLoading,
   listTab,
-  rangeDay,
   onSelectCategory,
   onSetCurrentTab,
 }) => {
@@ -71,8 +69,7 @@ export const SummaryActivity: React.FC<SummaryActivityProps> = ({
               return <Skeleton key={index} minHeight="6.25rem" />;
             })
           : data.map(({ minutes = 0, target = 0, ...item }, key) => {
-              const totalTarget = target * rangeDay;
-              const difference = minutes - totalTarget;
+              const difference = minutes - target;
               return (
                 <Flex
                   flexDirection="column"
@@ -90,7 +87,7 @@ export const SummaryActivity: React.FC<SummaryActivityProps> = ({
                   <Flex flexDirection="column" gap=".25rem">
                     <Flex justifyContent="space-between">
                       <Text color="black400" variant="small">
-                        {minutes} / {totalTarget} Minutes
+                        {minutes} / {target} Minutes
                       </Text>
                       <Text
                         color={difference < 0 ? "red400" : "blue400"}
@@ -109,7 +106,7 @@ export const SummaryActivity: React.FC<SummaryActivityProps> = ({
                       _text={{
                         color: "black700",
                       }}
-                      percent={Math.round((minutes / totalTarget) * 100)}
+                      percent={Math.round((minutes / target) * 100)}
                     />
                   </Flex>
                 </Flex>
