@@ -1,4 +1,11 @@
-import { Flex, Progress, ScrollBar, Skeleton, Text } from "astarva-ui";
+import {
+  DatePicker,
+  Flex,
+  Progress,
+  ScrollBar,
+  Skeleton,
+  Text,
+} from "astarva-ui";
 import React from "react";
 
 import { Category } from "@/modules/activityApp/category/models";
@@ -9,17 +16,23 @@ interface SummaryActivityProps {
   isLoading: boolean;
   listTab: ListTab[];
   currentTab: string;
+  startDate: Date | null;
+  endDate: Date | null;
   onSetCurrentTab: (tab: string) => void;
+  onDateRange: (dates: [Date | null, Date | null]) => void;
   onSelectCategory: (category: Category) => void;
 }
 
 export const SummaryActivity: React.FC<SummaryActivityProps> = ({
   currentTab,
   data = [],
+  startDate,
+  endDate,
   isLoading,
   listTab,
   onSelectCategory,
   onSetCurrentTab,
+  onDateRange,
 }) => {
   return (
     <Flex
@@ -56,6 +69,15 @@ export const SummaryActivity: React.FC<SummaryActivityProps> = ({
           </Flex>
         ))}
       </ScrollBar>
+
+      {currentTab === "custom" && (
+        <DatePicker
+          selectsRange
+          startDate={startDate || undefined}
+          endDate={endDate || undefined}
+          onChange={onDateRange}
+        />
+      )}
 
       <ScrollBar
         flexDirection="column"

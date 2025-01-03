@@ -23,6 +23,15 @@ export const useSummaryActivity = () => {
   const rangeMonthly = dateTime.getRangeThisMonth();
   const rangeYearly = dateTime.getRangeThisYear();
 
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+
+  const handleChangeRange = (dates: [Date | null, Date | null]) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+  };
+
   const listTab: ListTab[] = [
     { name: "All", value: "all", range: {} },
     { name: "Daily", value: "day", range: rangeDaily },
@@ -37,12 +46,22 @@ export const useSummaryActivity = () => {
       value: "year",
       range: rangeYearly,
     },
+    {
+      name: "Custom",
+      value: "custom",
+      range: {},
+    },
   ];
   const selectedTypeSummary = listTab.find((item) => item.value === currentTab);
 
-  const { data, isLoading, refetch } = useGetCategory({
-    ...selectedTypeSummary?.range,
-  });
+  const params =
+    currentTab === "custom"
+      ? {
+          start_date: dateTime.formatDate(startDate || new Date()),
+          end_date: dateTime.formatDate(endDate || new Date()),
+        }
+      : selectedTypeSummary?.range;
+  const { data, isLoading, refetch } = useGetCategory({ ...params });
 
   return {
     currentTab,
@@ -50,7 +69,10 @@ export const useSummaryActivity = () => {
     isLoading,
     listTab,
     selectedTypeSummary,
+    startDate,
+    endDate,
     refetch,
     setCurrentTab,
+    handleChangeRange,
   };
 };

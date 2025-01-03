@@ -23,8 +23,17 @@ const HomeActivityContainer = () => {
   const [categorySelected, setCategorySelected] = useState<Category>();
   const [dataActivity, setDataActivity] = useState<Activity>();
 
-  const { currentTab, data, isLoading, listTab, refetch, setCurrentTab } =
-    useSummaryActivity();
+  const {
+    currentTab,
+    data,
+    startDate,
+    endDate,
+    isLoading,
+    listTab,
+    refetch,
+    setCurrentTab,
+    handleChangeRange,
+  } = useSummaryActivity();
 
   const selectCategory = async (category: Category) => {
     setCategorySelected(category);
@@ -71,8 +80,11 @@ const HomeActivityContainer = () => {
           currentTab={currentTab}
           isLoading={isLoading}
           listTab={listTab}
+          startDate={startDate}
+          endDate={endDate}
           onSelectCategory={selectCategory}
           onSetCurrentTab={setCurrentTab}
+          onDateRange={handleChangeRange}
         />
       </Flex>
     </Layout>
