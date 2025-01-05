@@ -40,7 +40,7 @@ export const AddCategoryDrawer: React.FC<Props> = ({
     defaultValues: {
       name: "",
       target: 0,
-      startDate: new Date(),
+      start_date: new Date(),
     },
   });
 
@@ -96,7 +96,7 @@ export const AddCategoryDrawer: React.FC<Props> = ({
           )}
         />
         <Controller
-          name="startDate"
+          name="start_date"
           control={control}
           render={({ field }) => {
             const currentDate = field.value

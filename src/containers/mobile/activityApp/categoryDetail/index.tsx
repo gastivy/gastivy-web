@@ -65,7 +65,7 @@ const CategoryDetailContainer: React.FC = () => {
     if (data?.data) {
       setValue("name", name);
       setValue("target", target);
-      setValue("startDate", start_date);
+      setValue("start_date", start_date);
     }
   }, [data?.data]);
 
@@ -123,7 +123,7 @@ const CategoryDetailContainer: React.FC = () => {
               )}
             />
             <Controller
-              name="startDate"
+              name="start_date"
               control={control}
               render={({ field }) => {
                 const currentDate = field.value

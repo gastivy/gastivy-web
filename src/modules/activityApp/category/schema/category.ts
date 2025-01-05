@@ -8,5 +8,5 @@ export const schemaCategory = Yup.object().shape({
   target: Yup.number()
     .min(1, "Target at least 1 minute")
     .required("Target is required"),
-  startDate: Yup.date().required("Start Date is required"),
+  start_date: Yup.date().required("Start Date is required"),
 });
