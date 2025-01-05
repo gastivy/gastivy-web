@@ -142,10 +142,7 @@ const TransactionsFinanceContainer = () => {
           <Tabs
             currentTab={currentRange}
             listTab={monthList}
-            onSetCurrentTab={(val) => {
-              console.log(val);
-              setCurrentRange(val);
-            }}
+            onSetCurrentTab={setCurrentRange}
           />
         )}
 

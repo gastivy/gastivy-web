@@ -269,10 +269,12 @@ export const UpdateTransactionsDrawer: React.FC<Props> = ({
             )}
 
             <Input
+              value={detailTransaction?.data.name}
               label="Note"
               size="small"
               placeholder="Input Note"
               autoComplete="off"
+              maxLength={30}
               isError={Boolean(errors?.name?.message)}
               error={errors?.name?.message}
               {...register("name")}
@@ -346,6 +348,7 @@ export const UpdateTransactionsDrawer: React.FC<Props> = ({
             <TextArea
               label="Description"
               placeholder="Input Description"
+              maxLength={2000}
               isError={Boolean(errors.description?.message)}
               error={errors.description?.message}
               {...register("description")}

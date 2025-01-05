@@ -22,14 +22,15 @@ export interface DeleteCategoryRequest {
 }
 
 export interface Category {
-  id?: string;
-  user_id?: string;
-  name?: string;
-  created_at?: Date;
-  updated_at?: Date;
-  target?: number;
-  seconds?: number;
-  minutes?: number;
+  id: string;
+  user_id: string;
+  name: string;
+  target: number;
+  seconds: number;
+  minutes: number;
+  start_date: Date;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export type AllCategoryResponse = HttpResponse<Category[]>;

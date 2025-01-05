@@ -64,6 +64,7 @@ export const AddCategoryDrawer: React.FC<Props> = ({ isVisible, onBack }) => {
           label="Category Name"
           disabled={isPending}
           placeholder="Input Category Name"
+          maxLength={30}
           isError={Boolean(errors.name?.message)}
           error={errors.name?.message}
           {...register("name")}

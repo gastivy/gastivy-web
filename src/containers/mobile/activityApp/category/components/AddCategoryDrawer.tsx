@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button, Drawer, Flex, Input } from "astarva-ui";
+import { Button, DatePicker, Drawer, Flex, Input } from "astarva-ui";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -40,6 +40,7 @@ export const AddCategoryDrawer: React.FC<Props> = ({
     defaultValues: {
       name: "",
       target: 0,
+      startDate: new Date(),
     },
   });
 
@@ -73,6 +74,7 @@ export const AddCategoryDrawer: React.FC<Props> = ({
           label="Category Name"
           placeholder="Input Category Name"
           _label={{ variant: "small" }}
+          maxLength={30}
           isError={Boolean(errors.name?.message)}
           error={errors.name?.message}
           {...register("name")}
@@ -92,6 +94,23 @@ export const AddCategoryDrawer: React.FC<Props> = ({
               onChange={(value) => field.onChange(value)}
             />
           )}
+        />
+        <Controller
+          name="startDate"
+          control={control}
+          render={({ field }) => {
+            const currentDate = field.value
+              ? new Date(field.value)
+              : new Date();
+
+            return (
+              <DatePicker
+                label="Start Date"
+                selected={currentDate}
+                onSelect={(val) => field.onChange(val)}
+              />
+            );
+          }}
         />
       </Flex>
       <Flex padding="1rem">

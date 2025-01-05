@@ -1,8 +1,15 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Flex, Input, Skeleton, useDisclosure } from "astarva-ui";
+import {
+  Button,
+  DatePicker,
+  Flex,
+  Input,
+  Skeleton,
+  useDisclosure,
+} from "astarva-ui";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { Loading } from "@/components/base/Loading";
 import Layout from "@/components/mobile/Layout";
@@ -34,12 +41,13 @@ const CategoryDetailContainer: React.FC = () => {
         push(route.activityApp.category.path);
       },
     });
-  const { name = "", target = 0 } = data?.data || {};
+  const { name = "", target = 0, start_date = new Date() } = data?.data || {};
 
   const {
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schemaCategory),
@@ -57,6 +65,7 @@ const CategoryDetailContainer: React.FC = () => {
     if (data?.data) {
       setValue("name", name);
       setValue("target", target);
+      setValue("startDate", start_date);
     }
   }, [data?.data]);
 
@@ -88,18 +97,47 @@ const CategoryDetailContainer: React.FC = () => {
         >
           <Flex flexDirection="column" gap=".75rem">
             <Input
+              value={name}
               label="Category Name"
+              size="small"
               placeholder="Input Category Name"
+              maxLength={30}
               isError={Boolean(errors.name?.message)}
               error={errors.name?.message}
               {...register("name")}
             />
-            <Input
-              label="Target Daily"
-              placeholder="Input Target Daily"
-              isError={Boolean(errors.target?.message)}
-              error={errors.target?.message}
-              {...register("target")}
+            <Controller
+              name="target"
+              control={control}
+              rules={{ required: "Target Daily is Required" }}
+              render={({ field }) => (
+                <Input.Number
+                  label="Target Daily"
+                  value={String(field.value || "")}
+                  size="small"
+                  isError={Boolean(errors.target?.message)}
+                  error={errors.target?.message}
+                  placeholder="Input Target Daily"
+                  onChange={(value) => field.onChange(value)}
+                />
+              )}
+            />
+            <Controller
+              name="startDate"
+              control={control}
+              render={({ field }) => {
+                const currentDate = field.value
+                  ? new Date(field.value)
+                  : new Date();
+
+                return (
+                  <DatePicker
+                    label="Start Date"
+                    selected={currentDate}
+                    onSelect={(val) => field.onChange(val)}
+                  />
+                );
+              }}
             />
           </Flex>
           <Flex gap=".5rem">

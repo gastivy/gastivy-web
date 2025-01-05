@@ -68,6 +68,7 @@ export const CreateWalletDrawer: React.FC<Props> = ({ isVisible, onBack }) => {
           label="Wallet Name"
           placeholder="Input Wallet Name"
           autoComplete="off"
+          maxLength={30}
           isError={Boolean(errors.name?.message)}
           error={errors.name?.message}
           {...register(`name`)}

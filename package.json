@@ -14,7 +14,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@tanstack/react-query": "^5.59.15",
-    "astarva-ui": "^1.6.6",
+    "astarva-ui": "^1.6.11",
     "axios": "^1.7.7",
     "chart.js": "^4.4.7",
     "cookies-next": "^4.3.0",

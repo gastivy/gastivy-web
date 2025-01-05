@@ -34,6 +34,8 @@ export const UpdateWalletDrawer: React.FC<Props> = ({
     queryKey: ["wallet-detail"],
   });
 
+  const { name = "", balance = 0, type = 0 } = data?.data || {};
+
   const { mutate, isPending } = useUpdateWallet({
     onSuccess: () => {
       reset();
@@ -62,9 +64,9 @@ export const UpdateWalletDrawer: React.FC<Props> = ({
 
   useEffect(() => {
     if (data?.data) {
-      setValue("name", data?.data.name);
-      setValue("balance", data?.data.balance);
-      setValue("type", data?.data.type);
+      setValue("name", name);
+      setValue("balance", balance);
+      setValue("type", type);
     }
   }, [data?.data]);
 
@@ -93,9 +95,11 @@ export const UpdateWalletDrawer: React.FC<Props> = ({
         paddingTop="5rem"
       >
         <Input
+          value={name}
           label="Wallet Name"
           placeholder="Input Wallet Name"
           autoComplete="off"
+          maxLength={30}
           isError={Boolean(errors.name?.message)}
           error={errors.name?.message}
           {...register(`name`)}

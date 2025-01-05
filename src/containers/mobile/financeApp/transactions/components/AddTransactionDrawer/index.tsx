@@ -80,6 +80,18 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
     );
   }, [data?.data]);
 
+  const originWallet = [
+    TypesTransactions.EXPENSES,
+    TypesTransactions.TRANSFER,
+    TypesTransactions.PROFIT,
+    TypesTransactions.PROFIT,
+  ];
+
+  const destinationWallet = [
+    TypesTransactions.INCOME,
+    TypesTransactions.TRANSFER,
+  ];
+
   const walletData = wallets?.data || [];
   const walletOptions = walletData.map((item) => ({
     label: item.name,
@@ -273,7 +285,7 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                         )}
                       />
 
-                      {[2, 3].includes(type || 0) && (
+                      {originWallet.includes(type as TypesTransactions) && (
                         <Controller
                           name={`transactions.${index}.from_wallet`}
                           control={control}
@@ -305,7 +317,9 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                         />
                       )}
 
-                      {[1, 3].includes(type || 0) && (
+                      {destinationWallet.includes(
+                        type as TypesTransactions
+                      ) && (
                         <Controller
                           name={`transactions.${index}.to_wallet`}
                           control={control}
@@ -340,6 +354,7 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                         size="small"
                         placeholder="Input Note"
                         autoComplete="off"
+                        maxLength={30}
                         isError={Boolean(
                           errors.transactions?.[index]?.name?.message
                         )}
@@ -418,6 +433,7 @@ export const AddTransactionsDrawer: React.FC<Props> = ({
                       <TextArea
                         label="Description"
                         placeholder="Input Description"
+                        maxLength={2000}
                         isError={Boolean(
                           errors.transactions?.[index]?.description?.message
                         )}

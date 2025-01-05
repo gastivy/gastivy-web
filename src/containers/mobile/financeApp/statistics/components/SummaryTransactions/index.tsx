@@ -68,10 +68,7 @@ export const SummaryTransactions = () => {
         <Tabs
           currentTab={currentRange}
           listTab={monthList}
-          onSetCurrentTab={(val) => {
-            console.log(val);
-            setCurrentRange(val);
-          }}
+          onSetCurrentTab={setCurrentRange}
         />
       )}
 

@@ -88,10 +88,12 @@ const CategoryDetailTransactionContainer: React.FC = () => {
         >
           <Flex flexDirection="column" gap=".75rem">
             <Input
+              value={name}
               label="Category Name"
               disabled={disabled}
               size="small"
               placeholder="Input Category Name"
+              maxLength={30}
               isError={Boolean(errors.name?.message)}
               error={errors.name?.message}
               {...register("name")}
