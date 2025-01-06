@@ -1,10 +1,16 @@
 import { httpService } from "@/utils/httpService";
 
-import { CreateActivityRequest, UpdateActivityRequest } from "../models";
+import {
+  CreateActivityRequest,
+  ParamsActivitesRequest,
+  UpdateActivityRequest,
+} from "../models";
 
 export const ActivityServices = {
-  getAll: () =>
-    httpService.get("/activity-app/activity").then((res) => res.data),
+  getAll: (params?: ParamsActivitesRequest) =>
+    httpService
+      .get("/activity-app/activity", { params })
+      .then((res) => res.data),
 
   create: (payload: CreateActivityRequest) =>
     httpService.post("/activity-app/activity", payload).then((res) => res.data),

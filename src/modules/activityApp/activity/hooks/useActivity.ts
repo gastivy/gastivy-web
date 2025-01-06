@@ -9,6 +9,7 @@ import { AxiosError } from "axios";
 import {
   CreateActivityRequest,
   LogActivityResponse,
+  ParamsActivitesRequest,
   UpdateActivityRequest,
 } from "../models";
 import { ActivityServices } from "../services";
@@ -22,11 +23,12 @@ export const useCreateActivity = (
   });
 
 export const useGetActivity = (
+  params?: ParamsActivitesRequest,
   options?: UseQueryOptions<LogActivityResponse>
 ) =>
   useQuery({
-    queryKey: ["all-category"],
-    queryFn: () => ActivityServices.getAll(),
+    queryKey: ["all-category", params],
+    queryFn: () => ActivityServices.getAll(params),
     ...options,
   });
 
