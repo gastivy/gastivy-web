@@ -166,7 +166,7 @@ export const AddActivityDrawer: React.FC<Props> = ({
               borderRadius="17.5rem"
               border=".625rem solid"
               borderColor="blue200"
-              boxShadow="0 .25rem 20px 0 rgba(50, 132, 255, 0.25)"
+              boxShadow="0 .25rem 1.25rem 0 rgba(50, 132, 255, 0.25)"
             >
               <Text variant="heading3" color="white">
                 {timer}

@@ -1,5 +1,5 @@
 import { Box, Flex, Icon, IconNames, Skeleton, Text } from "astarva-ui";
-import React from "react";
+import React, { useState } from "react";
 
 import { TypesTransactions } from "@/modules/financeApp/category/models";
 import { useGetBalance } from "@/modules/financeApp/wallet/hooks/useWallet";
@@ -16,6 +16,13 @@ export const Balance: React.FC<BalanceProps> = ({
   onExpenses,
   onTransfer,
 }) => {
+  const isHide = localStorage.getItem("hide_balance") === "true";
+  const [isHideBalance, setIsHideBalance] = useState(isHide);
+
+  const handleShowHide = () => {
+    localStorage.setItem("hide_balance", isHideBalance ? "false" : "true");
+    setIsHideBalance(!isHideBalance);
+  };
   const { data, isLoading, isRefetching } = useGetBalance();
   const MenuTransactions = [
     {
@@ -96,13 +103,23 @@ export const Balance: React.FC<BalanceProps> = ({
           <Text color="white" variant="small">
             Current Balance
           </Text>
-          {isLoading || isRefetching ? (
-            <Skeleton width="10rem" height="1.5rem" marginTop=".25rem" />
-          ) : (
-            <Text color="white" variant="heading6" weight="medium">
-              {formatter.currency(data?.data?.balance)}
-            </Text>
-          )}
+
+          <Flex alignItems="center" gap=".5rem">
+            {isLoading || isRefetching ? (
+              <Skeleton width="10rem" height="1.5rem" marginTop=".25rem" />
+            ) : (
+              <Text color="white" variant="heading6" weight="medium">
+                {isHideBalance
+                  ? "**********"
+                  : formatter.currency(data?.data?.balance)}
+              </Text>
+            )}
+            <Icon
+              name={isHideBalance ? "Hide-outline" : "Eye-outline"}
+              color="white"
+              onClick={handleShowHide}
+            />
+          </Flex>
         </Flex>
 
         <Flex
