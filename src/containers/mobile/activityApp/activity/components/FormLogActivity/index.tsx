@@ -52,7 +52,7 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
   const { mutate, isPending: isPendingUpdate } = useUpdateActivity({
     onSuccess: () => {
       handleBack();
-      queryClient.invalidateQueries({ queryKey: ["all-category"] });
+      queryClient.invalidateQueries({ queryKey: ["activities"] });
     },
   });
 
@@ -60,7 +60,7 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
     {
       onSuccess: async () => {
         handleBack();
-        queryClient.invalidateQueries({ queryKey: ["all-category"] });
+        queryClient.invalidateQueries({ queryKey: ["activities"] });
       },
     }
   );

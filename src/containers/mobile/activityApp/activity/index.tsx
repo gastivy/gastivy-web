@@ -8,16 +8,17 @@ import {
   Tabs,
   Text,
 } from "astarva-ui";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Layout from "@/components/mobile/Layout";
 import { Navbar } from "@/components/mobile/Navbar";
 import useDisclosure from "@/hooks/useDisclosure";
-import { useGetActivity } from "@/modules/activityApp/activity/hooks/useActivity";
+import { useFilterActivity } from "@/modules/activityApp/activity/hooks/useFilterActivity";
 import { LogActivity } from "@/modules/activityApp/activity/models";
 import { dateTime, RangeDate } from "@/utils/dateTime";
 
 import { ConfirmDeleteModal } from "./components/ConfirmDeleteModal";
+import { FilterDrawer } from "./components/FilterDrawer";
 import { FormLogActivity } from "./components/FormLogActivity";
 import { OptionsLogActivity } from "./components/OptionsLogActivity";
 
@@ -25,57 +26,32 @@ const ActivityContainer = () => {
   const [activitySelected, setActivitySelected] = useState<
     LogActivity | undefined
   >(undefined);
-  const [currentYear, setCurrentYear] = useState<number>(
-    new Date().getFullYear()
-  );
-  const [currentRange, setCurrentRange] = useState<RangeDate>();
-  const monthList = dateTime.generateMonths(currentYear);
   const optionsLogActivity = useDisclosure({ open: false });
   const confirmDeleteModal = useDisclosure({ open: false });
   const updateLogActivtyDrawer = useDisclosure({ open: false });
   const addActivityDrawer = useDisclosure({ open: false });
-
-  const { data, isLoading, isRefetching } = useGetActivity(
-    { ...currentRange },
-    {
-      enabled: Boolean(currentRange),
-      queryKey: ["all-category", currentRange],
-    }
-  );
+  const filterDisclosure = useDisclosure({ open: false });
+  const {
+    logActivity,
+    isLoading,
+    isRefetching,
+    currentYear,
+    currentRange,
+    monthList,
+    idCategories,
+    setIdCategories,
+    setCurrentYear,
+    setCurrentRange,
+  } = useFilterActivity();
 
   const yearList = dateTime
     .generateYears(2020)
     .map((year) => ({ label: String(year), value: year }));
 
-  const getLogActivity = () => {
-    const grouped: { [key: string]: LogActivity[] } = {};
-
-    data?.data.forEach((activity) => {
-      const date = dateTime
-        .convertToLocalTime(String(activity.start_date))
-        .split("T")[0];
-
-      if (!grouped[date]) {
-        grouped[date] = [];
-      }
-      grouped[date].push(activity);
-    });
-
-    return Object.keys(grouped).map((date) => ({
-      key: date,
-      logActivity: grouped[date],
-    }));
-  };
-
   const handleClickActivity = (activity: LogActivity) => {
     setActivitySelected(activity);
     optionsLogActivity.onOpen();
   };
-
-  useEffect(() => {
-    const thisMonth = monthList[new Date().getMonth()];
-    setCurrentRange(thisMonth.value);
-  }, [currentYear]);
 
   return (
     <Layout>
@@ -108,6 +84,18 @@ const ActivityContainer = () => {
         onClose={addActivityDrawer.onClose}
       />
 
+      {/* Filter Drawer */}
+      {filterDisclosure.isOpen && (
+        <FilterDrawer
+          isVisible={filterDisclosure.isOpen}
+          currentRange={currentRange}
+          idCategories={idCategories}
+          onSelectIdCategory={setIdCategories}
+          onSetCurrentRange={setCurrentRange}
+          onClose={filterDisclosure.onClose}
+        />
+      )}
+
       <Navbar title="Activity">
         <Navbar.Suffix>
           <Flex
@@ -126,12 +114,27 @@ const ActivityContainer = () => {
       </Navbar>
 
       <Flex flexDirection="column" paddingTop="5rem" gap="2rem">
-        <Select
-          value={currentYear}
-          size="small"
-          options={yearList}
-          onSelect={(option) => setCurrentYear(Number(option.value))}
-        />
+        <Flex alignItems="center" gap="1rem">
+          <Flex flexDirection="column" flex={1}>
+            <Select
+              value={currentYear}
+              size="small"
+              options={yearList}
+              onSelect={(option) => setCurrentYear(Number(option.value))}
+            />
+          </Flex>
+
+          <Flex
+            justifyContent="center"
+            alignItems="center"
+            padding=".5rem"
+            backgroundColor="white"
+            borderRadius=".25rem"
+            onClick={filterDisclosure.onOpen}
+          >
+            <Icon name="Filter-solid" size="1.25rem" color="blue400" />
+          </Flex>
+        </Flex>
 
         {currentRange && (
           <Tabs
@@ -153,7 +156,7 @@ const ActivityContainer = () => {
             ? Array.from({ length: 20 }).map((_, index: number) => (
                 <Skeleton key={index} minHeight="3.125rem" />
               ))
-            : getLogActivity().map((item, key) => {
+            : logActivity.map((item, key) => {
                 return (
                   <Flex key={key} flexDirection="column" gap="1.5rem">
                     <Divider

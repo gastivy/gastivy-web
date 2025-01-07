@@ -27,7 +27,7 @@ export const useGetActivity = (
   options?: UseQueryOptions<LogActivityResponse>
 ) =>
   useQuery({
-    queryKey: ["all-category", params],
+    queryKey: ["activities", params],
     queryFn: () => ActivityServices.getAll(params),
     ...options,
   });

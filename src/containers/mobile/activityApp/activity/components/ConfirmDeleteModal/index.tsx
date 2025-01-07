@@ -30,7 +30,7 @@ export const ConfirmDeleteModal: React.FC<Props> = ({
 
   const { mutate, isPending } = useDeleteActivity({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["all-category"] });
+      queryClient.invalidateQueries({ queryKey: ["activities"] });
       onClose();
     },
   });
