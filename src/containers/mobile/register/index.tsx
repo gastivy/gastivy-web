@@ -1,11 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Flex, Input, Text } from "astarva-ui";
+import { Alert, Button, Flex, Input, Text } from "astarva-ui";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { Alert } from "@/components/base/Alert";
 import Layout from "@/components/mobile/Layout";
 import { route } from "@/constants/route";
 import { useRegister } from "@/modules/auth/hooks/useAuth";

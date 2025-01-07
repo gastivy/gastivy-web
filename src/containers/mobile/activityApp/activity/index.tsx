@@ -5,6 +5,7 @@ import {
   ScrollBar,
   Select,
   Skeleton,
+  Tabs,
   Text,
 } from "astarva-ui";
 import { useEffect, useState } from "react";
@@ -16,7 +17,6 @@ import { useGetActivity } from "@/modules/activityApp/activity/hooks/useActivity
 import { LogActivity } from "@/modules/activityApp/activity/models";
 import { dateTime, RangeDate } from "@/utils/dateTime";
 
-import { Tabs } from "../../financeApp/statistics/components/Tabs";
 import { ConfirmDeleteModal } from "./components/ConfirmDeleteModal";
 import { FormLogActivity } from "./components/FormLogActivity";
 import { OptionsLogActivity } from "./components/OptionsLogActivity";
@@ -132,11 +132,12 @@ const ActivityContainer = () => {
           options={yearList}
           onSelect={(option) => setCurrentYear(Number(option.value))}
         />
+
         {currentRange && (
           <Tabs
-            currentTab={currentRange}
-            listTab={monthList}
-            onSetCurrentTab={setCurrentRange}
+            activeTab={currentRange}
+            options={monthList}
+            onChange={(val) => setCurrentRange(val as RangeDate)}
           />
         )}
 

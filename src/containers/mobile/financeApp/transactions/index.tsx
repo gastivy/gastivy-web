@@ -4,6 +4,7 @@ import {
   ScrollBar,
   Select,
   Skeleton,
+  Tabs,
   Text,
   useDisclosure,
 } from "astarva-ui";
@@ -17,7 +18,6 @@ import { useGetTransactions } from "@/modules/financeApp/transactions/hooks/useT
 import { Transactions } from "@/modules/financeApp/transactions/models";
 import { dateTime, RangeDate } from "@/utils/dateTime";
 
-import { Tabs } from "../statistics/components/Tabs";
 import { AddTransactionsDrawer } from "./components/AddTransactionDrawer";
 import { ConfirmDeleteModal } from "./components/ConfirmDeleteModal";
 import { OptionsLogTransaction } from "./components/OptionsLogTransaction";
@@ -138,11 +138,12 @@ const TransactionsFinanceContainer = () => {
           options={yearList}
           onSelect={(option) => setCurrentYear(Number(option.value))}
         />
+
         {currentRange && (
           <Tabs
-            currentTab={currentRange}
-            listTab={monthList}
-            onSetCurrentTab={setCurrentRange}
+            activeTab={currentRange}
+            options={monthList}
+            onChange={(val) => setCurrentRange(val as RangeDate)}
           />
         )}
 

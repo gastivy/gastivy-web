@@ -15,8 +15,8 @@ importers:
         specifier: ^5.59.15
         version: 5.59.16(react@18.3.1)
       astarva-ui:
-        specifier: ^1.6.11
-        version: 1.6.11(@types/styled-components@5.1.34)(@types/styled-system@5.1.23)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^1.6.12
+        version: 1.6.12(@types/styled-components@5.1.34)(@types/styled-system@5.1.23)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       axios:
         specifier: ^1.7.7
         version: 1.7.7
@@ -627,8 +627,8 @@ packages:
   ast-types-flow@0.0.8:
     resolution: {integrity: sha512-OH/2E5Fg20h2aPrbe+QL8JZQFko0YZaF+j4mnQ7BGhfavO7OpSLa8a0y9sBwomHdSbkhTS8TQNayBfnW5DwbvQ==}
 
-  astarva-ui@1.6.11:
-    resolution: {integrity: sha512-F3E5KGi0WAmip/bEFgOA+U9Vo5Ati3WBvI8O1U/DI3UlKn9iYVFWMfig9Z1MNY+MKvSNGfpYzJDSFukyVScxfA==}
+  astarva-ui@1.6.12:
+    resolution: {integrity: sha512-bD2xvkOR/7CBr5MAw7PwoILZvpWps5xAOdr++sSTzDM/Indu8leQor2BCK74u+PsFx7IOeus9MUvwbsFtQmPcw==}
     engines: {node: '>=14.0.0 <20.0.0'}
     peerDependencies:
       '@types/styled-components': '>=5.1.26'
@@ -2815,7 +2815,7 @@ snapshots:
 
   ast-types-flow@0.0.8: {}
 
-  astarva-ui@1.6.11(@types/styled-components@5.1.34)(@types/styled-system@5.1.23)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  astarva-ui@1.6.12(@types/styled-components@5.1.34)(@types/styled-system@5.1.23)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@types/styled-components': 5.1.34
       '@types/styled-system': 5.1.23

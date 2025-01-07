@@ -1,4 +1,4 @@
-import { colorIndex, Divider, Flex, Select, Text } from "astarva-ui";
+import { colorIndex, Divider, Flex, Select, Tabs, Text } from "astarva-ui";
 import { useEffect, useState } from "react";
 
 import { TypesTransactions } from "@/modules/financeApp/category/models";
@@ -6,7 +6,6 @@ import { useSummaryCategoryTransactions } from "@/modules/financeApp/statistics/
 import { dateTime, RangeDate } from "@/utils/dateTime";
 import { formatter } from "@/utils/formatter";
 
-import { Tabs } from "../Tabs";
 import { BarChart } from "./BarChart";
 import PieChart from "./PieChart";
 
@@ -64,11 +63,12 @@ export const SummaryTransactions = () => {
         options={yearList}
         onSelect={(option) => setCurrentYear(Number(option.value))}
       />
+
       {currentRange && (
         <Tabs
-          currentTab={currentRange}
-          listTab={monthList}
-          onSetCurrentTab={setCurrentRange}
+          activeTab={currentRange}
+          options={monthList}
+          onChange={(val) => setCurrentRange(val as RangeDate)}
         />
       )}
 
