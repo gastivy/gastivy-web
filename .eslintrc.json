@@ -27,6 +27,7 @@
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "simple-import-sort/exports": "warn",
-    "simple-import-sort/imports": "warn"
+    "simple-import-sort/imports": "warn",
+    "no-console": "error"
   }
 }
