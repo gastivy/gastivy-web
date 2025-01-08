@@ -19,12 +19,14 @@ httpService.interceptors.request.use(
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     } else {
+      // eslint-disable-next-line no-console
       console.warn("No token found, Authorization header not set.");
     }
 
     return config;
   },
   (error) => {
+    // eslint-disable-next-line no-console
     console.error("Request Error:", error);
     return Promise.reject(error);
   }
@@ -45,6 +47,7 @@ httpService.interceptors.response.use(
         windowObj.location.href = `${baseUrl}/login?referrer=${currentUrl}`;
       }
     } else {
+      // eslint-disable-next-line no-console
       console.error("Response Error:", error.response?.data || error);
     }
 
