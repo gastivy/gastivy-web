@@ -69,7 +69,6 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
     control,
     formState: { errors },
     handleSubmit: onSubmit,
-    register,
     reset,
     setValue,
     watch,
@@ -241,30 +240,60 @@ export const FormLogActivity: React.FC<UpdateLogActivityProps> = ({
             Time
           </Text>
           <Flex gap="1.25rem">
-            <Flex maxWidth="3.75rem" alignItems="center" gap=".5rem">
-              <Input
-                size="small"
-                style={{ textAlign: "center" }}
-                isError={Boolean(errors.seconds?.message)}
-                {...register("hours")}
+            <Flex minWidth="3.75rem" alignItems="center" gap=".5rem">
+              <Controller
+                name="hours"
+                control={control}
+                render={({ field }) => (
+                  <Input.Number
+                    value={String(field.value || 0)}
+                    size="small"
+                    style={{ textAlign: "center", width: "1.25rem" }}
+                    min={0}
+                    max={24}
+                    isError={Boolean(errors.hours?.message)}
+                    placeholder="0"
+                    onChange={(value) => field.onChange(value)}
+                  />
+                )}
               />
               <Text color="black300">h</Text>
             </Flex>
-            <Flex maxWidth="3.75rem" alignItems="center" gap=".5rem">
-              <Input
-                size="small"
-                style={{ textAlign: "center" }}
-                isError={Boolean(errors.seconds?.message)}
-                {...register("minutes")}
+            <Flex minWidth="3.75rem" alignItems="center" gap=".5rem">
+              <Controller
+                name="minutes"
+                control={control}
+                render={({ field }) => (
+                  <Input.Number
+                    value={String(field.value || 0)}
+                    size="small"
+                    min={0}
+                    max={59}
+                    style={{ textAlign: "center", width: "1.25rem" }}
+                    isError={Boolean(errors.minutes?.message)}
+                    placeholder="0"
+                    onChange={(value) => field.onChange(value)}
+                  />
+                )}
               />
               <Text color="black300">m</Text>
             </Flex>
-            <Flex maxWidth="3.75rem" alignItems="center" gap=".5rem">
-              <Input
-                size="small"
-                style={{ textAlign: "center" }}
-                isError={Boolean(errors.seconds?.message)}
-                {...register("seconds")}
+            <Flex minWidth="3.75rem" alignItems="center" gap=".5rem">
+              <Controller
+                name="seconds"
+                control={control}
+                render={({ field }) => (
+                  <Input.Number
+                    value={String(field.value || 0)}
+                    size="small"
+                    min={0}
+                    max={59}
+                    style={{ textAlign: "center", width: "1.25rem" }}
+                    isError={Boolean(errors.seconds?.message)}
+                    placeholder="0"
+                    onChange={(value) => field.onChange(value)}
+                  />
+                )}
               />
               <Text color="black300">s</Text>
             </Flex>
