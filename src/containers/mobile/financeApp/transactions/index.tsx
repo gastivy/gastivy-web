@@ -8,18 +8,19 @@ import {
   Text,
   useDisclosure,
 } from "astarva-ui";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Loading } from "@/components/base/Loading";
 import Layout from "@/components/mobile/Layout";
 import { Navbar } from "@/components/mobile/Navbar";
 import { CardTransaction } from "@/components/mobile/Transactions/CardTransaction";
-import { useGetTransactions } from "@/modules/financeApp/transactions/hooks/useTransaction";
+import { useFilterTransactions } from "@/modules/financeApp/transactions/hooks/useFilterTransaction";
 import { Transactions } from "@/modules/financeApp/transactions/models";
 import { dateTime, RangeDate } from "@/utils/dateTime";
 
 import { AddTransactionsDrawer } from "./components/AddTransactionDrawer";
 import { ConfirmDeleteModal } from "./components/ConfirmDeleteModal";
+import { FilterDrawer } from "./components/FilterDrawer";
 import { OptionsLogTransaction } from "./components/OptionsLogTransaction";
 import { UpdateTransactionsDrawer } from "./components/UpdateTransactionDrawer";
 
@@ -32,24 +33,23 @@ const TransactionsFinanceContainer = () => {
     Transactions | undefined
   >(undefined);
 
-  const [currentRange, setCurrentRange] = useState<RangeDate>();
-  const [currentYear, setCurrentYear] = useState<number>(
-    new Date().getFullYear()
-  );
-  const yearList = dateTime
-    .generateYears(2020)
-    .map((year) => ({ label: String(year), value: year }));
-  const monthList = dateTime.generateMonths(currentYear);
-
-  const { isLoading, isRefetching, data, refetch } = useGetTransactions(
-    {
-      ...currentRange,
-    },
-    {
-      enabled: Boolean(currentRange),
-      queryKey: ["transactions", currentRange],
-    }
-  );
+  const {
+    currentRange,
+    currentYear,
+    monthList,
+    yearList,
+    isLoading,
+    isRefetching,
+    data,
+    idCategories,
+    filterDisclosure,
+    idsWallet,
+    setIdsWallet,
+    setIdCategories,
+    refetch,
+    setCurrentYear,
+    setCurrentRange,
+  } = useFilterTransactions();
 
   const getLogTransaction = () => {
     const grouped: { [key: string]: Transactions[] } = {};
@@ -75,11 +75,6 @@ const TransactionsFinanceContainer = () => {
     setTransactionSelected(transaction);
     optionsLogTransaction.onOpen();
   };
-
-  useEffect(() => {
-    const thisMonth = monthList[new Date().getMonth()];
-    setCurrentRange(thisMonth.value);
-  }, [currentYear]);
 
   return (
     <Layout _flex={{ paddingBottom: "5.5rem" }}>
@@ -114,6 +109,20 @@ const TransactionsFinanceContainer = () => {
         onBack={updateTransactionDrawer.onClose}
       />
 
+      {filterDisclosure.isOpen && (
+        <FilterDrawer
+          isVisible={filterDisclosure.isOpen}
+          currentRange={currentRange}
+          idCategories={idCategories}
+          idWallet={idsWallet}
+          onRefetch={refetch}
+          onSelectIdWallet={setIdsWallet}
+          onSelectIdCategory={setIdCategories}
+          onSetCurrentRange={setCurrentRange}
+          onClose={filterDisclosure.onClose}
+        />
+      )}
+
       <Navbar title="Transactions">
         <Navbar.Suffix>
           <Flex
@@ -132,12 +141,21 @@ const TransactionsFinanceContainer = () => {
       </Navbar>
 
       <Flex flexDirection="column" paddingTop="5rem" gap="2rem">
-        <Select
-          value={currentYear}
-          size="small"
-          options={yearList}
-          onSelect={(option) => setCurrentYear(Number(option.value))}
-        />
+        <Flex alignItems="center" gap="1rem">
+          <Flex flexDirection="column" flex={1}>
+            <Select
+              value={currentYear}
+              size="small"
+              options={yearList}
+              onSelect={(option) => setCurrentYear(Number(option.value))}
+            />
+          </Flex>
+          <Icon
+            name="Filter-solid"
+            color="blue400"
+            onClick={filterDisclosure.onOpen}
+          />
+        </Flex>
 
         {currentRange && (
           <Tabs

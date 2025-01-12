@@ -51,4 +51,6 @@ export interface GetTransactionRequest {
   limit?: number;
   start_date?: string;
   end_date?: string;
+  category_ids?: string[];
+  wallet_ids?: string[];
 }

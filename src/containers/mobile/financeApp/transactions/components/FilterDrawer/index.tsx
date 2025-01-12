@@ -7,17 +7,21 @@ import {
   ScrollBar,
   Text,
 } from "astarva-ui";
-import { useState } from "react";
+import React, { useState } from "react";
 
 import { Navbar } from "@/components/mobile/Navbar";
-import { useGetCategory } from "@/modules/activityApp/category/hooks/useCategory";
+import { useGetCategoryTransaction } from "@/modules/financeApp/category/hooks/useCategoryTransaction";
+import { useGetWallet } from "@/modules/financeApp/wallet/hooks/useWallet";
 import { dateTime, RangeDate } from "@/utils/dateTime";
 
 interface FilterDrawerProps {
   isVisible: boolean;
-  currentRange?: RangeDate;
   idCategories: string[];
+  idWallet: string[];
+  currentRange?: RangeDate;
   onClose: () => void;
+  onRefetch: () => void;
+  onSelectIdWallet: (ids: string[]) => void;
   onSetCurrentRange: (range: RangeDate) => void;
   onSelectIdCategory: (ids: string[]) => void;
 }
@@ -26,11 +30,14 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
   isVisible,
   currentRange,
   idCategories,
+  idWallet,
   onClose,
   onSetCurrentRange,
+  onSelectIdWallet,
   onSelectIdCategory,
 }) => {
   const [idsCategory, setIdsCategory] = useState<string[]>(idCategories);
+  const [idsWallet, setIdsWallet] = useState<string[]>(idWallet);
   const [startDate, setStartDate] = useState<Date | null>(
     currentRange?.start_date ? new Date(currentRange.start_date) : null
   );
@@ -38,13 +45,12 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
     currentRange?.end_date ? new Date(currentRange.end_date) : null
   );
 
-  const { data, isLoading } = useGetCategory(
-    {},
-    {
-      enabled: isVisible,
-      queryKey: ["all-category"],
-    }
-  );
+  const { data, isLoading } = useGetCategoryTransaction({
+    enabled: isVisible,
+    queryKey: ["category-transaction"],
+  });
+
+  const { data: dataWallet, isLoading: isLoadingWallet } = useGetWallet();
 
   const handleChangeRange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
@@ -52,7 +58,7 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
     setEndDate(end);
   };
 
-  const handleSelect = (id: string) => {
+  const handleSelectCategoryTransaction = (id: string) => {
     const ids = idsCategory.filter((item) => item !== id);
 
     if (idsCategory.includes(id)) {
@@ -63,8 +69,20 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
     setIdsCategory([...ids, id]);
   };
 
+  const handleSelectWallet = (id: string) => {
+    const ids = idsWallet.filter((item) => item !== id);
+
+    if (idsWallet.includes(id)) {
+      setIdsWallet([...ids]);
+      return;
+    }
+
+    setIdsWallet([...ids, id]);
+  };
+
   const handleSubmit = () => {
     onSelectIdCategory(idsCategory);
+    onSelectIdWallet(idsWallet);
 
     if (startDate && endDate) {
       onSetCurrentRange({
@@ -77,12 +95,12 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
 
   return (
     <Drawer isVisible={isVisible} isFullHeight gap="1rem">
-      <Navbar title="Filter Activity" onBack={onClose} />
+      <Navbar title="Filter Transactions" onBack={onClose} />
 
       <ScrollBar
         overflowY="auto"
         flexDirection="column"
-        gap="1rem"
+        gap="1.5rem"
         height="100vh"
         paddingTop="5rem"
       >
@@ -95,8 +113,7 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
         />
 
         <Flex flexDirection="column" gap=".75rem">
-          <Text>Category Activity</Text>
-
+          <Text>Category Transaction</Text>
           <Flex flexWrap="wrap" gap=".5rem" rowGap=".625rem">
             {isLoading && <Text>Loading...</Text>}
 
@@ -115,7 +132,40 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
                     borderRadius="1.25rem"
                     minWidth="3.75rem"
                     backgroundColor={isActive ? "blue400" : "white"}
-                    onClick={() => handleSelect(item.id)}
+                    onClick={() => handleSelectCategoryTransaction(item.id)}
+                  >
+                    <Text
+                      variant="extra-small"
+                      color={isActive ? "white" : "blue400"}
+                    >
+                      {item.name}
+                    </Text>
+                  </Flex>
+                );
+              })}
+          </Flex>
+        </Flex>
+
+        <Flex flexDirection="column" gap=".75rem">
+          <Text>Wallet</Text>
+          <Flex flexWrap="wrap" gap=".5rem" rowGap=".625rem">
+            {isLoadingWallet && <Text>Loading...</Text>}
+            {!isLoadingWallet &&
+              dataWallet?.data?.map((item) => {
+                const isActive = idsWallet.includes(item.id);
+                return (
+                  <Flex
+                    key={item.id}
+                    justifyContent="center"
+                    alignItems="center"
+                    gap=".5rem"
+                    border={`.0625rem solid ${Colors.blue400}`}
+                    maxWidth="max-content"
+                    padding=".25rem .5rem"
+                    borderRadius="1.25rem"
+                    minWidth="3.75rem"
+                    backgroundColor={isActive ? "blue400" : "white"}
+                    onClick={() => handleSelectWallet(item.id)}
                   >
                     <Text
                       variant="extra-small"
