@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "astarva-ui";
+import { Box, Flex, Skeleton, Text } from "astarva-ui";
 import { useRouter } from "next/router";
 
 import { CardTransaction } from "@/components/mobile/Transactions/CardTransaction";
@@ -7,7 +7,7 @@ import { useGetTransactions } from "@/modules/financeApp/transactions/hooks/useT
 
 export const Transactions = () => {
   const router = useRouter();
-  const { data } = useGetTransactions({ limit: 5 });
+  const { data, isLoading } = useGetTransactions({ limit: 5 });
   return (
     <Flex flexDirection="column" gap="1rem">
       <Flex justifyContent="space-between">
@@ -21,10 +21,24 @@ export const Transactions = () => {
       </Flex>
 
       <Flex flexDirection="column" gap=".5rem">
-        {data?.data?.map((transaction, index) => {
-          return <CardTransaction key={index} transaction={transaction} />;
-        })}
+        {isLoading ? (
+          <LoadingSkeleton />
+        ) : (
+          data?.data?.map((transaction, index) => {
+            return <CardTransaction key={index} transaction={transaction} />;
+          })
+        )}
       </Flex>
     </Flex>
   );
 };
+
+function LoadingSkeleton() {
+  return (
+    <Flex flexDirection="column" gap=".5rem">
+      {Array.from({ length: 5 }).map((_, index: number) => (
+        <Skeleton key={index} height="100px" />
+      ))}
+    </Flex>
+  );
+}
