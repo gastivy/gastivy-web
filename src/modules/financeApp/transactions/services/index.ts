@@ -4,14 +4,13 @@ import {
   CreateTransactionRequest,
   DetailTransactionsResponse,
   GetTransactionRequest,
-  TransactionsResponse,
   UpdateTransactionRequest,
 } from "../models";
 
 export const TransactionServices = {
   get: (params?: GetTransactionRequest) =>
     httpService
-      .get<TransactionsResponse>("/finance-app/transactions", { params })
+      .get("/finance-app/transactions", { params })
       .then((res) => res.data),
 
   getDetail: (transactionId: string) =>

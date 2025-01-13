@@ -1,6 +1,9 @@
-import { HttpResponse } from "@/types/HttpResponse";
+import { HttpInfiniteResponse, HttpResponse } from "@/types/HttpResponse";
 
 export type TransactionsResponse = HttpResponse<Transactions[]>;
+export type TransactionInfinteResponse = HttpInfiniteResponse<
+  TransactionsResponse[]
+>;
 export type DetailTransactionsResponse = HttpResponse<DetailTransaction>;
 
 interface TransactionRequest {
@@ -49,6 +52,7 @@ export interface DetailTransaction {
 
 export interface GetTransactionRequest {
   limit?: number;
+  page?: number;
   start_date?: string;
   end_date?: string;
   category_ids?: string[];

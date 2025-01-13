@@ -52,7 +52,7 @@ const Navbar: React.FC<NavbarProps> & {
         scrollY > 20 ? "0 .0625rem .25rem 0 rgba(50, 132, 255, 0.25)" : ""
       }
       backgroundColor="white"
-      zIndex={1}
+      zIndex={5}
     >
       {/* Prefix or Handle Back */}
       {prefix ? (

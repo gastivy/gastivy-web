@@ -1,4 +1,6 @@
 import {
+  useInfiniteQuery,
+  UseInfiniteQueryOptions,
   useMutation,
   UseMutationOptions,
   useQuery,
@@ -10,6 +12,7 @@ import {
   CreateTransactionRequest,
   DetailTransactionsResponse,
   GetTransactionRequest,
+  TransactionInfinteResponse,
   TransactionsResponse,
   UpdateTransactionRequest,
 } from "../models";
@@ -24,14 +27,46 @@ export const useCreateTransactions = (
   });
 
 export const useGetTransactions = (
-  params?: GetTransactionRequest,
+  request?: GetTransactionRequest,
   options?: UseQueryOptions<TransactionsResponse>
 ) =>
   useQuery({
-    queryKey: ["transactions", params],
-    queryFn: () => TransactionServices.get(params),
+    queryKey: ["transactions", request],
+    queryFn: () => TransactionServices.get(request),
     ...options,
   });
+
+export const useInfiniteTransactions = (
+  request: GetTransactionRequest,
+  options?: UseInfiniteQueryOptions<
+    TransactionsResponse,
+    AxiosError,
+    TransactionInfinteResponse,
+    TransactionsResponse
+  >
+) => {
+  return useInfiniteQuery({
+    queryKey: ["infinite-transactions", request],
+    queryFn: async ({ pageParam = 1 }) => {
+      const response = await TransactionServices.get({
+        ...request,
+        page: pageParam as number,
+      });
+
+      return response;
+    },
+    getNextPageParam: (lastPage) => {
+      const { current_page = 1, total_pages = 1 } = lastPage.pagination || {};
+      if (current_page < total_pages) {
+        return total_pages + 1;
+      } else {
+        return undefined;
+      }
+    },
+    initialPageParam: 1,
+    ...options,
+  });
+};
 
 export const useGetDetailTransactions = (
   transactionId: string,
