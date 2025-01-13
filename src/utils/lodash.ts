@@ -36,4 +36,8 @@ export const lodash = {
 
     return true;
   },
+
+  isObjectEmpty(obj: Record<string, unknown>): boolean {
+    return Object.keys(obj).length === 0;
+  },
 };

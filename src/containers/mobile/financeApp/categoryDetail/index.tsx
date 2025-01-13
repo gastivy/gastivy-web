@@ -49,7 +49,7 @@ const CategoryDetailTransactionContainer: React.FC = () => {
         <Flex
           justifyContent="center"
           alignItems="center"
-          marginTop="64px"
+          marginTop="4rem"
           height="10rem"
           backgroundColor="blue50"
         >

@@ -5,6 +5,7 @@ interface InfiniteScrollProps extends FlexProps {
   isFetchingNextPage: boolean;
   hasNextPage: boolean;
   children: ReactNode;
+  hideScroll?: boolean;
   onNextPage: () => void;
 }
 

@@ -18,7 +18,7 @@ interface FilterDrawerProps {
   isVisible: boolean;
   idCategories: string[];
   idWallet: string[];
-  currentRange?: RangeDate;
+  currentRange?: Partial<RangeDate>;
   onClose: () => void;
   onRefetch: () => void;
   onSelectIdWallet: (ids: string[]) => void;

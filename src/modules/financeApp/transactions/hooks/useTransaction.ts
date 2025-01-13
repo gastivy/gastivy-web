@@ -48,12 +48,24 @@ export const useInfiniteTransactions = (
   return useInfiniteQuery({
     queryKey: ["infinite-transactions", request],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await TransactionServices.get({
-        ...request,
-        page: pageParam as number,
-      });
-
-      return response;
+      try {
+        const response = await TransactionServices.get({
+          ...request,
+          page: pageParam as number,
+        });
+        return response;
+      } catch (error) {
+        if ((error as AxiosError).response?.status === 404) {
+          return {
+            data: [],
+            pagination: {
+              current_page: pageParam,
+              total_pages: 1,
+            },
+          };
+        }
+        throw error;
+      }
     },
     getNextPageParam: (lastPage) => {
       const { current_page = 1, total_pages = 1 } = lastPage.pagination || {};

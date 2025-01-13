@@ -1,15 +1,15 @@
 import {
   Flex,
   Icon,
-  ScrollBar,
   Select,
   Skeleton,
   Tabs,
   Text,
   useDisclosure,
 } from "astarva-ui";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
+import { InfiniteScroll } from "@/components/base/InfiniteScroll";
 import { Loading } from "@/components/base/Loading";
 import Layout from "@/components/mobile/Layout";
 import { Navbar } from "@/components/mobile/Navbar";
@@ -36,14 +36,17 @@ const TransactionsFinanceContainer = () => {
   const {
     currentRange,
     currentYear,
-    monthList,
+    optionsTab,
     yearList,
     isLoading,
     isRefetching,
+    isFetchingNextPage,
+    hasNextPage,
     data,
     idCategories,
     filterDisclosure,
     idsWallet,
+    fetchNextPage,
     setIdsWallet,
     setIdCategories,
     refetch,
@@ -51,10 +54,15 @@ const TransactionsFinanceContainer = () => {
     setCurrentRange,
   } = useFilterTransactions();
 
+  const transaction = useMemo(
+    () => data?.pages?.flatMap((res) => res.data || []) || [],
+    [data]
+  );
+
   const getLogTransaction = () => {
     const grouped: { [key: string]: Transactions[] } = {};
 
-    data?.data.forEach((transaction) => {
+    transaction.forEach((transaction) => {
       const date = dateTime
         .convertToLocalTime(String(transaction.date))
         .split("T")[0];
@@ -157,21 +165,22 @@ const TransactionsFinanceContainer = () => {
           />
         </Flex>
 
-        {currentRange && (
-          <Tabs
-            activeTab={currentRange}
-            options={monthList}
-            onChange={(val) => setCurrentRange(val as RangeDate)}
-          />
-        )}
+        <Tabs
+          activeTab={currentRange}
+          options={optionsTab}
+          onChange={(val) => setCurrentRange(val as RangeDate)}
+        />
 
-        <ScrollBar
+        <InfiniteScroll
+          isFetchingNextPage={isFetchingNextPage}
+          hasNextPage={hasNextPage}
           flexDirection="column"
           overflowY="auto"
           hideScroll
           gap="2rem"
           maxHeight="calc(100vh - 20rem)"
           paddingX=".25rem"
+          onNextPage={fetchNextPage}
         >
           {isLoading ? (
             <LoadingSkeleton />
@@ -200,7 +209,7 @@ const TransactionsFinanceContainer = () => {
               );
             })
           )}
-        </ScrollBar>
+        </InfiniteScroll>
       </Flex>
     </Layout>
   );

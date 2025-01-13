@@ -1,4 +1,4 @@
-import { colorIndex, Flex, Icon, Text, useDisclosure } from "astarva-ui";
+import { Box, colorIndex, Flex, Icon, Text, useDisclosure } from "astarva-ui";
 import React from "react";
 
 import { TypesTransactions } from "@/modules/financeApp/category/models";
@@ -121,9 +121,15 @@ export const CardTransaction: React.FC<CardTransactionProps> = ({
 
           {descriptionDisclosure.isOpen && (
             <Flex padding=".625rem 1rem">
-              <Text variant="small" color="black500">
+              <Box
+                fontSize=".75rem"
+                color="black500"
+                style={{
+                  whiteSpace: "pre-line",
+                }}
+              >
                 {transaction.description}
-              </Text>
+              </Box>
             </Flex>
           )}
         </Flex>

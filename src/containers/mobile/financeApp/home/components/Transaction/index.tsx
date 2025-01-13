@@ -37,7 +37,7 @@ function LoadingSkeleton() {
   return (
     <Flex flexDirection="column" gap=".5rem">
       {Array.from({ length: 5 }).map((_, index: number) => (
-        <Skeleton key={index} height="100px" />
+        <Skeleton key={index} height="6.25rem" />
       ))}
     </Flex>
   );
