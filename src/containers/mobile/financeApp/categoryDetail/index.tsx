@@ -1,6 +1,6 @@
 import { Flex, Icon, Select, Tabs, Text } from "astarva-ui";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import Layout from "@/components/mobile/Layout";
 import { Navbar } from "@/components/mobile/Navbar";
@@ -13,14 +13,21 @@ import { LogTransactions } from "./components/LogTransactions";
 
 const CategoryDetailTransactionContainer: React.FC = () => {
   const { query, push } = useRouter();
-  const [currentRange, setCurrentRange] = useState<RangeDate>();
-  const [currentYear, setCurrentYear] = useState<number>(
-    new Date().getFullYear()
-  );
-  const monthList = dateTime.generateMonths(currentYear);
-  const yearList = dateTime
-    .generateYears(2020)
-    .map((year) => ({ label: String(year), value: year }));
+  const [currentRange, setCurrentRange] = useState<Partial<RangeDate>>({});
+  const [currentYear, setCurrentYear] = useState<number>(0);
+
+  const optionsTab = [
+    { label: "All", value: {} },
+    ...dateTime.generateMonths(currentYear),
+  ];
+
+  const yearList = [
+    { label: "All The Time", value: 0 },
+    ...dateTime
+      .generateYears(2010)
+      .sort((a, b) => b - a)
+      .map((year) => ({ label: String(year), value: year })),
+  ];
 
   const { data } = useGetDetailCategoryTransaction(query.categoryId as string);
   const { name, type } = data?.data || {};
@@ -30,11 +37,6 @@ const CategoryDetailTransactionContainer: React.FC = () => {
     TypesTransactions.LOSS,
     TypesTransactions.PROFIT,
   ].includes(type as TypesTransactions);
-
-  useEffect(() => {
-    const thisMonth = monthList[new Date().getMonth()];
-    setCurrentRange(thisMonth.value);
-  }, [currentYear]);
 
   return (
     <Layout isShowBottomBar={false} _flex={{ padding: 0 }}>
@@ -67,13 +69,11 @@ const CategoryDetailTransactionContainer: React.FC = () => {
             onSelect={(option) => setCurrentYear(Number(option.value))}
           />
 
-          {currentRange && (
-            <Tabs
-              activeTab={currentRange}
-              options={monthList}
-              onChange={(val) => setCurrentRange(val as RangeDate)}
-            />
-          )}
+          <Tabs
+            activeTab={currentRange}
+            options={optionsTab}
+            onChange={(val) => setCurrentRange(val as RangeDate)}
+          />
         </Flex>
 
         <LogTransactions

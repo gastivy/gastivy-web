@@ -10,7 +10,7 @@ import { Transactions } from "@/modules/financeApp/transactions/models";
 import { dateTime, RangeDate } from "@/utils/dateTime";
 
 interface Props {
-  currentRange?: RangeDate;
+  currentRange: Partial<RangeDate>;
   isHideButton: boolean;
 }
 
@@ -73,14 +73,7 @@ export const LogTransactions: React.FC<Props> = ({
     <Disclosure defaultOpen={true}>
       {({ isOpen, onToggle }: useDisclosureProps) => (
         <Flex flexDirection="column" position="relative">
-          <Flex
-            width="100%"
-            position={isOpen ? "sticky" : "relative"}
-            top={isOpen ? "4rem" : "0"}
-            zIndex="6"
-            padding="1rem"
-            backgroundColor="white"
-          >
+          <Flex width="100%" padding="1rem" backgroundColor="white">
             <Flex
               flex={1}
               padding=".5rem"
