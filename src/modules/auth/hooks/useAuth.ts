@@ -24,3 +24,9 @@ export const useRegister = (
     mutationFn: (data) => AuthServices.register(data),
     ...options,
   });
+
+export const useLogout = (options?: UseMutationOptions<unknown, AxiosError>) =>
+  useMutation({
+    mutationFn: () => AuthServices.logout(),
+    ...options,
+  });

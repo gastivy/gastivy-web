@@ -11,16 +11,17 @@ import { useRef } from "react";
 
 import { KEY_ACCESS_TOKEN } from "@/constants/cookies";
 import { route } from "@/constants/route";
-import { cookies } from "@/utils/cookies";
+import { useLogout } from "@/modules/auth/hooks/useAuth";
 
 export const Profile = () => {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure({ open: false });
-
-  const handleLogout = () => {
-    cookies.deleteCookie(KEY_ACCESS_TOKEN);
-    router.push("/login");
-  };
+  const { mutate: logout } = useLogout({
+    onSuccess: () => {
+      localStorage.removeItem(KEY_ACCESS_TOKEN);
+      router.push("/login");
+    },
+  });
 
   const dropdownProfile = [
     {
@@ -28,7 +29,7 @@ export const Profile = () => {
       onClick: () => router.push(route.activityApp.home.path),
     },
     // { label: "Settings", onClick: undefined },
-    { label: "Logout", onClick: handleLogout },
+    { label: "Logout", onClick: logout },
   ];
 
   const dropdownProfileRef = useRef<HTMLDivElement | null>(null);

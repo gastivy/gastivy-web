@@ -11,7 +11,6 @@ import { route } from "@/constants/route";
 import { useLogin } from "@/modules/auth/hooks/useAuth";
 import { LoginRequest } from "@/modules/auth/models/Auth";
 import { schemaLogin } from "@/modules/auth/schema/auth";
-import { cookies } from "@/utils/cookies";
 
 const LoginContainer: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,7 +18,7 @@ const LoginContainer: React.FC = () => {
   const { isPending, isError, mutate } = useLogin({
     onSuccess: ({ data }) => {
       if (data.token) {
-        cookies.setCookie({ key: KEY_ACCESS_TOKEN, value: data.token });
+        localStorage.setItem(KEY_ACCESS_TOKEN, data.token);
         router.push(route.activityApp.home.path);
       }
     },

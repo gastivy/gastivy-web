@@ -1,8 +1,7 @@
 import axios from "axios";
 
 import { KEY_ACCESS_TOKEN } from "@/constants/cookies";
-
-import { cookies } from "./cookies";
+import { AuthServices } from "@/modules/auth/services";
 
 export const httpService = axios.create({
   baseURL: process.env.API_URL,
@@ -14,7 +13,7 @@ export const httpService = axios.create({
 
 httpService.interceptors.request.use(
   (config) => {
-    const token = cookies.getCookie(KEY_ACCESS_TOKEN);
+    const token = localStorage.getItem(KEY_ACCESS_TOKEN);
 
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
@@ -35,17 +34,8 @@ httpService.interceptors.request.use(
 httpService.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const windowObj = typeof window !== "undefined" ? window : undefined;
-
     if (error?.response?.status === 401) {
-      const baseUrl = windowObj?.location.origin;
-      const currentUrl = windowObj?.location.href;
-
-      // Redirect to login page if not authenticated
-      if (windowObj) {
-        cookies.deleteCookie(KEY_ACCESS_TOKEN);
-        windowObj.location.href = `${baseUrl}/login?referrer=${currentUrl}`;
-      }
+      await AuthServices.refresh();
     } else {
       // eslint-disable-next-line no-console
       console.error("Response Error:", error.response?.data || error);
