@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Alert, Button, Flex, Input, Text } from "astarva-ui";
+import { Alert, Box, Button, Flex, Input, Text } from "astarva-ui";
 import { AxiosError } from "axios";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -53,39 +54,61 @@ const LoginContainer: React.FC = () => {
         </Text>
       </Flex>
 
-      <Flex flexDirection="column" padding="1.5rem" gap="1rem">
-        {isError && errorMessage && (
-          <Alert
-            message={errorMessage}
-            variant="error"
-            onClose={handleCloseAlert}
-          />
-        )}
+      <Box as="form" onSubmit={handleSubmit(handleSubmitForm)}>
+        <Flex flexDirection="column" padding="1.5rem" gap="3rem">
+          {isError && errorMessage && (
+            <Alert
+              message={errorMessage}
+              variant="error"
+              onClose={handleCloseAlert}
+            />
+          )}
 
-        <Input
-          label="Email"
-          autoComplete="new-email"
-          {...register("email")}
-          isError={Boolean(errors.email?.message)}
-          error={errors.email?.message}
-        />
-        <Input.Password
-          label="Password"
-          {...register("password")}
-          isError={Boolean(errors.password?.message)}
-          error={errors.password?.message}
-        />
-        <Text>{errors.password?.message}</Text>
-        <Button
-          isBlock
-          variant="primary"
-          shape="semi-round"
-          disabled={isPending}
-          onClick={handleSubmit(handleSubmitForm)}
-        >
-          {isPending ? "Loading..." : "Login"}
-        </Button>
-      </Flex>
+          <Flex flexDirection="column" gap="1rem">
+            <Input
+              label="Email"
+              autoComplete="new-email"
+              {...register("email")}
+              isError={Boolean(errors.email?.message)}
+              error={errors.email?.message}
+            />
+            <Input.Password
+              label="Password"
+              {...register("password")}
+              isError={Boolean(errors.password?.message)}
+              error={errors.password?.message}
+            />
+          </Flex>
+
+          <Flex flexDirection="column" gap="1rem">
+            <Button
+              type="submit"
+              isBlock
+              variant="primary"
+              shape="semi-round"
+              disabled={
+                isPending ||
+                (Boolean(errors.email?.message) &&
+                  Boolean(errors.password?.message))
+              }
+            >
+              {isPending ? "Loading..." : "Login"}
+            </Button>
+
+            <Flex justifyContent="center" alignItems="center" gap="4px">
+              <Text color="black500">{`Don't have an account?`}</Text>
+              <Link
+                href={route.register.path}
+                style={{ textDecoration: "none" }}
+              >
+                <Text color="blue500" weight="semi-bold">
+                  Sign up now
+                </Text>
+              </Link>
+            </Flex>
+          </Flex>
+        </Flex>
+      </Box>
     </Layout>
   );
 };
