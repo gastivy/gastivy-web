@@ -18,12 +18,12 @@ export const menuActivityApp: BottomBarProps[] = [
     icon: "Home-outline",
     iconActive: "Home-solid",
   },
-  {
-    path: activityApp.statistic.path,
-    name: activityApp.statistic.name,
-    icon: "Chart-outline",
-    iconActive: "Chart-solid",
-  },
+  // {
+  //   path: activityApp.statistic.path,
+  //   name: activityApp.statistic.name,
+  //   icon: "Chart-outline",
+  //   iconActive: "Chart-solid",
+  // },
   {
     path: activityApp.category.path,
     name: activityApp.category.name,

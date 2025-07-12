@@ -10,6 +10,8 @@ import {
 } from "astarva-ui";
 import { useState } from "react";
 
+import { Assets } from "@/assets";
+import { EmptyState } from "@/components/base/EmptyState";
 import Layout from "@/components/mobile/Layout";
 import { Navbar } from "@/components/mobile/Navbar";
 import useDisclosure from "@/hooks/useDisclosure";
@@ -152,81 +154,93 @@ const ActivityContainer = () => {
           maxHeight="calc(100vh - 20rem)"
           paddingX=".25rem"
         >
-          {isLoading || isRefetching
-            ? Array.from({ length: 20 }).map((_, index: number) => (
+          {isLoading ||
+            (isRefetching &&
+              Array.from({ length: 20 }).map((_, index: number) => (
                 <Skeleton key={index} minHeight="3.125rem" />
-              ))
-            : logActivity.map((item, key) => {
-                return (
-                  <Flex key={key} flexDirection="column" gap="1.5rem">
-                    <Divider
-                      align="center"
-                      _textStyle={{
-                        color: "black300",
-                        variant: "medium",
-                      }}
-                    >
-                      <Text variant="small">
-                        {dateTime.getDate(new Date(item.key), "en-GB", {
-                          dateStyle: "long",
-                        })}
-                      </Text>
-                    </Divider>
-                    {item.logActivity.map(({ is_done, ...activity }, index) => {
-                      return (
-                        <Flex
-                          flexDirection="column"
-                          justifyContent="space-between"
-                          key={index}
-                          boxShadow="0 .25rem .5rem 0 rgba(50, 132, 255, 0.15)"
-                          gap=".25rem"
-                          padding=".75rem .625rem"
-                          borderRadius=".375rem"
-                          onClick={() =>
-                            handleClickActivity({ is_done, ...activity })
-                          }
-                        >
-                          <Flex justifyContent="space-between" gap=".25rem">
-                            <Text variant="small" weight="regular">
-                              {activity.category_name}
-                            </Text>
-                            <Text variant="small" italic color="black600">
-                              {dateTime.getRangeTime(
-                                String(activity.start_date),
-                                String(activity.end_date)
-                              )}
-                            </Text>
-                          </Flex>
-                          <Flex justifyContent="space-between">
-                            <Flex alignItems="center" gap=".5rem">
-                              <Icon
-                                name={
-                                  is_done
-                                    ? "Instant-outline"
-                                    : "Time-Square-outline"
-                                }
-                                color={is_done ? "blue400" : "black300"}
-                                size={is_done ? "1.25rem" : "1rem"}
-                              />
-                              <Text
-                                variant="small"
-                                color={is_done ? "blue400" : "black400"}
-                              >
-                                {is_done ? "Done" : "Pause"}
-                              </Text>
-                            </Flex>
-                            <Text color="black400" variant="small">
-                              {dateTime.convertSecondsToTimeFormat(
-                                activity.seconds
-                              )}
-                            </Text>
-                          </Flex>
+              )))}
+
+          {logActivity.length === 0 ? (
+            <EmptyState
+              src={Assets.NoteEmptyState}
+              title="You Have No Activities"
+              description="Start your activities now to achieve better productivity"
+              buttonText="Create Activities"
+              onClick={addActivityDrawer.onOpen}
+            />
+          ) : (
+            logActivity.map((item, key) => {
+              return (
+                <Flex key={key} flexDirection="column" gap="1.5rem">
+                  <Divider
+                    align="center"
+                    _textStyle={{
+                      color: "black300",
+                      variant: "medium",
+                    }}
+                  >
+                    <Text variant="small">
+                      {dateTime.getDate(new Date(item.key), "en-GB", {
+                        dateStyle: "long",
+                      })}
+                    </Text>
+                  </Divider>
+                  {item.logActivity.map(({ is_done, ...activity }, index) => {
+                    return (
+                      <Flex
+                        flexDirection="column"
+                        justifyContent="space-between"
+                        key={index}
+                        boxShadow="0 .25rem .5rem 0 rgba(50, 132, 255, 0.15)"
+                        gap=".25rem"
+                        padding=".75rem .625rem"
+                        borderRadius=".375rem"
+                        onClick={() =>
+                          handleClickActivity({ is_done, ...activity })
+                        }
+                      >
+                        <Flex justifyContent="space-between" gap=".25rem">
+                          <Text variant="small" weight="regular">
+                            {activity.category_name}
+                          </Text>
+                          <Text variant="small" italic color="black600">
+                            {dateTime.getRangeTime(
+                              String(activity.start_date),
+                              String(activity.end_date)
+                            )}
+                          </Text>
                         </Flex>
-                      );
-                    })}
-                  </Flex>
-                );
-              })}
+                        <Flex justifyContent="space-between">
+                          <Flex alignItems="center" gap=".5rem">
+                            <Icon
+                              name={
+                                is_done
+                                  ? "Instant-outline"
+                                  : "Time-Square-outline"
+                              }
+                              color={is_done ? "blue400" : "black300"}
+                              size={is_done ? "1.25rem" : "1rem"}
+                            />
+                            <Text
+                              variant="small"
+                              color={is_done ? "blue400" : "black400"}
+                            >
+                              {is_done ? "Done" : "Pause"}
+                            </Text>
+                          </Flex>
+                          <Text color="black400" variant="small">
+                            {dateTime.convertSecondsToTimeFormat(
+                              activity.seconds
+                            )}
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    );
+                  })}
+                </Flex>
+              );
+            })
+          )}
         </ScrollBar>
       </Flex>
     </Layout>

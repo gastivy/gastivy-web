@@ -95,7 +95,7 @@ const LoginContainer: React.FC = () => {
               {isPending ? "Loading..." : "Login"}
             </Button>
 
-            <Flex justifyContent="center" alignItems="center" gap="4px">
+            <Flex justifyContent="center" alignItems="center" gap=".25rem">
               <Text color="black500">{`Don't have an account?`}</Text>
               <Link
                 href={route.register.path}

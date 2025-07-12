@@ -92,7 +92,7 @@ const RegisterContainer = () => {
               {isPending ? "Loading..." : "Register"}
             </Button>
 
-            <Flex justifyContent="center" alignItems="center" gap="4px">
+            <Flex justifyContent="center" alignItems="center" gap=".25rem">
               <Text color="black500">Already have an account?</Text>
               <Link href={route.login.path} style={{ textDecoration: "none" }}>
                 <Text color="blue500" weight="semi-bold">

@@ -1,6 +1,8 @@
 import { Colors, Flex, Icon, Skeleton, Text, useDisclosure } from "astarva-ui";
 import { useState } from "react";
 
+import { Assets } from "@/assets";
+import { EmptyState } from "@/components/base/EmptyState";
 import { Loading } from "@/components/base/Loading";
 import Layout from "@/components/mobile/Layout";
 import { Navbar } from "@/components/mobile/Navbar";
@@ -60,40 +62,47 @@ const WalletContainer = () => {
       </Navbar>
 
       <Flex flexDirection="column" gap=".75rem" padding="5rem 0 0">
-        {isLoading ? (
-          <LoadingSkeleton />
+        {isLoading && <LoadingSkeleton />}
+        {walletData.length === 0 ? (
+          <EmptyState
+            src={Assets.WalletEmptyState}
+            width={220}
+            height={220}
+            title="You Have No Wallet"
+            description="Create your wallet now for manage your financial"
+            buttonText="Create Wallet"
+            onClick={createWalletDisclosure.onOpen}
+          />
         ) : (
-          walletData.map((data, index) => {
-            return (
+          walletData.map((data, index) => (
+            <Flex
+              key={index}
+              backgroundColor="white"
+              boxShadow="0 .125rem .375rem 0 rgba(50, 132, 255, 0.1)"
+              padding=".625rem"
+              borderRadius=".625rem"
+              alignItems="center"
+              gap="1rem"
+              border={`.0625rem solid ${Colors.black50}`}
+              onClick={() => handleSelect(data.id)}
+            >
               <Flex
-                key={index}
-                backgroundColor="white"
-                boxShadow="0 .125rem .375rem 0 rgba(50, 132, 255, 0.1)"
-                padding=".625rem"
-                borderRadius=".625rem"
+                justifyContent="center"
                 alignItems="center"
-                gap="1rem"
-                border={`.0625rem solid ${Colors.black50}`}
-                onClick={() => handleSelect(data.id)}
+                backgroundColor="blue50"
+                padding=".75rem"
+                borderRadius=".5rem"
               >
-                <Flex
-                  justifyContent="center"
-                  alignItems="center"
-                  backgroundColor="blue50"
-                  padding=".75rem"
-                  borderRadius=".5rem"
-                >
-                  <Icon name="Wallet-outline" size="1.75rem" color="blue400" />
-                </Flex>
-                <Flex flexDirection="column">
-                  <Text variant="medium">{data.name}</Text>
-                  <Text variant="small" color="black400">
-                    {formatter.currency(data.balance)}
-                  </Text>
-                </Flex>
+                <Icon name="Wallet-outline" size="1.75rem" color="blue400" />
               </Flex>
-            );
-          })
+              <Flex flexDirection="column">
+                <Text variant="medium">{data.name}</Text>
+                <Text variant="small" color="black400">
+                  {formatter.currency(data.balance)}
+                </Text>
+              </Flex>
+            </Flex>
+          ))
         )}
       </Flex>
     </Layout>

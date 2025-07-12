@@ -6,8 +6,12 @@ import {
   Skeleton,
   Text,
 } from "astarva-ui";
+import { useRouter } from "next/navigation";
 import React from "react";
 
+import { Assets } from "@/assets";
+import { EmptyState } from "@/components/base/EmptyState";
+import { route } from "@/constants/route";
 import { Category } from "@/modules/activityApp/category/models";
 import { ListTab } from "@/modules/activityApp/home/useSummaryActivity";
 
@@ -34,6 +38,7 @@ export const SummaryActivity: React.FC<SummaryActivityProps> = ({
   onSetCurrentTab,
   onDateRange,
 }) => {
+  const router = useRouter();
   return (
     <Flex
       flexDirection="column"
@@ -86,54 +91,65 @@ export const SummaryActivity: React.FC<SummaryActivityProps> = ({
         overflowY="auto"
         padding=".5rem .25rem"
       >
-        {isLoading
-          ? Array.from({ length: 6 }).map((_, index) => {
-              return <Skeleton key={index} minHeight="6.25rem" />;
-            })
-          : data.map(({ minutes = 0, target = 0, ...item }, key) => {
-              const difference = minutes - target;
-              return (
-                <Flex
-                  flexDirection="column"
-                  backgroundColor="white"
-                  padding=".625rem"
-                  borderRadius=".5rem"
-                  key={key}
-                  gap=".75rem"
-                  boxShadow="0 .25rem .5rem 0 rgba(50, 132, 255, 0.15)"
-                  onClick={() => onSelectCategory({ ...item, minutes, target })}
-                >
-                  <Text variant="medium" color="black900">
-                    {item.name}
-                  </Text>
-                  <Flex flexDirection="column" gap=".25rem">
-                    <Flex justifyContent="space-between">
-                      <Text color="black400" variant="small">
-                        {minutes} / {target} Minutes
-                      </Text>
-                      <Text
-                        color={difference < 0 ? "red400" : "blue400"}
-                        variant="small"
-                      >
-                        {difference < 0 ? difference : `+${difference}`} m
-                      </Text>
-                    </Flex>
-                    <Progress.Bar
-                      width="100%"
-                      color="blue400"
-                      backgroundColor="blue50"
-                      withoutLimit
-                      textInside={false}
-                      height=".75rem"
-                      _text={{
-                        color: "black700",
-                      }}
-                      percent={Math.round((minutes / target) * 100)}
-                    />
+        {isLoading &&
+          Array.from({ length: 6 }).map((_, index) => {
+            return <Skeleton key={index} minHeight="6.25rem" />;
+          })}
+
+        {data.length === 0 ? (
+          <EmptyState
+            src={Assets.BoxEmptyState}
+            title="You Have No Category Activities"
+            description="Start create your category activities now to achieve better productivity"
+            buttonText="Create Category Activity"
+            onClick={() => router.push(route.activityApp.category.path)}
+          />
+        ) : (
+          data.map(({ minutes = 0, target = 0, ...item }, key) => {
+            const difference = minutes - target;
+            return (
+              <Flex
+                flexDirection="column"
+                backgroundColor="white"
+                padding=".625rem"
+                borderRadius=".5rem"
+                key={key}
+                gap=".75rem"
+                boxShadow="0 .25rem .5rem 0 rgba(50, 132, 255, 0.15)"
+                onClick={() => onSelectCategory({ ...item, minutes, target })}
+              >
+                <Text variant="medium" color="black900">
+                  {item.name}
+                </Text>
+                <Flex flexDirection="column" gap=".25rem">
+                  <Flex justifyContent="space-between">
+                    <Text color="black400" variant="small">
+                      {minutes} / {target} Minutes
+                    </Text>
+                    <Text
+                      color={difference < 0 ? "red400" : "blue400"}
+                      variant="small"
+                    >
+                      {difference < 0 ? difference : `+${difference}`} m
+                    </Text>
                   </Flex>
+                  <Progress.Bar
+                    width="100%"
+                    color="blue400"
+                    backgroundColor="blue50"
+                    withoutLimit
+                    textInside={false}
+                    height=".75rem"
+                    _text={{
+                      color: "black700",
+                    }}
+                    percent={Math.round((minutes / target) * 100)}
+                  />
                 </Flex>
-              );
-            })}
+              </Flex>
+            );
+          })
+        )}
       </ScrollBar>
     </Flex>
   );

@@ -9,6 +9,8 @@ import {
 } from "astarva-ui";
 import { useMemo, useState } from "react";
 
+import { Assets } from "@/assets";
+import { EmptyState } from "@/components/base/EmptyState";
 import { InfiniteScroll } from "@/components/base/InfiniteScroll";
 import { Loading } from "@/components/base/Loading";
 import Layout from "@/components/mobile/Layout";
@@ -182,32 +184,40 @@ const TransactionsFinanceContainer = () => {
           paddingX=".25rem"
           onNextPage={fetchNextPage}
         >
-          {isLoading ? (
-            <LoadingSkeleton />
-          ) : (
-            getLogTransaction().map((item, index) => {
-              return (
-                <Flex flexDirection="column" key={index} gap=".75rem">
-                  <Text variant="small" color="black700">
-                    {dateTime.getDate(new Date(item.key), "en-GB", {
-                      dateStyle: "long",
-                    })}
-                  </Text>
+          {isLoading && <LoadingSkeleton />}
 
-                  <Flex flexDirection="column" gap=".5rem">
-                    {item.log.map((transaction, indexTransaction) => {
-                      return (
-                        <CardTransaction
-                          transaction={transaction}
-                          key={indexTransaction}
-                          onClick={() => handleClickTransaction(transaction)}
-                        />
-                      );
-                    })}
-                  </Flex>
+          {(transaction || []).length === 0 ? (
+            <EmptyState
+              src={Assets.NoteEmptyState}
+              width={220}
+              height={220}
+              title="You Have No Transactions"
+              description="Create your transactions now for manage your financial"
+              buttonText="Create Transactions"
+              onClick={addTransactionDisclosure.onOpen}
+            />
+          ) : (
+            getLogTransaction().map((item, index) => (
+              <Flex flexDirection="column" key={index} gap=".75rem">
+                <Text variant="small" color="black700">
+                  {dateTime.getDate(new Date(item.key), "en-GB", {
+                    dateStyle: "long",
+                  })}
+                </Text>
+
+                <Flex flexDirection="column" gap=".5rem">
+                  {item.log.map((transaction, indexTransaction) => {
+                    return (
+                      <CardTransaction
+                        transaction={transaction}
+                        key={indexTransaction}
+                        onClick={() => handleClickTransaction(transaction)}
+                      />
+                    );
+                  })}
                 </Flex>
-              );
-            })
+              </Flex>
+            ))
           )}
         </InfiniteScroll>
       </Flex>
