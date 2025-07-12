@@ -1,6 +1,7 @@
 import { Flex } from "astarva-ui";
 import { useEffect, useState } from "react";
 
+import { Profile } from "@/components/base/Profile";
 import Layout from "@/components/mobile/Layout";
 import useDisclosure from "@/hooks/useDisclosure";
 import { Timer } from "@/hooks/useStopwatch";
@@ -9,7 +10,6 @@ import { useSummaryActivity } from "@/modules/activityApp/home/useSummaryActivit
 import { IndexedDB } from "@/utils/indexedDB";
 
 import { AddActivityDrawer } from "./components/AddActivityDrawer";
-import { Profile } from "./components/Profile";
 import { SummaryActivity } from "./sections/SummaryActivity";
 
 interface Activity {

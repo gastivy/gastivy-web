@@ -34,7 +34,7 @@ export const Transactions = () => {
             title="You Have No Transactions"
             description="Create your transactions now for manage your financial"
             buttonText="Create Transactions"
-            paddingBottom="100px"
+            paddingBottom="6.25rem"
             onClick={() => router.push(route.financeApp.transactions.path)}
           />
         ) : (

@@ -1,11 +1,11 @@
 import { useDisclosure } from "astarva-ui";
 
+import { Profile } from "@/components/base/Profile";
 import Layout from "@/components/mobile/Layout";
 import { TypesTransactions } from "@/modules/financeApp/category/models";
 
 import { AddTransactionsDrawer } from "../transactions/components/AddTransactionDrawer";
 import { Balance } from "./components/Balance";
-import { Profile } from "./components/Profile";
 import { Transactions } from "./components/Transaction";
 
 const HomeFinanceContainer = () => {
