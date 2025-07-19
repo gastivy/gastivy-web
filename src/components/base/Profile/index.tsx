@@ -9,10 +9,11 @@ import {
 import { useRouter } from "next/router";
 import { useRef } from "react";
 
-import { KEY_ACCESS_TOKEN } from "@/constants/cookies";
+import { KEY_IS_LOGIN } from "@/constants/localStorage";
 import { route } from "@/constants/route";
 import { useLogout } from "@/modules/auth/hooks/useAuth";
 import { useUser } from "@/modules/user/hooks/useUser";
+import { cookies } from "@/utils/cookies";
 
 export const Profile = () => {
   const router = useRouter();
@@ -21,7 +22,7 @@ export const Profile = () => {
   const { data } = useUser();
   const { mutate: logout } = useLogout({
     onSuccess: () => {
-      localStorage.removeItem(KEY_ACCESS_TOKEN);
+      cookies.deleteCookie(KEY_IS_LOGIN);
       router.push("/login");
     },
   });
