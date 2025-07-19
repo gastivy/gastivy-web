@@ -61,12 +61,15 @@ export const useSummaryActivity = () => {
           end_date: dateTime.formatDate(endDate || new Date()),
         }
       : selectedTypeSummary?.range;
-  const { data, isLoading, refetch } = useGetCategory({ ...params });
+  const { data, isLoading, isRefetching, refetch } = useGetCategory({
+    ...params,
+  });
 
   return {
     currentTab,
     data,
     isLoading,
+    isRefetching,
     listTab,
     selectedTypeSummary,
     startDate,

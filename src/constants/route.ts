@@ -39,6 +39,10 @@ export const route = {
       path: "/finance-app/transactions",
     },
   },
+  home: {
+    name: "Home",
+    path: "/",
+  },
   login: {
     name: "Login",
     path: "/login",

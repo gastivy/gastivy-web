@@ -1,4 +1,3 @@
-import { KEY_ACCESS_TOKEN } from "@/constants/cookies";
 import {
   LoginRequest,
   LoginResponse,
@@ -21,25 +20,17 @@ export const AuthServices = {
   refresh: () =>
     httpService
       .post("/auth/refresh", {}, { withCredentials: true })
-      .then((res) => {
-        localStorage.setItem(KEY_ACCESS_TOKEN, res.data.data.accessToken);
-      })
+      .then((res) => res.data)
       .catch(() => {
         const windowObj = typeof window !== "undefined" ? window : undefined;
 
         const baseUrl = windowObj?.location.origin;
         const currentUrl = windowObj?.location.href;
 
-        // Redirect to login page if not authenticated
-        localStorage.removeItem(KEY_ACCESS_TOKEN);
-
         if (windowObj) {
           windowObj.location.href = `${baseUrl}/login?referrer=${currentUrl}`;
         }
       }),
 
-  logout: () =>
-    httpService
-      .post("/auth/logout")
-      .then(() => localStorage.removeItem(KEY_ACCESS_TOKEN)),
+  logout: () => httpService.post("/auth/logout").then((res) => res.data),
 };

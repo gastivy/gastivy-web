@@ -18,6 +18,7 @@ import { ListTab } from "@/modules/activityApp/home/useSummaryActivity";
 interface SummaryActivityProps {
   data?: Category[];
   isLoading: boolean;
+  isRefetching: boolean;
   listTab: ListTab[];
   currentTab: string;
   startDate: Date | null;
@@ -33,6 +34,7 @@ export const SummaryActivity: React.FC<SummaryActivityProps> = ({
   startDate,
   endDate,
   isLoading,
+  isRefetching,
   listTab,
   onSelectCategory,
   onSetCurrentTab,
@@ -87,16 +89,16 @@ export const SummaryActivity: React.FC<SummaryActivityProps> = ({
       <ScrollBar
         flexDirection="column"
         gap="1rem"
-        maxHeight="27.5rem"
+        maxHeight="calc(100dvh - 260px)"
         overflowY="auto"
         padding=".5rem .25rem"
       >
-        {isLoading &&
+        {(isLoading || isRefetching) &&
           Array.from({ length: 6 }).map((_, index) => {
             return <Skeleton key={index} minHeight="6.25rem" />;
           })}
 
-        {data.length === 0 ? (
+        {!(isLoading || isRefetching) && data.length === 0 && (
           <EmptyState
             src={Assets.BoxEmptyState}
             title="You Have No Category Activities"
@@ -104,7 +106,10 @@ export const SummaryActivity: React.FC<SummaryActivityProps> = ({
             buttonText="Create Category Activity"
             onClick={() => router.push(route.activityApp.category.path)}
           />
-        ) : (
+        )}
+
+        {!(isLoading || isRefetching) &&
+          data.length > 0 &&
           data.map(({ minutes = 0, target = 0, ...item }, key) => {
             const difference = minutes - target;
             return (
@@ -148,8 +153,7 @@ export const SummaryActivity: React.FC<SummaryActivityProps> = ({
                 </Flex>
               </Flex>
             );
-          })
-        )}
+          })}
       </ScrollBar>
     </Flex>
   );

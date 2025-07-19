@@ -1,11 +1,14 @@
-import { PageRender } from "@/components/base/PageRender";
-import HomeContainer from "@/containers/mobile/activityApp/home";
-import { PageNotSupport } from "@/containers/web";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-const Login = () =>
-  PageRender({
-    mobile: <HomeContainer />,
-    web: <PageNotSupport />,
-  });
+import { route } from "@/constants/route";
 
-export default Login;
+const Home = () => {
+  const router = useRouter();
+  useEffect(() => {
+    router.push(route.activityApp.home.path);
+  }, []);
+  return null;
+};
+
+export default Home;

@@ -184,9 +184,8 @@ const TransactionsFinanceContainer = () => {
           paddingX=".25rem"
           onNextPage={fetchNextPage}
         >
-          {isLoading && <LoadingSkeleton />}
-
-          {(transaction || []).length === 0 ? (
+          {(isLoading || isRefetching) && <LoadingSkeleton />}
+          {!(isLoading || isRefetching) && (transaction || []).length === 0 && (
             <EmptyState
               src={Assets.NoteEmptyState}
               width={220}
@@ -196,7 +195,9 @@ const TransactionsFinanceContainer = () => {
               buttonText="Create Transactions"
               onClick={addTransactionDisclosure.onOpen}
             />
-          ) : (
+          )}{" "}
+          {!(isLoading || isRefetching) &&
+            (transaction || []).length > 0 &&
             getLogTransaction().map((item, index) => (
               <Flex flexDirection="column" key={index} gap=".75rem">
                 <Text variant="small" color="black700">
@@ -217,8 +218,7 @@ const TransactionsFinanceContainer = () => {
                   })}
                 </Flex>
               </Flex>
-            ))
-          )}
+            ))}
         </InfiniteScroll>
       </Flex>
     </Layout>

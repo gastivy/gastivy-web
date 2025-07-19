@@ -154,13 +154,12 @@ const ActivityContainer = () => {
           maxHeight="calc(100vh - 20rem)"
           paddingX=".25rem"
         >
-          {isLoading ||
-            (isRefetching &&
-              Array.from({ length: 20 }).map((_, index: number) => (
-                <Skeleton key={index} minHeight="3.125rem" />
-              )))}
+          {(isLoading || isRefetching) &&
+            Array.from({ length: 10 }).map((_, index: number) => (
+              <Skeleton key={index} minHeight="70px" />
+            ))}
 
-          {logActivity.length === 0 ? (
+          {!(isLoading || isRefetching) && logActivity.length === 0 && (
             <EmptyState
               src={Assets.NoteEmptyState}
               title="You Have No Activities"
@@ -168,7 +167,10 @@ const ActivityContainer = () => {
               buttonText="Create Activities"
               onClick={addActivityDrawer.onOpen}
             />
-          ) : (
+          )}
+
+          {!(isLoading || isRefetching) &&
+            logActivity.length > 0 &&
             logActivity.map((item, key) => {
               return (
                 <Flex key={key} flexDirection="column" gap="1.5rem">
@@ -239,8 +241,7 @@ const ActivityContainer = () => {
                   })}
                 </Flex>
               );
-            })
-          )}
+            })}
         </ScrollBar>
       </Flex>
     </Layout>

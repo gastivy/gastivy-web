@@ -29,6 +29,7 @@ const HomeActivityContainer = () => {
     startDate,
     endDate,
     isLoading,
+    isRefetching,
     listTab,
     refetch,
     setCurrentTab,
@@ -79,6 +80,7 @@ const HomeActivityContainer = () => {
           data={data?.data}
           currentTab={currentTab}
           isLoading={isLoading}
+          isRefetching={isRefetching}
           listTab={listTab}
           startDate={startDate}
           endDate={endDate}

@@ -7,7 +7,6 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import Layout from "@/components/mobile/Layout";
-import { KEY_ACCESS_TOKEN } from "@/constants/cookies";
 import { route } from "@/constants/route";
 import { useLogin } from "@/modules/auth/hooks/useAuth";
 import { LoginRequest } from "@/modules/auth/models/Auth";
@@ -19,8 +18,7 @@ const LoginContainer: React.FC = () => {
   const { isPending, isError, mutate } = useLogin({
     onSuccess: ({ data }) => {
       if (data.token) {
-        localStorage.setItem(KEY_ACCESS_TOKEN, data.token);
-        router.push(route.activityApp.home.path);
+        router.push(route.home.path);
       }
     },
     onError: ({ response }) => {

@@ -3,7 +3,6 @@ import { useState } from "react";
 
 import { Assets } from "@/assets";
 import { EmptyState } from "@/components/base/EmptyState";
-import { Loading } from "@/components/base/Loading";
 import Layout from "@/components/mobile/Layout";
 import { Navbar } from "@/components/mobile/Navbar";
 import { useGetWallet } from "@/modules/financeApp/wallet/hooks/useWallet";
@@ -29,8 +28,6 @@ const WalletContainer = () => {
 
   return (
     <Layout _flex={{ paddingBottom: "5.5rem" }}>
-      {isRefetching && <Loading />}
-
       {/* Add Wallet Drawer */}
       <CreateWalletDrawer
         isVisible={createWalletDisclosure.isOpen}
@@ -62,8 +59,8 @@ const WalletContainer = () => {
       </Navbar>
 
       <Flex flexDirection="column" gap=".75rem" padding="5rem 0 0">
-        {isLoading && <LoadingSkeleton />}
-        {walletData.length === 0 ? (
+        {(isLoading || isRefetching) && <LoadingSkeleton />}
+        {!(isLoading || isRefetching) && walletData.length === 0 && (
           <EmptyState
             src={Assets.WalletEmptyState}
             width={220}
@@ -73,7 +70,9 @@ const WalletContainer = () => {
             buttonText="Create Wallet"
             onClick={createWalletDisclosure.onOpen}
           />
-        ) : (
+        )}
+        {!(isLoading || isRefetching) &&
+          walletData?.length > 0 &&
           walletData.map((data, index) => (
             <Flex
               key={index}
@@ -102,8 +101,7 @@ const WalletContainer = () => {
                 </Text>
               </Flex>
             </Flex>
-          ))
-        )}
+          ))}
       </Flex>
     </Layout>
   );

@@ -45,13 +45,12 @@ const CategoryContainer: React.FC = () => {
       </Navbar>
 
       <Flex flexDirection="column" gap="1rem" paddingY="4.5rem">
-        {isLoading ||
-          (isRefetching &&
-            Array.from({ length: 3 }).map((_, index: number) => (
-              <Skeleton backgroundColor="black50" height="5rem" key={index} />
-            )))}
+        {(isLoading || isRefetching) &&
+          Array.from({ length: 3 }).map((_, index: number) => (
+            <Skeleton backgroundColor="black50" height="5rem" key={index} />
+          ))}
 
-        {data?.data.length === 0 ? (
+        {!(isLoading || isRefetching) && data?.data.length === 0 && (
           <EmptyState
             src={Assets.BoxEmptyState}
             title="You Have No Category"
@@ -59,7 +58,10 @@ const CategoryContainer: React.FC = () => {
             buttonText="Create Category Activity"
             onClick={addCategoryDisclosure.onOpen}
           />
-        ) : (
+        )}
+
+        {!(isLoading || isRefetching) &&
+          (data?.data.length || 0) > 0 &&
           data?.data.map((item, index) => {
             return (
               <Flex
@@ -96,8 +98,7 @@ const CategoryContainer: React.FC = () => {
                 </Flex>
               </Flex>
             );
-          })
-        )}
+          })}
       </Flex>
     </Layout>
   );
