@@ -1,1 +1,1 @@
-export const KEY_IS_LOGIN = "lisogin";
+// export const KEY_IS_LOGIN = "lisogin";

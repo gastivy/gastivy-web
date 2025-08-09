@@ -7,12 +7,10 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import Layout from "@/components/mobile/Layout";
-import { KEY_IS_LOGIN } from "@/constants/localStorage";
 import { route } from "@/constants/route";
 import { useLogin } from "@/modules/auth/hooks/useAuth";
 import { LoginRequest } from "@/modules/auth/models/Auth";
 import { schemaLogin } from "@/modules/auth/schema/auth";
-import { cookies } from "@/utils/cookies";
 
 const LoginContainer: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -20,7 +18,6 @@ const LoginContainer: React.FC = () => {
   const { isPending, isError, mutate } = useLogin({
     onSuccess: ({ data }) => {
       if (data.token) {
-        cookies.setCookie({ key: KEY_IS_LOGIN, value: true });
         router.push(route.home.path);
       }
     },
