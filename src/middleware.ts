@@ -8,6 +8,7 @@ export function middleware(request: NextRequest) {
   // Access Token
   const isAuthenticated = request.cookies.get(KEY_ACCESS_TOKEN);
 
+  console.log("KEY_ACCESS_TOKEN: ", KEY_ACCESS_TOKEN);
   console.log("getAll", request.cookies.getAll());
   console.log("isAuthenticated", isAuthenticated);
 
