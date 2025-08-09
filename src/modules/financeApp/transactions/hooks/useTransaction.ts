@@ -42,7 +42,7 @@ export const useInfiniteTransactions = (
     TransactionsResponse,
     AxiosError,
     TransactionInfinteResponse,
-    TransactionsResponse
+    [string, GetTransactionRequest]
   >
 ) => {
   return useInfiniteQuery({

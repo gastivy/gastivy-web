@@ -12,6 +12,6 @@ export interface HttpResponse<T> {
 }
 
 export interface HttpInfiniteResponse<T> {
-  pages: T;
+  pages: T[];
   pageParams: number[];
 }

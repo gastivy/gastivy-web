@@ -1,9 +1,8 @@
 import { HttpInfiniteResponse, HttpResponse } from "@/types/HttpResponse";
 
 export type TransactionsResponse = HttpResponse<Transactions[]>;
-export type TransactionInfinteResponse = HttpInfiniteResponse<
-  TransactionsResponse[]
->;
+export type TransactionInfinteResponse =
+  HttpInfiniteResponse<TransactionsResponse>;
 export type DetailTransactionsResponse = HttpResponse<DetailTransaction>;
 
 interface TransactionRequest {
