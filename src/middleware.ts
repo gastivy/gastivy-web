@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
     !isAuthenticated &&
     !pathWithoutUnauthorized.includes(request.nextUrl.pathname)
   ) {
-    return NextResponse.redirect(new URL(route.register.path, request.url));
+    return NextResponse.redirect(new URL(route.login.path, request.url));
   }
 
   if (
