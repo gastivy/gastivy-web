@@ -18,7 +18,9 @@ const LoginContainer: React.FC = () => {
   const { isPending, isError, mutate } = useLogin({
     onSuccess: ({ data }) => {
       if (data.token) {
-        router.push(route.home.path);
+        setTimeout(() => {
+          router.push(route.home.path);
+        }, 500);
       }
     },
     onError: ({ response }) => {
