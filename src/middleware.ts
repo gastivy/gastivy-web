@@ -2,15 +2,23 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { route } from "./constants/route";
 
-export function middleware(request: NextRequest) {
-  // Access Token
+export async function middleware(request: NextRequest) {
+  const isAuthenticated = request.cookies.get("STG_GSTID")?.value;
+
+  // // Access Token
   const pathWithoutUnauthorized = ["/login", "/register"];
 
-  if (!pathWithoutUnauthorized.includes(request.nextUrl.pathname)) {
+  if (
+    !isAuthenticated &&
+    !pathWithoutUnauthorized.includes(request.nextUrl.pathname)
+  ) {
     return NextResponse.redirect(new URL(route.login.path, request.url));
   }
 
-  if (pathWithoutUnauthorized.includes(request.nextUrl.pathname)) {
+  if (
+    isAuthenticated &&
+    pathWithoutUnauthorized.includes(request.nextUrl.pathname)
+  ) {
     return NextResponse.redirect(new URL(route.home.path, request.url));
   }
 
