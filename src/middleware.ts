@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { KEY_ACCESS_TOKEN } from "./constants/cookies";
 import { route } from "./constants/route";
 
-export async function middleware(request: NextRequest) {
-  const isAuthenticated = request.cookies.get(KEY_ACCESS_TOKEN)?.value;
+export function middleware(request: NextRequest) {
+  // Access Token
+  const isAuthenticated = request.cookies.get(KEY_ACCESS_TOKEN);
 
-  // // Access Token
   const pathWithoutUnauthorized = ["/login", "/register"];
 
   if (
