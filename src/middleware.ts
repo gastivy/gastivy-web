@@ -5,7 +5,7 @@ import { route } from "./constants/route";
 
 export function middleware(request: NextRequest) {
   // Access Token
-  const isAuthenticated = request.cookies.get(KEY_ACCESS_TOKEN);
+  const isAuthenticated = request.cookies.get(KEY_ACCESS_TOKEN)?.value;
 
   const pathWithoutUnauthorized = ["/login", "/register"];
 
